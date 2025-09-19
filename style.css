@@ -209,58 +209,50 @@ header {
   margin: 1.4rem auto 1.8rem;
   padding: 0 1rem;
 }
+
+/* --- Glossier gold upgrade (kept same selectors & behavior) --- */
 .menu-toggle a{
   display: block;
   text-align: center;
   padding: 1rem 1.25rem;
   border-radius: 16px;
-  border: 2px solid #D4AF37;
-  background: #222;
+  border: 2px solid #D4AF37;                 /* keep exact gold */
+  background:
+    linear-gradient(180deg, #262626 0%, #1b1b1b 60%, #151515 100%); /* richer depth */
   color: var(--logo-gold);
   font-weight: 800;
   text-decoration: none;
   letter-spacing: .3px;
   box-shadow:
-    0 2px 0 #8f6f05,
-    0 6px 22px #D4AF3722;
-  transition: transform .06s ease,
-             box-shadow .18s ease,
-             filter .18s ease;
-}
-.menu-toggle a:hover{
-  filter: brightness(1.03);
-  box-shadow:
-    0 2px 0 #8f6f05,
-    0 10px 28px #D4AF3740;
-}
-.menu-toggle a:active{
-  transform: translateY(1px);
-  box-shadow:
-    inset 0 -2px 6px #2a2108,
-    0 8px 30px #D4AF374F;
-}
-.menu-toggle a:link,
-.menu-toggle a:visited,
-.menu-toggle a:focus{
-  background: #222 !important;
-  border: 2px solid #D4AF37 !important;
-  color: var(--logo-gold) !important;
-  opacity: 1 !important;
-  filter: none !important;
-  outline: none;
-}
-.menu-toggle a.active,
-.menu-toggle a[aria-current="page"]{
-  box-shadow:
-    0 0 0 2px #D4AF37,
-    0 12px 36px #D4AF3728;
-}
-a { -webkit-tap-highlight-color: transparent; }
-.menu-toggle a{
+    inset 0 0 0 1px rgba(255,255,255,.04),
+    0 2px 0 #8f6f05,                          /* existing embossed line tone */
+    0 10px 26px rgba(212,175,55,0.22),        /* softer base glow */
+    0 0 18px rgba(212,175,55,0.26);           /* halo */
   position: relative;
   isolation: isolate;
-  transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
+  transition:
+    transform .15s ease,
+    box-shadow .2s ease,
+    filter .2s ease,
+    background .2s ease,
+    border-color .2s ease,
+    color .2s ease;
 }
+
+/* glossy highlight strip */
+.menu-toggle a::before{
+  content:"";
+  position:absolute;
+  left: 8px; right: 8px; top: 6px;
+  height: 40%;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255,255,255,.28), rgba(255,255,255,0));
+  pointer-events:none;
+  mix-blend-mode:screen;
+  opacity:.9;
+}
+
+/* outer gold aura (kept your ::after usage but richer) */
 .menu-toggle a::after{
   content:"";
   position:absolute;
@@ -272,33 +264,74 @@ a { -webkit-tap-highlight-color: transparent; }
   transition: opacity .18s ease;
   background:
     radial-gradient(60% 60% at 50% 50%,
-      #D4AF3766 0%,
-      #D4AF3740 45%,
-      transparent 70%);
+      rgba(212,175,55,0.45) 0%,
+      rgba(212,175,55,0.26) 45%,
+      transparent 75%);
 }
-.menu-toggle a:hover,
-.menu-toggle a:focus-visible{
-  transform: translateY(-2px);
-  filter: brightness(1.04);
+
+/* hover */
+.menu-toggle a:hover{
+  filter: brightness(1.05);
+  background:
+    linear-gradient(180deg, #2b2b2b 0%, #1f1f1f 60%, #161616 100%);
   box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.06),
     0 2px 0 #8f6f05,
-    0 10px 28px #D4AF3748;
+    0 12px 30px rgba(212,175,55,0.32),
+    0 0 26px rgba(212,175,55,0.36);
 }
-.menu-toggle a:hover::after,
-.menu-toggle a:focus-visible::after,
-.menu-toggle a:active::after{
-  opacity:1;
+.menu-toggle a:hover::after{ opacity:1; }
+
+/* focus-visible for accessibility */
+.menu-toggle a:focus-visible{
+  outline: none;
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 0 3px rgba(212,175,55,.55),
+    0 0 0 6px rgba(212,175,55,.20),
+    0 12px 30px rgba(212,175,55,0.28);
 }
+.menu-toggle a:focus-visible::after{ opacity:1; }
+
+/* active/pressed */
+.menu-toggle a:active{
+  transform: translateY(1px);
+  background:
+    linear-gradient(180deg, #1a1a1a 0%, #121212 100%);
+  box-shadow:
+    inset 0 -2px 8px rgba(212,175,55,.25),
+    inset 0 2px 6px rgba(0,0,0,.6),
+    0 8px 28px rgba(212,175,55,0.31);
+}
+.menu-toggle a:active::after{ opacity:1; }
+
+/* keep your link/visited/focus base state intact */
+.menu-toggle a:link,
+.menu-toggle a:visited,
+.menu-toggle a:focus{
+  background:
+    linear-gradient(180deg, #262626 0%, #1b1b1b 60%, #151515 100%) !important;
+  border: 2px solid #D4AF37 !important;
+  color: var(--logo-gold) !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+/* active page state preserved, with subtle boost */
 .menu-toggle a.active,
 .menu-toggle a[aria-current="page"]{
   box-shadow:
     0 0 0 2px #D4AF37,
-    0 12px 36px #D4AF3728;
+    0 14px 38px rgba(212,175,55,0.32);
 }
 .menu-toggle a.active::after,
 .menu-toggle a[aria-current="page"]::after{
   opacity:1;
 }
+
+a { -webkit-tap-highlight-color: transparent; }
+
+/* bottom-nav interactions unchanged, just kept here */
 .bottom-nav a:hover,
 .bottom-nav a:focus-visible,
 .bottom-nav a:active{
@@ -332,4 +365,99 @@ a { -webkit-tap-highlight-color: transparent; }
     0 2px 8px rgba(0,0,0,0.45),
     0 0 22px rgba(232,193,49,0.35),
     0 12px 32px rgba(232,193,49,0.28);
+}
+
+/* === Mobile-only compact glossy pills for menu buttons === */
+@media (max-width: 600px){
+  /* switch layout to a flexible, tighter row that wraps nicely */
+  .menu-toggle{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:flex-start;
+    gap:.6rem;
+    max-width: 100%;
+    padding: 0 .75rem;
+    margin:.8rem auto 1.1rem;
+  }
+
+  /* base state (lightweight, glossy gold) */
+  .menu-toggle a,
+  .menu-toggle a:link,
+  .menu-toggle a:visited,
+  .menu-toggle a:focus{
+    padding:.55rem .85rem;
+    border-radius:12px;
+    font-size:.95rem;
+    line-height:1;
+    letter-spacing:.2px;
+
+    /* glossy gold fill */
+    background:
+      linear-gradient(180deg, #FFD867 0%, #E8C131 58%, #CBA21B 100%) !important;
+    color:#2a1e00 !important; /* darker text for contrast on gold */
+    border:1.5px solid #D4AF37 !important;
+
+    /* softer, phone-friendly shadows */
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,.25),
+      0 2px 0 #8f6f05,
+      0 6px 14px rgba(212,175,55,.28);
+    filter:none !important;
+    transform:none;
+    position:relative;
+    isolation:isolate;
+    text-shadow:0 1px 0 rgba(255,255,255,.35);
+  }
+
+  /* subtle sheen */
+  .menu-toggle a::before{
+    content:"";
+    position:absolute;
+    left:8px; right:8px; top:6px; height:38%;
+    border-radius:10px;
+    background:linear-gradient(180deg, rgba(255,255,255,.6), rgba(255,255,255,0));
+    pointer-events:none;
+  }
+
+  /* soften the outer glow used on desktop */
+  .menu-toggle a::after{
+    content:"";
+    position:absolute;
+    inset:-8px;
+    border-radius:16px;
+    background:radial-gradient(60% 60% at 50% 50%,
+      rgba(212,175,55,.28), rgba(212,175,55,0) 70%);
+    opacity:.55;
+    pointer-events:none;
+    z-index:-1;
+  }
+
+  /* hover/focus: tiny lift, brighter rim */
+  .menu-toggle a:hover,
+  .menu-toggle a:focus-visible{
+    transform:translateY(-1px);
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,.3),
+      0 2px 0 #8f6f05,
+      0 10px 20px rgba(212,175,55,.36);
+    outline:none;
+  }
+
+  /* active: pressed-in look */
+  .menu-toggle a:active{
+    transform:translateY(0);
+    background:
+      linear-gradient(180deg, #F0C84E 0%, #D4AF37 60%, #B88F1F 100%) !important;
+    box-shadow:
+      inset 0 -2px 6px rgba(0,0,0,.35),
+      0 2px 10px rgba(212,175,55,.28);
+  }
+
+  /* active page state */
+  .menu-toggle a.active,
+  .menu-toggle a[aria-current="page"]{
+    box-shadow:
+      0 0 0 2px #D4AF37,
+      0 10px 26px rgba(212,175,55,.34);
+  }
 }
