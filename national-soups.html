@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>National Soups — 1708 Hotel</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+  <style>
+    /* Ticket-style banner (local only) */
+    .menu-banner{
+      position: relative;
+      padding: 1.15rem 0;
+      margin: .4rem 0 .9rem;
+      background: linear-gradient(180deg,#181818 0%, #111 48%, #0d0d0d 100%);
+      border: none;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.05),
+        0 10px 24px rgba(212,175,55,.10);
+      isolation: isolate;
+      overflow: hidden;
+      text-align: center;
+      font-weight: 800;
+      font-size: 1.25rem;
+    }
+    .menu-banner::before,
+    .menu-banner::after{
+      content:"";
+      position:absolute; left:0; right:0; height:1px;
+      background: linear-gradient(90deg, transparent, rgba(212,175,55,.85), transparent);
+      pointer-events:none;
+    }
+    .menu-banner::before{ top:0; filter:blur(.2px); }
+    .menu-banner::after{ bottom:0; filter:blur(.2px); }
+    .menu-banner .glow{
+      position:absolute; inset:0; pointer-events:none; z-index:0;
+      background: radial-gradient(50% 60% at 50% 100%, rgba(212,175,55,.18) 0%, rgba(212,175,55,0) 65%);
+      opacity:.9;
+    }
+    .menu-banner h2{
+      position: relative; z-index:1; margin:0; letter-spacing:.08em;
+      color: var(--logo-gold); text-transform: uppercase; font-weight:900; font-size:1.4rem;
+      background: linear-gradient(180deg,#fff0b0 0%, #e8c131 60%, #b8891c 100%);
+      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+      -webkit-text-stroke: 1px rgba(212,175,55,.35);
+      text-shadow: 0 1px 0 rgba(0,0,0,.65), 0 0 18px rgba(212,175,55,.22);
+    }
+    .menu-banner h2::after{
+      content:""; display:block; width:150px; height:2px; margin:.55rem auto 0;
+      border-radius:2px; background: linear-gradient(90deg, transparent, #d4af37, transparent);
+      box-shadow: 0 0 10px rgba(212,175,55,.35);
+    }
+
+    /* Back button */
+    .back-wrap{
+      display:flex;justify-content:center;align-items:center;
+      margin:.85rem auto 0; padding:0 .8rem; max-width:980px;
+    }
+    .back-btn{
+      display:inline-block; text-decoration:none; font-weight:800; letter-spacing:.2px;
+      padding:.65rem 1.05rem; border-radius:14px; border:1.5px solid #D4AF37; color:#2a1e00;
+      background: linear-gradient(180deg, #FFD867 0%, #E8C131 58%, #CBA21B 100%);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.25), 0 2px 0 #8f6f05, 0 10px 24px rgba(212,175,55,.28);
+      position:relative; isolation:isolate;
+      transition: transform .12s ease, box-shadow .18s ease, filter .18s ease;
+    }
+    .back-btn::before{
+      content:""; position:absolute; left:10px; right:10px; top:7px; height:38%;
+      border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,0));
+      pointer-events:none;
+    }
+    .back-btn:hover, .back-btn:focus-visible{
+      transform: translateY(-1px);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.3), 0 2px 0 #8f6f05, 0 12px 28px rgba(212,175,55,.36);
+      outline:none;
+    }
+
+    .spacer{ height:3.8rem; }
+    @media (max-width: 420px){
+      .menu-banner h2{ font-size:1.28rem; }
+      .menu-banner h2::after{ width:120px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="animate__animated animate__fadeInDown">
+    <img src="images/1708.png" alt="1708 Hotel Logo" class="logo" />
+  </header>
+
+  <!-- Banner -->
+  <div class="menu-banner">
+    <span class="glow" aria-hidden="true"></span>
+    <h2>NATIONAL SOUPS</h2>
+  </div>
+
+  <!-- Back to Food -->
+  <div class="back-wrap">
+    <a class="back-btn" href="./food.html">← Back to Food</a>
+  </div>
+
+  <!-- Cards Grid -->
+  <main>
+    <div class="food-grid">
+      <div class="food-card">
+        <img src="images/afang-soup.jpg" alt="Afang Soup" />
+        <div class="food-info"><h4>Afang Soup</h4><p>₦6,500</p></div>
+      </div>
+
+      <div class="food-card">
+        <img src="images/okro-okra-soup.jpg" alt="Okro/Okra Soup" />
+        <div class="food-info"><h4>Okro / Okra Soup</h4><p>₦5,500</p></div>
+      </div>
+
+      <div class="food-card">
+        <img src="images/egusi-soup.jpg" alt="Egusi Soup" />
+        <div class="food-info"><h4>Egusi Soup</h4><p>₦6,000</p></div>
+      </div>
+
+      <div class="food-card">
+        <img src="images/vegetable-soup.jpg" alt="Vegetable Soup" />
+        <div class="food-info"><h4>Vegetable Soup</h4><p>₦6,000</p></div>
+      </div>
+
+      <div class="food-card">
+        <img src="images/native-soup.jpg" alt="Native Soup" />
+        <div class="food-info"><h4>Native Soup</h4><p>₦6,500</p></div>
+      </div>
+
+      <!-- Fisherman Soup (added) -->
+      <div class="food-card">
+        <img src="images/fisherman-soup-9000.jpg" alt="Fisherman Soup" />
+        <div class="food-info"><h4>Fisherman Soup</h4><p>₦9,000</p></div>
+      </div>
+    </div>
+
+    <div class="tray-note">Takeout ₦300</div>
+    <div class="spacer"></div>
+  </main>
+
+  <!-- Bottom Navigation (local file links) -->
+  <nav class="bottom-nav">
+    <a href="./index.html" class="active">Home</a>
+    <a href="./food.html">Food</a>
+    <a href="./drinks.html">Drinks</a>
+    <a href="./rooms.html">Rooms</a>
+    <a href="./contact.html">Contact</a>
+  </nav>
+</body>
+</html>

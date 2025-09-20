@@ -3,32 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Food — 1708 Hotel</title>
-  <!-- use relative paths so it works via file:// -->
+  <title>Main Dishes (Inter-Continental) — 1708 Hotel</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
   <style>
-    /* Food page-only tweaks (keeps Maximus layout vibe) */
-    .menu-toggle{
-      display:flex;justify-content:center;gap:.6rem;flex-wrap:wrap;
-      margin:1rem auto 1.2rem;max-width:980px;padding:0 .6rem;
-    }
-    .menu-toggle a{
-      padding:.55rem 1rem;border-radius:8px;font-weight:800;text-decoration:none;
-      background:#0f0f0f;border:1px solid var(--logo-gold);
-      color:var(--logo-gold);transition:box-shadow .2s ease, transform .08s ease;
-    }
-    .menu-toggle a:hover{ box-shadow:0 0 10px rgba(212,175,55,.22); }
-    .menu-toggle a:active{ transform:scale(.98); box-shadow:inset 0 -2px 0 #D4AF37,0 0 10px rgba(212,175,55,.45); }
-
-    .food-info p small{ font-weight:600; opacity:.9; }
-
-    /* ===== Elegant “ticket” banner (local only) ===== */
+    /* Ticket-style banner (local only) */
     .menu-banner{
       position: relative;
       padding: 1.15rem 0;
-      margin: .35rem 0 .9rem;
+      margin: .4rem 0 .9rem;
       background: linear-gradient(180deg,#181818 0%, #111 48%, #0d0d0d 100%);
       border: none;
       box-shadow:
@@ -63,96 +47,91 @@
       text-shadow: 0 1px 0 rgba(0,0,0,.65), 0 0 18px rgba(212,175,55,.22);
     }
     .menu-banner h2::after{
-      content:""; display:block; width:120px; height:2px; margin:.55rem auto 0;
+      content:""; display:block; width:190px; height:2px; margin:.55rem auto 0;
       border-radius:2px; background: linear-gradient(90deg, transparent, #d4af37, transparent);
       box-shadow: 0 0 10px rgba(212,175,55,.35);
     }
 
+    /* Back button */
+    .back-wrap{
+      display:flex;justify-content:center;align-items:center;
+      margin:.85rem auto 0; padding:0 .8rem; max-width:980px;
+    }
+    .back-btn{
+      display:inline-block; text-decoration:none; font-weight:800; letter-spacing:.2px;
+      padding:.65rem 1.05rem; border-radius:14px; border:1.5px solid #D4AF37; color:#2a1e00;
+      background: linear-gradient(180deg, #FFD867 0%, #E8C131 58%, #CBA21B 100%);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.25), 0 2px 0 #8f6f05, 0 10px 24px rgba(212,175,55,.28);
+      position:relative; isolation:isolate;
+      transition: transform .12s ease, box-shadow .18s ease, filter .18s ease;
+    }
+    .back-btn::before{
+      content:""; position:absolute; left:10px; right:10px; top:7px; height:38%;
+      border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,0));
+      pointer-events:none;
+    }
+    .back-btn:hover, .back-btn:focus-visible{
+      transform: translateY(-1px);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.3), 0 2px 0 #8f6f05, 0 12px 28px rgba(212,175,55,.36);
+      outline:none;
+    }
+
+    .spacer{ height:3.8rem; }
     @media (max-width: 420px){
       .menu-banner h2{ font-size:1.28rem; }
-      .menu-banner h2::after{ width:92px; }
+      .menu-banner h2::after{ width:140px; }
     }
   </style>
 </head>
 <body>
-  <!-- Header (logo only) -->
+  <!-- Header -->
   <header class="animate__animated animate__fadeInDown">
     <img src="images/1708.png" alt="1708 Hotel Logo" class="logo" />
   </header>
 
+  <!-- Banner -->
   <div class="menu-banner">
     <span class="glow" aria-hidden="true"></span>
-    <h2>FOOD MENU</h2>
+    <h2>MAIN DISHES (INTER-CONTINENTAL)</h2>
   </div>
 
-  <!-- Category Buttons -->
-  <div class="menu-toggle">
-    
-    <a href="./appetizers-nat.html">Appetizers (National)</a>
-    <a href="./appetizers-int.html">Appetizers (Inter.)</a>
-    <a href="./main-dishes-nat.html">Main Dishes Nat. (Rice)</a>
-    <a href="./main-dishes-int.html">Main Dishes Inter. (Pasta)</a>
-    <a href="./swallows.html">Swallows</a>
-    <a href="./national-soups.html">National Soups</a>
-
-    <a href="./bbq-fries.html">BBQ-Fries</a>
-   
-    <a href="./stews-sauces.html">Stews &amp; Sauces</a>
-    <a href="./breakfast-dishes.html">Breakfast Dishes</a>
-    <a href="./beverages.html">Beverages</a>
-    <a href="./proteins.html">Proteins</a>
+  <!-- Back to Food -->
+  <div class="back-wrap">
+    <a class="back-btn" href="./food.html">← Back to Food</a>
   </div>
 
-  <!-- Preview Grid (sample dishes) -->
+  <!-- Cards Grid -->
   <main>
     <div class="food-grid">
-      <!-- English Breakfast -->
       <div class="food-card">
-        <img src="images/english-breakfast.jpg" alt="English Breakfast" />
-        <div class="food-info">
-          <h4>English Breakfast</h4>
-          <p>₦7,500</p>
-        </div>
+        <img src="images/plain-spaghetti.jpg" alt="Plain Spaghetti" />
+        <div class="food-info"><h4>Plain Spaghetti</h4><p>₦5,000</p></div>
       </div>
 
-      <!-- Club Sandwich -->
       <div class="food-card">
-        <img src="images/club-sandwich.jpg" alt="Club Sandwich" />
-        <div class="food-info">
-          <h4>Club Sandwich</h4>
-          <p>₦6,500</p>
-        </div>
+        <img src="images/jollof-spaghetti.jpg" alt="Jollof Spaghetti" />
+        <div class="food-info"><h4>Jollof Spaghetti</h4><p>₦6,000</p></div>
       </div>
 
-      <!-- French Fries -->
       <div class="food-card">
         <img src="images/french-fries.jpg" alt="French Fries" />
-        <div class="food-info">
-          <h4>French Fries</h4>
-          <p>₦3,500</p>
-        </div>
+        <div class="food-info"><h4>French Fries</h4><p>₦3,500</p></div>
       </div>
 
-      <!-- Chicken Wings -->
       <div class="food-card">
-        <img src="images/chicken-wings.jpg" alt="Chicken Wings" />
-        <div class="food-info">
-          <h4>Chicken Wings</h4>
-          <p>₦7,000</p>
-        </div>
+        <img src="images/chinese-stir-fry-rice.jpg" alt="Chinese Stir-Fry Rice" />
+        <div class="food-info"><h4>Chinese Stir-Fry Rice</h4><p>₦6,500</p></div>
       </div>
     </div>
 
-    <!-- Professional notice -->
-    <div class="tray-note">
-      Takeout ₦300
-    </div>
+    <div class="tray-note">Takeout ₦300</div>
+    <div class="spacer"></div>
   </main>
 
-  <!-- Bottom Navigation (same structure as 1708 home) -->
+  <!-- Bottom Navigation (local file links) -->
   <nav class="bottom-nav">
-    <a href="./index.html">Home</a>
-    <a href="./food.html" class="active">Food</a>
+    <a href="./index.html" class="active">Home</a>
+    <a href="./food.html">Food</a>
     <a href="./drinks.html">Drinks</a>
     <a href="./rooms.html">Rooms</a>
     <a href="./contact.html">Contact</a>
