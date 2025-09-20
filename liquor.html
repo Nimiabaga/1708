@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Liquor — 1708 Hotel</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+  <style>
+    /* Ticket banner (consistent with other pages) */
+    .menu-banner{
+      position: relative;
+      padding: 1.15rem 0;
+      margin: .4rem 0 .9rem;
+      background: linear-gradient(180deg,#181818 0%, #111 48%, #0d0d0d 100%);
+      border: none;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.05),
+        0 10px 24px rgba(212,175,55,.10);
+      isolation: isolate; overflow: hidden; text-align:center;
+      font-weight: 800; font-size: 1.25rem;
+    }
+    .menu-banner::before,
+    .menu-banner::after{
+      content:""; position:absolute; left:0; right:0; height:1px;
+      background: linear-gradient(90deg, transparent, rgba(212,175,55,.85), transparent);
+      pointer-events:none;
+    }
+    .menu-banner::before{ top:0; filter:blur(.2px); }
+    .menu-banner::after{ bottom:0; filter:blur(.2px); }
+    .menu-banner .glow{
+      position:absolute; inset:0; pointer-events:none; z-index:0;
+      background: radial-gradient(50% 60% at 50% 100%, rgba(212,175,55,.18) 0%, rgba(212,175,55,0) 65%);
+      opacity:.9;
+    }
+    .menu-banner h2{
+      position: relative; z-index:1; margin:0; letter-spacing:.08em;
+      color: var(--logo-gold); text-transform: uppercase; font-weight:900; font-size:1.4rem;
+      background: linear-gradient(180deg,#fff0b0 0%, #e8c131 60%, #b8891c 100%);
+      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+      -webkit-text-stroke: 1px rgba(212,175,55,.35);
+      text-shadow: 0 1px 0 rgba(0,0,0,.65), 0 0 18px rgba(212,175,55,.22);
+    }
+    .menu-banner h2::after{
+      content:""; display:block; width:160px; height:2px; margin:.55rem auto 0;
+      border-radius:2px; background: linear-gradient(90deg, transparent, #d4af37, transparent);
+      box-shadow: 0 0 10px rgba(212,175,55,.35);
+    }
+
+    /* Back button */
+    .back-wrap{ display:flex; justify-content:center; margin:.85rem auto 0; padding:0 .8rem; max-width:980px; }
+    .back-btn{
+      display:inline-block; text-decoration:none; font-weight:800; letter-spacing:.2px;
+      padding:.65rem 1.05rem; border-radius:14px; border:1.5px solid #D4AF37; color:#2a1e00;
+      background: linear-gradient(180deg, #FFD867 0%, #E8C131 58%, #CBA21B 100%);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.25), 0 2px 0 #8f6f05, 0 10px 24px rgba(212,175,55,.28);
+      position:relative; isolation:isolate; transition: transform .12s ease, box-shadow .18s ease;
+    }
+    .back-btn::before{
+      content:""; position:absolute; left:10px; right:10px; top:7px; height:38%;
+      border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,0));
+      pointer-events:none;
+    }
+    .back-btn:hover, .back-btn:focus-visible{ transform: translateY(-1px); outline:none; }
+
+    /* Extra padding above fixed bottom nav */
+    main{ padding-bottom: 4.5rem; }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="animate__animated animate__fadeInDown">
+    <img src="images/1708.png" alt="1708 Hotel Logo" class="logo" />
+  </header>
+
+  <!-- Banner -->
+  <div class="menu-banner">
+    <span class="glow" aria-hidden="true"></span>
+    <h2>LIQUOR</h2>
+  </div>
+
+  <!-- Back to Drinks -->
+  <div class="back-wrap">
+    <a class="back-btn" href="./drinks.html">← Back to Drinks</a>
+  </div>
+
+  <!-- Single-card grid (uses existing .food-grid / .food-card / .food-info from style.css) -->
+  <main>
+    <div class="food-grid">
+      <div class="food-card">
+        <img src="images/gordon-gin-medium.jpg" alt="GORDON GIN (MEDIUM)" />
+        <div class="food-info">
+          <h4>GORDON GIN (MEDIUM)</h4>
+          <p>₦5,000</p>
+        </div>
+      </div>
+
+      <div class="food-card">
+        <img src="images/big-gordon.jpg" alt="BIG GORDON" />
+        <div class="food-info">
+          <h4>BIG GORDON</h4>
+          <p>₦12,000</p>
+        </div>
+      </div>
+
+      <div class="food-card">
+        <img src="images/smirnoff-x1-small.jpg" alt="SMIRNOFF X1 (SMALL)" />
+        <div class="food-info">
+          <h4>SMIRNOFF X1 (SMALL)</h4>
+          <p>₦3,200</p>
+        </div>
+      </div>
+
+      <div class="food-card">
+        <img src="images/smirnoff-x1-big.jpg" alt="SMIRNOFF X1 (BIG)" />
+        <div class="food-info">
+          <h4>SMIRNOFF X1 (BIG)</h4>
+          <p>₦12,000</p>
+        </div>
+      </div>
+
+      <div class="food-card">
+        <img src="images/kensington.jpg" alt="KENSINGTON" />
+        <div class="food-info">
+          <h4>KENSINGTON</h4>
+          <p>₦13,000</p>
+        </div>
+      </div>
+
+      <div class="food-card">
+        <img src="images/john-bannermans.jpg" alt="JOHN BANNERMANS" />
+        <div class="food-info">
+          <h4>JOHN BANNERMANS</h4>
+          <p>₦25,000</p>
+        </div>
+      </div>
+
+      <div class="food-card">
+        <img src="images/campari-medium.jpg" alt="M/CAMPARI" />
+        <div class="food-info">
+          <h4>M/CAMPARI</h4>
+          <p>₦32,000</p>
+        </div>
+      </div>
+
+      <div class="food-card">
+        <img src="images/campari-big.jpg" alt="B/CAMPARI" />
+        <div class="food-info">
+          <h4>B/CAMPARI</h4>
+          <p>₦36,000</p>
+        </div>
+      </div>
+
+      <!-- Placeholders you asked for -->
+      <div class="food-card">
+        <img src="images/claymore.jpg" alt="CLAY MORE" />
+        <div class="food-info">
+          <h4>CLAY MORE</h4>
+          <p>₦14,000</p>
+        </div>
+      </div>
+
+      <div class="food-card">
+        <img src="images/monkey-shoulder.jpg" alt="MONKEY SHOULDER" />
+        <div class="food-info">
+          <h4>MONKEY SHOULDER</h4>
+          <p>₦45,000</p>
+        </div>
+      </div>
+
+      <div class="food-card">
+        <img src="images/baileys.jpg" alt="BAILEYS" />
+        <div class="food-info">
+          <h4>BAILEYS</h4>
+          <p>₦18,000</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tray-note">Tap any card to zoom. Prices subject to change.</div>
+  </main>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a href="./index.html">Home</a>
+    <a href="./food.html">Food</a>
+    <a href="./drinks.html" class="active">Drinks</a>
+    <a href="./rooms.html">Rooms</a>
+    <a href="./contact.html">Contact</a>
+  </nav>
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rooms — 1708 Hotel</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+  <style>
+    /* --- Local tweaks for Rooms page (keeps your global style intact) --- */
+
+    /* Intro line */
+    .rooms-intro{
+      text-align:center;
+      font-weight:900;
+      letter-spacing:.02em;
+      color: var(--logo-gold);
+      margin:.2rem 0 .8rem;
+      font-size:1.25rem;
+    }
+
+    /* Ticket banner reused look */
+    .menu-banner{
+      position: relative;
+      padding: 1.05rem 0;
+      margin: .35rem 0 .8rem;
+      background: linear-gradient(180deg,#181818 0%, #111 48%, #0d0d0d 100%);
+      border: none;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 10px 24px rgba(212,175,55,.10);
+      isolation: isolate; overflow:hidden; text-align:center;
+      font-weight:800; font-size:1.1rem;
+    }
+    .menu-banner::before,
+    .menu-banner::after{
+      content:""; position:absolute; left:0; right:0; height:1px;
+      background: linear-gradient(90deg, transparent, rgba(212,175,55,.85), transparent);
+      pointer-events:none;
+    }
+    .menu-banner::before{ top:0; filter:blur(.2px); }
+    .menu-banner::after{ bottom:0; filter:blur(.2px); }
+    .menu-banner .glow{
+      position:absolute; inset:0; pointer-events:none; z-index:0;
+      background: radial-gradient(50% 60% at 50% 100%, rgba(212,175,55,.18) 0%, rgba(212,175,55,0) 65%);
+      opacity:.9;
+    }
+    .menu-banner h2{
+      position:relative; z-index:1; margin:0; letter-spacing:.08em;
+      color: var(--logo-gold); text-transform: uppercase; font-weight:900;
+      background: linear-gradient(180deg,#fff0b0 0%, #e8c131 60%, #b8891c 100%);
+      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+      -webkit-text-stroke: 1px rgba(212,175,55,.35);
+      text-shadow: 0 1px 0 rgba(0,0,0,.65), 0 0 18px rgba(212,175,55,.22);
+    }
+
+    /* Slideshow */
+    .slider-wrap{
+      max-width: 980px;
+      margin: .6rem auto 1.1rem;
+      padding: 0 1rem;
+    }
+    .slider{
+      position:relative; overflow:hidden; border-radius:14px;
+      border:1px solid #D4AF37;
+      box-shadow: 0 10px 28px rgba(212,175,55,.18);
+      height: 220px;
+    }
+    .slides{
+      display:flex; width:400%;
+      height:100%;
+      animation: slideAuto 20s infinite;
+    }
+    .slides img{
+      width:100%; height:100%; object-fit:cover; flex:0 0 100%;
+      display:block;
+    }
+    @keyframes slideAuto{
+      0%   { transform: translateX(0%); }
+      20%  { transform: translateX(0%); }
+      25%  { transform: translateX(-100%); }
+      45%  { transform: translateX(-100%); }
+      50%  { transform: translateX(-200%); }
+      70%  { transform: translateX(-200%); }
+      75%  { transform: translateX(-300%); }
+      95%  { transform: translateX(-300%); }
+      100% { transform: translateX(0%); }
+    }
+    /* If you only add 2–3 images, it's still fine (the extra frames just repeat). */
+
+    /* Room cards (reuse food-grid visuals) */
+    .rooms-grid{
+      display:flex; flex-wrap:wrap; justify-content:center; gap:1rem;
+      max-width:980px; margin: 0 auto 1.1rem; padding: 0 1rem;
+    }
+    .room-card{
+      background:#1a1a1a;
+      border-radius:14px;
+      box-shadow:0 2px 6px rgba(0,0,0,0.3);
+      width: calc(50% - 1rem);
+      max-width: 260px;
+      text-align:center;
+      overflow:hidden;
+      transition: transform .25s ease, box-shadow .22s ease, filter .22s ease;
+      border: 1px solid #D4AF37;
+    }
+    .room-card:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 2px 6px rgba(0,0,0,.35), 0 0 18px rgba(212,175,55,.28), 0 10px 28px rgba(212,175,55,.20);
+      filter: brightness(1.02);
+    }
+    .room-card img{
+      width:100%; height:160px; object-fit:cover; display:block;
+      border-bottom:1px solid #D4AF37;
+    }
+    .room-info{
+      padding:.6rem .6rem 1rem;
+      line-height:1.2;
+    }
+    .room-info h4{
+      color: var(--logo-gold);
+      font-family: 'Shiny Cold', sans-serif;
+      font-size: 1.05rem;
+      margin:.2rem 0 .4rem;
+    }
+    .room-info p{
+      margin:0;
+      font-weight:900;
+      font-size:1.35rem;
+      color: var(--logo-gold);
+      background:none;
+    }
+
+    /* CTA row */
+    .cta-row{
+      display:flex; gap:.8rem; justify-content:center; align-items:center;
+      margin: 1.1rem auto 4.8rem;
+      padding: 0 1rem; max-width:980px; flex-wrap:wrap;
+    }
+    .cta-btn{
+      display:inline-block; text-decoration:none; font-weight:800; letter-spacing:.2px;
+      padding:.85rem 1.2rem; border-radius:14px; border:1.5px solid #D4AF37; color:#2a1e00;
+      background: linear-gradient(180deg, #FFD867 0%, #E8C131 58%, #CBA21B 100%);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.25), 0 2px 0 #8f6f05, 0 10px 24px rgba(212,175,55,.28);
+      transition: transform .12s ease, box-shadow .18s ease; position:relative; isolation:isolate;
+    }
+    .cta-btn::before{
+      content:""; position:absolute; left:12px; right:12px; top:8px; height:36%;
+      border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,0));
+      pointer-events:none;
+    }
+    .cta-btn:hover, .cta-btn:focus-visible{ transform: translateY(-1px); outline:none; }
+
+    /* Floating call toggle (left) */
+    .call-fab{
+      position: fixed;
+      left: 12px; bottom: 86px;   /* stays above bottom nav */
+      width: 54px; height: 54px; border-radius: 999px;
+      background: linear-gradient(180deg, #FFD867 0%, #E8C131 58%, #CBA21B 100%);
+      border: 1.5px solid #D4AF37;
+      box-shadow: 0 6px 20px rgba(212,175,55,.35);
+      display:flex; align-items:center; justify-content:center;
+      text-decoration:none; color:#1b1400; font-weight:900;
+      z-index: 1001;
+    }
+    .call-fab span{ font-size: 22px; line-height: 1; }
+
+    @media (max-width: 600px){
+      .slider{ height: 190px; }
+      .room-card{ width: 48%; max-width: none; }
+    }
+    @media (max-width: 420px){
+      .rooms-intro{ font-size: 1.12rem; }
+      .room-card{ width: 100%; }
+    }
+
+    main{ padding-bottom: 4.8rem; } /* room for bottom nav */
+  </style>
+</head>
+<body>
+  <!-- Header (logo only) -->
+  <header class="animate__animated animate__fadeInDown">
+    <img src="images/1708.png" alt="1708 Hotel Logo" class="logo" />
+  </header>
+
+  <!-- Welcome line -->
+  <div class="rooms-intro">Welcome to Comfort.</div>
+
+  <!-- Sub-banner -->
+  <div class="menu-banner">
+    <span class="glow" aria-hidden="true"></span>
+    <h2>Our Rooms</h2>
+  </div>
+
+  <!-- Slideshow -->
+  <div class="slider-wrap">
+    <div class="slider">
+      <div class="slides">
+        <img src="images/hotel-slide-1.jpg" alt="1708 Hotel — Lobby" />
+        <img src="images/hotel-slide-2.jpg" alt="1708 Hotel — Lounge" />
+        <img src="images/hotel-slide-3.jpg" alt="1708 Hotel — Room" />
+        <img src="images/hotel-slide-4.jpg" alt="1708 Hotel — Bar / Pool" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Room cards -->
+  <main>
+    <div class="rooms-grid">
+      <!-- Deluxe -->
+      <article class="room-card">
+        <img src="images/room-deluxe.jpg" alt="Deluxe Room" />
+        <div class="room-info">
+          <h4>Deluxe</h4>
+          <p>₦40,000</p>
+        </div>
+      </article>
+
+      <!-- Standard -->
+      <article class="room-card">
+        <img src="images/room-standard.jpg" alt="Standard Room" />
+        <div class="room-info">
+          <h4>Standard</h4>
+          <p>₦35,000</p>
+        </div>
+      </article>
+    </div>
+
+    <!-- CTAs -->
+    <div class="cta-row">
+      <!-- WhatsApp: replace 234XXXXXXXXXX with your number -->
+      <a class="cta-btn" href="https://wa.me/234XXXXXXXXXX?text=Hello%201708%20Hotel%2C%20I%27d%20like%20to%20book%20a%20room." target="_blank" rel="noopener">Book a Room Now</a>
+      <!-- Optional second CTA: direct call -->
+      <a class="cta-btn" href="tel:+234XXXXXXXXXX">Call to Book</a>
+    </div>
+  </main>
+
+  <!-- Floating Call Toggle (left) — replace with your number -->
+  <a class="call-fab" href="tel:+234XXXXXXXXXX" aria-label="Call 1708 Hotel">
+    <span>📞</span>
+  </a>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a href="./index.html">Home</a>
+    <a href="./food.html">Food</a>
+    <a href="./drinks.html">Drinks</a>
+    <a href="./rooms.html" class="active">Rooms</a>
+    <a href="./contact.html">Contact</a>
+  </nav>
+</body>
+</html>

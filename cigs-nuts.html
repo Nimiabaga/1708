@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cigarettes / Nuts — 1708 Hotel</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+  <style>
+    /* Ticket banner (consistent look) */
+    .menu-banner{
+      position: relative;
+      padding: 1.15rem 0;
+      margin: .4rem 0 .9rem;
+      background: linear-gradient(180deg,#181818 0%, #111 48%, #0d0d0d 100%);
+      border: none;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.05),
+        0 10px 24px rgba(212,175,55,.10);
+      isolation: isolate; overflow: hidden; text-align:center;
+      font-weight: 800; font-size: 1.25rem;
+    }
+    .menu-banner::before,
+    .menu-banner::after{
+      content:""; position:absolute; left:0; right:0; height:1px;
+      background: linear-gradient(90deg, transparent, rgba(212,175,55,.85), transparent);
+      pointer-events:none;
+    }
+    .menu-banner::before{ top:0; filter:blur(.2px); }
+    .menu-banner::after{ bottom:0; filter:blur(.2px); }
+    .menu-banner .glow{
+      position:absolute; inset:0; pointer-events:none; z-index:0;
+      background: radial-gradient(50% 60% at 50% 100%, rgba(212,175,55,.18) 0%, rgba(212,175,55,0) 65%);
+      opacity:.9;
+    }
+    .menu-banner h2{
+      position: relative; z-index:1; margin:0; letter-spacing:.08em;
+      color: var(--logo-gold); text-transform: uppercase; font-weight:900; font-size:1.4rem;
+      background: linear-gradient(180deg,#fff0b0 0%, #e8c131 60%, #b8891c 100%);
+      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+      -webkit-text-stroke: 1px rgba(212,175,55,.35);
+      text-shadow: 0 1px 0 rgba(0,0,0,.65), 0 0 18px rgba(212,175,55,.22);
+    }
+    .menu-banner h2::after{
+      content:""; display:block; width:200px; height:2px; margin:.55rem auto 0;
+      border-radius:2px; background: linear-gradient(90deg, transparent, #d4af37, transparent);
+      box-shadow: 0 0 10px rgba(212,175,55,.35);
+    }
+
+    /* Back button */
+    .back-wrap{ display:flex; justify-content:center; margin:.85rem auto 0; padding:0 .8rem; max-width:980px; }
+    .back-btn{
+      display:inline-block; text-decoration:none; font-weight:800; letter-spacing:.2px;
+      padding:.65rem 1.05rem; border-radius:14px; border:1.5px solid #D4AF37; color:#2a1e00;
+      background: linear-gradient(180deg, #FFD867 0%, #E8C131 58%, #CBA21B 100%);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.25), 0 2px 0 #8f6f05, 0 10px 24px rgba(212,175,55,.28);
+      position:relative; isolation:isolate; transition: transform .12s ease, box-shadow .18s ease;
+    }
+    .back-btn::before{
+      content:""; position:absolute; left:10px; right:10px; top:7px; height:38%;
+      border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,0));
+      pointer-events:none;
+    }
+    .back-btn:hover, .back-btn:focus-visible{ transform: translateY(-1px); outline:none; }
+
+    /* Optional top image */
+    .hero-drink{
+      max-width: 980px; margin: .5rem auto 0; padding: 0 1rem;
+    }
+    .hero-drink img{
+      width:100%; height:160px; object-fit:cover; border-radius:14px;
+      border:1px solid #D4AF37; box-shadow: 0 10px 28px rgba(212,175,55,.15);
+      display:block;
+    }
+
+    /* Full-width single item card (for Lighter) */
+    .single-card{
+      max-width:980px; margin: .9rem auto 0; padding: 0 1rem;
+    }
+    .single-card .list-card{ width:100%; }
+
+    /* Two-column list */
+    .list-wrap{
+      max-width: 980px;
+      margin: 1rem auto 5rem;
+      padding: 0 1rem;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+    @media (max-width: 720px){
+      .list-wrap{ grid-template-columns: 1fr; }
+    }
+    .list-card{
+      background:#151515;
+      border:1px solid #D4AF37;
+      border-radius:16px;
+      box-shadow: 0 10px 28px rgba(212,175,55,.15);
+      overflow:hidden;
+    }
+    .list-card h3{
+      margin:.8rem 0 .2rem; text-align:center; font-size:1rem; color:var(--logo-gold); letter-spacing:.05em;
+    }
+    .item-list{ list-style:none; margin:.2rem 0 0; padding:.2rem .8rem 1rem; }
+    .item-list li{
+      display:flex; justify-content:space-between; align-items:center;
+      padding:.6rem .6rem;
+      border-bottom:1px dashed rgba(212,175,55,.25);
+      font-weight:700; color:#eee; letter-spacing:.2px;
+    }
+    .item-list li:last-child{ border-bottom:0; }
+    .price{
+      color:var(--logo-gold);
+      font-weight:900;
+      margin-left:.8rem;
+      white-space:nowrap;
+    }
+
+    /* Keep space above fixed bottom nav */
+    main{ padding-bottom: 4.5rem; }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="animate__animated animate__fadeInDown">
+    <img src="images/1708.png" alt="1708 Hotel Logo" class="logo" />
+  </header>
+
+  <!-- Banner -->
+  <div class="menu-banner">
+    <span class="glow" aria-hidden="true"></span>
+    <h2>CIGARETTES / NUTS</h2>
+  </div>
+
+  <!-- Back to Drinks -->
+  <div class="back-wrap">
+    <a class="back-btn" href="./drinks.html">← Back to Drinks</a>
+  </div>
+
+  <!-- Optional single top image (remove if not needed) -->
+  <div class="hero-drink">
+    <img src="images/cigs-nuts.jpg" alt="Cigarettes and Nuts" />
+  </div>
+
+  <!-- Lighter (full-width single card placed above everything) -->
+  <div class="single-card">
+    <section class="list-card" aria-label="Accessories">
+      <h3>Accessories</h3>
+      <ul class="item-list">
+        <li><span>LIGHTER</span><span class="price">₦300</span></li>
+      </ul>
+    </section>
+  </div>
+
+  <!-- Two-column lists -->
+  <main>
+    <div class="list-wrap">
+      <!-- Column 1 -->
+      <section class="list-card">
+        <h3>Cigarettes</h3>
+        <ul class="item-list">
+          <li><span>DUNHILL</span><span class="price">₦3,200</span></li>
+          <li><span>BENSON SWITCH</span><span class="price">₦3,000</span></li>
+          <li><span>BENSON BOOST</span><span class="price">₦2,000</span></li>
+          <li><span>BENSON</span><span class="price">₦2,400</span></li>
+          <li><span>ESSE CHANGE</span><span class="price">₦3,400</span></li>
+        </ul>
+      </section>
+
+      <!-- Column 2 -->
+      <section class="list-card">
+        <h3>More Cigarettes / Nuts</h3>
+        <ul class="item-list">
+          <li><span>ORIS</span><span class="price">₦2,000</span></li>
+          <li><span>CHESTERFIELD</span><span class="price">₦3,100</span></li>
+          <li><span>DORCHESTER</span><span class="price">₦2,000</span></li>
+          <li><span>BOHEM</span><span class="price">₦2,100</span></li>
+          <li><span>GROUNDNUT SMALL</span><span class="price">₦1,800</span></li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a href="./index.html">Home</a>
+    <a href="./food.html">Food</a>
+    <a href="./drinks.html" class="active">Drinks</a>
+    <a href="./rooms.html">Rooms</a>
+    <a href="./contact.html">Contact</a>
+  </nav>
+</body>
+</html>
