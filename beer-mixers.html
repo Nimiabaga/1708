@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Beer / Mixers — 1708 Hotel</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+  <style>
+    /* Ticket banner */
+    .menu-banner{
+      position: relative;
+      padding: 1.15rem 0;
+      margin: .4rem 0 .9rem;
+      background: linear-gradient(180deg,#181818 0%, #111 48%, #0d0d0d 100%);
+      border: none;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.05),
+        0 10px 24px rgba(212,175,55,.10);
+      isolation: isolate; overflow: hidden; text-align:center;
+      font-weight: 800; font-size: 1.25rem;
+    }
+    .menu-banner::before,
+    .menu-banner::after{
+      content:""; position:absolute; left:0; right:0; height:1px;
+      background: linear-gradient(90deg, transparent, rgba(212,175,55,.85), transparent);
+      pointer-events:none;
+    }
+    .menu-banner::before{ top:0; filter:blur(.2px); }
+    .menu-banner::after{ bottom:0; filter:blur(.2px); }
+    .menu-banner .glow{
+      position:absolute; inset:0; pointer-events:none; z-index:0;
+      background: radial-gradient(50% 60% at 50% 100%, rgba(212,175,55,.18) 0%, rgba(212,175,55,0) 65%);
+      opacity:.9;
+    }
+    .menu-banner h2{
+      position: relative; z-index:1; margin:0; letter-spacing:.08em;
+      color: var(--logo-gold); text-transform: uppercase; font-weight:900; font-size:1.4rem;
+      background: linear-gradient(180deg,#fff0b0 0%, #e8c131 60%, #b8891c 100%);
+      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+      -webkit-text-stroke: 1px rgba(212,175,55,.35);
+      text-shadow: 0 1px 0 rgba(0,0,0,.65), 0 0 18px rgba(212,175,55,.22);
+    }
+    .menu-banner h2::after{
+      content:""; display:block; width:170px; height:2px; margin:.55rem auto 0;
+      border-radius:2px; background: linear-gradient(90deg, transparent, #d4af37, transparent);
+      box-shadow: 0 0 10px rgba(212,175,55,.35);
+    }
+
+    /* Back button */
+    .back-wrap{ display:flex; justify-content:center; margin:.85rem auto 0; padding:0 .8rem; max-width:1100px; }
+    .back-btn{
+      display:inline-block; text-decoration:none; font-weight:800; letter-spacing:.2px;
+      padding:.65rem 1.05rem; border-radius:14px; border:1.5px solid #D4AF37; color:#2a1e00;
+      background: linear-gradient(180deg, #FFD867 0%, #E8C131 58%, #CBA21B 100%);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.25), 0 2px 0 #8f6f05, 0 10px 24px rgba(212,175,55,.28);
+      position:relative; isolation:isolate; transition: transform .12s ease, box-shadow .18s ease;
+    }
+    .back-btn::before{
+      content:""; position:absolute; left:10px; right:10px; top:7px; height:38%;
+      border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,0));
+      pointer-events:none;
+    }
+    .back-btn:hover, .back-btn:focus-visible{ transform: translateY(-1px); outline:none; }
+
+    /* --- BEERS (lists in 3 columns like before) --- */
+    .beer-columns{
+      display:grid; grid-template-columns: repeat(3, minmax(220px, 1fr));
+      gap:1rem; max-width:1100px; margin:1rem auto; padding:0 1rem;
+    }
+    @media (max-width: 980px){ .beer-columns{ grid-template-columns: repeat(2, minmax(220px, 1fr)); } }
+    @media (max-width: 640px){ .beer-columns{ grid-template-columns: 1fr; } }
+
+    .beer-group{
+      background:#151515; border:1px solid #D4AF37; border-radius:16px;
+      box-shadow: 0 10px 28px rgba(212,175,55,.15); overflow:hidden;
+    }
+    .beer-group img{ width:100%; height:150px; object-fit:cover; border-bottom:1px solid #2a2a2a; display:block; }
+    .beer-group h3{ margin:.6rem 0 .2rem; text-align:center; font-size:1rem; color:var(--logo-gold); letter-spacing:.05em; }
+    .beer-list{ list-style:none; margin:.2rem 0 0; padding:.2rem .8rem 1rem; }
+    .beer-list li{
+      display:flex; justify-content:space-between; align-items:center;
+      padding:.55rem .55rem; border-bottom:1px dashed rgba(212,175,55,.25);
+      font-weight:700; color:#eee; letter-spacing:.2px;
+    }
+    .beer-list li:last-child{ border-bottom:0; }
+    .price{ color:var(--logo-gold); font-weight:900; margin-left:.8rem; white-space:nowrap; }
+
+    /* --- MIXERS (cards) --- */
+    .section-title{
+      text-align:center; margin:1.2rem 0 .2rem; font-size:1rem; color:var(--logo-gold); letter-spacing:.06em;
+    }
+    .food-grid{ justify-content:center; padding:1rem; }
+
+    /* bottom space past fixed nav */
+    main{ padding-bottom:4.5rem; }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="animate__animated animate__fadeInDown">
+    <img src="images/1708.png" alt="1708 Hotel Logo" class="logo" />
+  </header>
+
+  <!-- Banner -->
+  <div class="menu-banner">
+    <span class="glow" aria-hidden="true"></span>
+    <h2>BEER / MIXERS</h2>
+  </div>
+
+  <!-- Back to Drinks -->
+  <div class="back-wrap">
+    <a class="back-btn" href="./drinks.html">← Back to Drinks</a>
+  </div>
+
+  <!-- BEERS (lists) -->
+  <section class="beer-columns">
+    <!-- Lagers -->
+    <div class="beer-group">
+      <img src="images/beer-lager.jpg" alt="Lagers" />
+      <h3>Lagers</h3>
+      <ul class="beer-list">
+        <li><span>STAR</span><span class="price">₦1,800</span></li>
+        <li><span>GULDER</span><span class="price">₦1,900</span></li>
+        <li><span>HEINEKEN</span><span class="price">₦2,100</span></li>
+        <li><span>MEDIUM HEINEKEN</span><span class="price">₦1,600</span></li>
+        <li><span>33"</span><span class="price">₦1,600</span></li>
+        <li><span>BUDWEISSER</span><span class="price">₦1,700</span></li>
+        <li><span>LIFE</span><span class="price">₦1,600</span></li>
+        <li><span>HERO</span><span class="price">₦1,600</span></li>
+        <li><span>TIGER</span><span class="price">₦1,600</span></li>
+      </ul>
+    </div>
+
+    <!-- Stout / Dark -->
+    <div class="beer-group">
+      <img src="images/beer-stout.jpg" alt="Stout / Dark" />
+      <h3>Stout / Dark</h3>
+      <ul class="beer-list">
+        <li><span>SMALL STOUT</span><span class="price">₦1,700</span></li>
+        <li><span>MEDIUM STOUT</span><span class="price">₦2,000</span></li>
+        <li><span>BIG STOUT</span><span class="price">₦2,700</span></li>
+        <li><span>LEGEND</span><span class="price">₦2,000</span></li>
+        <li><span>GUINESS SMOOTH</span><span class="price">₦2,000</span></li>
+      </ul>
+    </div>
+
+    <!-- Ready To Drink / Flavoured -->
+    <div class="beer-group">
+      <img src="images/beer-rtd.jpg" alt="Ready to Drink / Flavoured" />
+      <h3>Ready To Drink / Flavoured</h3>
+      <ul class="beer-list">
+        <li><span>STAR RADLER</span><span class="price">₦1,300</span></li>
+        <li><span>ORIJIN</span><span class="price">₦1,500</span></li>
+        <li><span>B/SMIRNOFF</span><span class="price">₦2,200</span></li>
+        <li><span>S/SMIRNOFF</span><span class="price">₦1,200</span></li>
+        <li><span>DESPERADOES</span><span class="price">₦1,800</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- MIXERS (cards from Juice/Yoghurt you saved) -->
+  <h3 class="section-title">Mixers</h3>
+  <section class="food-grid">
+    <div class="food-card">
+      <img src="images/cranberry-juice.jpg" alt="Cranberry" />
+      <div class="food-info">
+        <h4>Cranberry</h4>
+        <p>₦3,200</p>
+      </div>
+    </div>
+    <div class="food-card">
+      <img src="images/mixed-juice.jpg" alt="Juice" />
+      <div class="food-info">
+        <h4>Juice</h4>
+        <p>₦3,000</p>
+      </div>
+    </div>
+    <div class="food-card">
+      <img src="images/hollandia-yoghurt.jpg" alt="Hollandia" />
+      <div class="food-info">
+        <h4>Hollandia</h4>
+        <p>₦3,500</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ENERGY / HERBS (single cards, exactly like your saved page) -->
+  <h3 class="section-title">Energy / Herbs</h3>
+  <section class="food-grid">
+    <div class="food-card">
+      <img src="images/blue-bullet.jpg" alt="Blue Bullet" />
+      <div class="food-info">
+        <h4>Blue Bullet</h4>
+        <p>₦2,000</p>
+      </div>
+    </div>
+    <div class="food-card">
+      <img src="images/black-bullet.jpg" alt="Black Bullet" />
+      <div class="food-info">
+        <h4>Black Bullet</h4>
+        <p>₦3,000</p>
+      </div>
+    </div>
+    <div class="food-card">
+      <img src="images/fearless.jpg" alt="Fearless" />
+      <div class="food-info">
+        <h4>Fearless</h4>
+        <p>₦1,000</p>
+      </div>
+    </div>
+    <div class="food-card">
+      <img src="images/predator.jpg" alt="Predator" />
+      <div class="food-info">
+        <h4>Predator</h4>
+        <p>₦2,000</p>
+      </div>
+    </div>
+    <div class="food-card">
+      <img src="images/climax-can.jpg" alt="Climax Can" />
+      <div class="food-info">
+        <h4>Climax Can</h4>
+        <p>₦1,200</p>
+      </div>
+    </div>
+    <div class="food-card">
+      <img src="images/odogwu-bitters.jpg" alt="Odogwu Bitters" />
+      <div class="food-info">
+        <h4>Odogwu Bitters</h4>
+        <p>₦1,200</p>
+      </div>
+    </div>
+    <div class="food-card">
+      <img src="images/don-simon.jpg" alt="Don Simon" />
+      <div class="food-info">
+        <h4>Don Simon</h4>
+        <p>₦6,500</p>
+      </div>
+    </div>
+    <div class="food-card">
+      <img src="images/1960-rootz.jpg" alt="1960" />
+      <div class="food-info">
+        <h4>1960</h4>
+        <p>₦2,500</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a href="./index.html">Home</a>
+    <a href="./food.html">Food</a>
+    <a href="./drinks.html" class="active">Drinks</a>
+    <a href="./rooms.html">Rooms</a>
+    <a href="./contact.html">Contact</a>
+  </nav>
+</body>
+</html>
