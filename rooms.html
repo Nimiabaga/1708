@@ -53,7 +53,7 @@
       text-shadow: 0 1px 0 rgba(0,0,0,.65), 0 0 18px rgba(212,175,55,.22);
     }
 
-    /* ===== Slider (same structure/behavior as contact page) ===== */
+    /* ===== Slider (same structure as contact page) ===== */
     .slider-wrap{
       max-width: 980px;
       margin: .6rem auto 1.1rem;
@@ -66,11 +66,11 @@
       border:1px solid #D4AF37;
       box-shadow: 0 10px 28px rgba(212,175,55,.18);
       background:#000;
-      aspect-ratio: 16 / 10;      /* letterboxed-style frame */
+      aspect-ratio: 16 / 10;
     }
     .slide{
       position:absolute; inset:0;
-      transform: translateX(100%); /* start off-screen right */
+      transform: translateX(100%);
       transition: transform .6s ease;
       will-change: transform;
       background:#000;
@@ -80,29 +80,14 @@
     .slide img{
       width:100%;
       height:100%;
-      object-fit: cover;          /* fills the card (no black bars) */
+      object-fit: contain;      /* show full image (no crop) */
       object-position:center;
       display:block;
       background:#000;
     }
-    /* smaller left arrow nudge */
-    .slider::after{
-      content:"‹";
-      position:absolute; left:10px; top:50%;
-      transform:translateY(-50%);
-      font-size:18px;             /* smaller */
-      line-height:1;
-      color:rgba(255,255,255,.6);
-      text-shadow:0 0 6px rgba(0,0,0,.6);
-      animation: nudgeLeft 1.2s ease-in-out infinite;
-      pointer-events:none;
-    }
-    @keyframes nudgeLeft{
-      0%,100%{ opacity:.3; transform:translate(-1px,-50%); }
-      50%{    opacity:.9; transform:translate(-6px,-50%); }
-    }
+    /* (Removed the arrow nudge entirely) */
 
-    /* Room cards (match food-card proportions) */
+    /* ===== Room cards (make images fit, hide name tags) ===== */
     .rooms-grid{
       display:flex; flex-wrap:wrap; justify-content:center; gap:1rem;
       max-width:980px; margin: 0 auto 1.1rem; padding: 0 1rem;
@@ -112,7 +97,7 @@
       border-radius:14px;
       box-shadow:0 2px 6px rgba(0,0,0,0.3);
       width: calc(50% - 1rem);
-      max-width: 160px; /* same cap as food-card */
+      max-width: 160px; /* same feel as food cards */
       text-align:center;
       overflow:hidden;
       transition: transform .25s ease, box-shadow .22s ease, filter .22s ease;
@@ -125,8 +110,9 @@
     }
     .room-card img{
       width:100%;
-      height:120px;        /* same height as food-card img */
-      object-fit:cover;    /* keeps every photo neat */
+      height:120px;
+      object-fit: contain;      /* fit entirely inside card image area */
+      background:#000;          /* letterbox for mismatched ratios */
       display:block;
       border-bottom:1px solid #D4AF37;
     }
@@ -134,12 +120,7 @@
       padding:.6rem .6rem 1rem;
       line-height:1.2;
     }
-    .room-info h4{
-      color: var(--logo-gold);
-      font-family: 'Shiny Cold', sans-serif;
-      font-size: 1.05rem;
-      margin:.2rem 0 .4rem;
-    }
+    .room-info h4{ display:none; } /* hide name tags */
     .room-info p{
       margin:0;
       font-weight:900;
@@ -168,19 +149,7 @@
     }
     .cta-btn:hover, .cta-btn:focus-visible{ transform: translateY(-1px); outline:none; }
 
-    /* Floating call toggle (left) */
-    .call-fab{
-      position: fixed;
-      left: 12px; bottom: 86px;   /* stays above bottom nav */
-      width: 54px; height: 54px; border-radius: 999px;
-      background: linear-gradient(180deg, #FFD867 0%, #E8C131 58%, #CBA21B 100%);
-      border: 1.5px solid #D4AF37;
-      box-shadow: 0 6px 20px rgba(212,175,55,.35);
-      display:flex; align-items:center; justify-content:center;
-      text-decoration:none; color:#1b1400; font-weight:900;
-      z-index: 1001;
-    }
-    .call-fab span{ font-size: 22px; line-height: 1; }
+    /* (Removed the floating call button entirely as requested) */
 
     @media (max-width: 600px){
       .room-card{ width: 48%; max-width: none; }
@@ -208,33 +177,29 @@
     <h2>Our Rooms</h2>
   </div>
 
-  <!-- Slideshow (same structure as contact page) -->
+  <!-- Slideshow (2 slides, like contact page) -->
   <div class="slider-wrap">
     <div class="slider" id="rooms-slider">
-      <div class="slide active"><img src="images/hotel-slide-1.jpg" alt="1708 Hotel — Lobby" /></div>
-      <div class="slide"><img src="images/hotel-slide-2.jpg" alt="1708 Hotel — Lounge" /></div>
-      <div class="slide"><img src="images/hotel-slide-3.jpg" alt="1708 Hotel — Room" /></div>
-      <div class="slide"><img src="images/hotel-slide-4.jpg" alt="1708 Hotel — Bar / Pool" /></div>
+      <div class="slide active"><img src="images/hotel-slide-1.jpg" alt=""></div>
+      <div class="slide"><img src="images/hotel-slide-2.jpg" alt=""></div>
     </div>
   </div>
 
   <!-- Room cards -->
   <main>
     <div class="rooms-grid">
-      <!-- Deluxe -->
+      <!-- Card 1 -->
       <article class="room-card">
-        <img src="images/room-deluxe.jpg" alt="Deluxe Room" />
+        <img src="images/room-deluxe.jpg" alt="">
         <div class="room-info">
-          <h4>Deluxe</h4>
           <p>₦40,000</p>
         </div>
       </article>
 
-      <!-- Standard -->
+      <!-- Card 2 -->
       <article class="room-card">
-        <img src="images/room-standard.jpg" alt="Standard Room" />
+        <img src="images/room-standard.jpg" alt="">
         <div class="room-info">
-          <h4>Standard</h4>
           <p>₦35,000</p>
         </div>
       </article>
@@ -247,11 +212,6 @@
     </div>
   </main>
 
-  <!-- Floating Call Toggle (left) -->
-  <a class="call-fab" href="tel:+234XXXXXXXXXX" aria-label="Call 1708 Hotel">
-    <span>📞</span>
-  </a>
-
   <!-- Bottom Navigation -->
   <nav class="bottom-nav">
     <a href="./index.html">Home</a>
@@ -261,7 +221,7 @@
     <a href="./contact.html">Contact</a>
   </nav>
 
-  <!-- Slider auto-advance (same logic as contact) -->
+  <!-- Simple left-slide like contact page -->
   <script>
     (function(){
       const slider = document.getElementById('rooms-slider');
