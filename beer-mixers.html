@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Beer / Mixers — 1708 Hotel</title>
+  <title>Beers / Mixers — 1708 Hotel</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
@@ -15,9 +15,7 @@
       margin: .4rem 0 .9rem;
       background: linear-gradient(180deg,#181818 0%, #111 48%, #0d0d0d 100%);
       border: none;
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.05),
-        0 10px 24px rgba(212,175,55,.10);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 10px 24px rgba(212,175,55,.10);
       isolation: isolate; overflow: hidden; text-align:center;
       font-weight: 800; font-size: 1.25rem;
     }
@@ -64,37 +62,41 @@
     }
     .back-btn:hover, .back-btn:focus-visible{ transform: translateY(-1px); outline:none; }
 
-    /* --- BEERS (lists in 3 columns like before) --- */
-    .beer-columns{
-      display:grid; grid-template-columns: repeat(3, minmax(220px, 1fr));
-      gap:1rem; max-width:1100px; margin:1rem auto; padding:0 1rem;
+    /* One hero image (beer only) */
+    .hero-beer{
+      max-width: 1100px; margin: .7rem auto 0; padding: 0 1rem;
     }
-    @media (max-width: 980px){ .beer-columns{ grid-template-columns: repeat(2, minmax(220px, 1fr)); } }
-    @media (max-width: 640px){ .beer-columns{ grid-template-columns: 1fr; } }
+    .hero-beer img{
+      width:100%; height:160px; object-fit:cover; border-radius:14px;
+      border:1px solid #D4AF37; box-shadow: 0 10px 28px rgba(212,175,55,.15);
+      display:block;
+    }
 
-    .beer-group{
+    /* Columns for lists (no pictures inside) */
+    .list-columns{
+      display:grid; grid-template-columns: repeat(3, minmax(220px, 1fr));
+      gap: 1rem; max-width:1100px; margin: 1rem auto; padding: 0 1rem;
+    }
+    @media (max-width: 980px){ .list-columns{ grid-template-columns: repeat(2, minmax(220px, 1fr)); } }
+    @media (max-width: 640px){ .list-columns{ grid-template-columns: 1fr; } }
+
+    .list-card{
       background:#151515; border:1px solid #D4AF37; border-radius:16px;
       box-shadow: 0 10px 28px rgba(212,175,55,.15); overflow:hidden;
     }
-    .beer-group img{ width:100%; height:150px; object-fit:cover; border-bottom:1px solid #2a2a2a; display:block; }
-    .beer-group h3{ margin:.6rem 0 .2rem; text-align:center; font-size:1rem; color:var(--logo-gold); letter-spacing:.05em; }
-    .beer-list{ list-style:none; margin:.2rem 0 0; padding:.2rem .8rem 1rem; }
-    .beer-list li{
+    .list-card h3{
+      margin:.8rem 0 .2rem; text-align:center; font-size:1rem; color:var(--logo-gold); letter-spacing:.05em;
+    }
+    .item-list{ list-style:none; margin:.2rem 0 0; padding:.2rem .8rem 1rem; }
+    .item-list li{
       display:flex; justify-content:space-between; align-items:center;
       padding:.55rem .55rem; border-bottom:1px dashed rgba(212,175,55,.25);
       font-weight:700; color:#eee; letter-spacing:.2px;
     }
-    .beer-list li:last-child{ border-bottom:0; }
+    .item-list li:last-child{ border-bottom:0; }
     .price{ color:var(--logo-gold); font-weight:900; margin-left:.8rem; white-space:nowrap; }
 
-    /* --- MIXERS (cards) --- */
-    .section-title{
-      text-align:center; margin:1.2rem 0 .2rem; font-size:1rem; color:var(--logo-gold); letter-spacing:.06em;
-    }
-    .food-grid{ justify-content:center; padding:1rem; }
-
-    /* bottom space past fixed nav */
-    main{ padding-bottom:4.5rem; }
+    main{ padding-bottom: 4.5rem; } /* space for fixed bottom nav */
   </style>
 </head>
 <body>
@@ -106,7 +108,7 @@
   <!-- Banner -->
   <div class="menu-banner">
     <span class="glow" aria-hidden="true"></span>
-    <h2>BEER / MIXERS</h2>
+    <h2>BEERS / MIXERS</h2>
   </div>
 
   <!-- Back to Drinks -->
@@ -114,138 +116,91 @@
     <a class="back-btn" href="./drinks.html">← Back to Drinks</a>
   </div>
 
-  <!-- BEERS (lists) -->
-  <section class="beer-columns">
-    <!-- Lagers -->
-    <div class="beer-group">
-      <img src="images/beer-lager.jpg" alt="Lagers" />
-      <h3>Lagers</h3>
-      <ul class="beer-list">
-        <li><span>STAR</span><span class="price">₦1,800</span></li>
-        <li><span>GULDER</span><span class="price">₦1,900</span></li>
-        <li><span>HEINEKEN</span><span class="price">₦2,100</span></li>
-        <li><span>MEDIUM HEINEKEN</span><span class="price">₦1,600</span></li>
-        <li><span>33"</span><span class="price">₦1,600</span></li>
-        <li><span>BUDWEISSER</span><span class="price">₦1,700</span></li>
-        <li><span>LIFE</span><span class="price">₦1,600</span></li>
-        <li><span>HERO</span><span class="price">₦1,600</span></li>
-        <li><span>TIGER</span><span class="price">₦1,600</span></li>
-      </ul>
-    </div>
+  <!-- One beer image only -->
+  <div class="hero-beer">
+    <img src="images/beer-lager.jpg" alt="Beers" />
+  </div>
 
-    <!-- Stout / Dark -->
-    <div class="beer-group">
-      <img src="images/beer-stout.jpg" alt="Stout / Dark" />
-      <h3>Stout / Dark</h3>
-      <ul class="beer-list">
-        <li><span>SMALL STOUT</span><span class="price">₦1,700</span></li>
-        <li><span>MEDIUM STOUT</span><span class="price">₦2,000</span></li>
-        <li><span>BIG STOUT</span><span class="price">₦2,700</span></li>
-        <li><span>LEGEND</span><span class="price">₦2,000</span></li>
-        <li><span>GUINESS SMOOTH</span><span class="price">₦2,000</span></li>
-      </ul>
-    </div>
+  <main>
+    <!-- All Beers -->
+    <section class="list-columns" aria-label="Beers">
+      <div class="list-card">
+        <h3>Beers — Lagers</h3>
+        <ul class="item-list">
+          <li><span>Star</span><span class="price">₦1,800</span></li>
+          <li><span>Gulder</span><span class="price">₦1,900</span></li>
+          <li><span>Heineken</span><span class="price">₦2,100</span></li>
+          <li><span>Medium Heineken</span><span class="price">₦1,600</span></li>
+          <li><span>33"</span><span class="price">₦1,600</span></li>
+          <li><span>Budweisser</span><span class="price">₦1,700</span></li>
+          <li><span>Life</span><span class="price">₦1,600</span></li>
+          <li><span>Hero</span><span class="price">₦1,600</span></li>
+          <li><span>Tiger</span><span class="price">₦1,600</span></li>
+        </ul>
+      </div>
 
-    <!-- Ready To Drink / Flavoured -->
-    <div class="beer-group">
-      <img src="images/beer-rtd.jpg" alt="Ready to Drink / Flavoured" />
-      <h3>Ready To Drink / Flavoured</h3>
-      <ul class="beer-list">
-        <li><span>STAR RADLER</span><span class="price">₦1,300</span></li>
-        <li><span>ORIJIN</span><span class="price">₦1,500</span></li>
-        <li><span>B/SMIRNOFF</span><span class="price">₦2,200</span></li>
-        <li><span>S/SMIRNOFF</span><span class="price">₦1,200</span></li>
-        <li><span>DESPERADOES</span><span class="price">₦1,800</span></li>
-      </ul>
-    </div>
-  </section>
+      <div class="list-card">
+        <h3>Beers — Stout / Dark</h3>
+        <ul class="item-list">
+          <li><span>Small Stout</span><span class="price">₦1,700</span></li>
+          <li><span>Medium Stout</span><span class="price">₦2,000</span></li>
+          <li><span>Big Stout</span><span class="price">₦2,700</span></li>
+          <li><span>Legend</span><span class="price">₦2,000</span></li>
+          <li><span>Guinness Smooth</span><span class="price">₦2,000</span></li>
+        </ul>
+      </div>
 
-  <!-- MIXERS (cards from Juice/Yoghurt you saved) -->
-  <h3 class="section-title">Mixers</h3>
-  <section class="food-grid">
-    <div class="food-card">
-      <img src="images/cranberry-juice.jpg" alt="Cranberry" />
-      <div class="food-info">
-        <h4>Cranberry</h4>
-        <p>₦3,200</p>
+      <div class="list-card">
+        <h3>Beers — Ready to Drink</h3>
+        <ul class="item-list">
+          <li><span>Star Radler</span><span class="price">₦1,300</span></li>
+          <li><span>Orijin</span><span class="price">₦1,500</span></li>
+          <li><span>Smirnoff (big)</span><span class="price">₦2,200</span></li>
+          <li><span>Smirnoff (small)</span><span class="price">₦1,200</span></li>
+          <li><span>Desperadoes</span><span class="price">₦1,800</span></li>
+        </ul>
       </div>
-    </div>
-    <div class="food-card">
-      <img src="images/mixed-juice.jpg" alt="Juice" />
-      <div class="food-info">
-        <h4>Juice</h4>
-        <p>₦3,000</p>
-      </div>
-    </div>
-    <div class="food-card">
-      <img src="images/hollandia-yoghurt.jpg" alt="Hollandia" />
-      <div class="food-info">
-        <h4>Hollandia</h4>
-        <p>₦3,500</p>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ENERGY / HERBS (single cards, exactly like your saved page) -->
-  <h3 class="section-title">Energy / Herbs</h3>
-  <section class="food-grid">
-    <div class="food-card">
-      <img src="images/blue-bullet.jpg" alt="Blue Bullet" />
-      <div class="food-info">
-        <h4>Blue Bullet</h4>
-        <p>₦2,000</p>
+    <!-- Soft and mixer -->
+    <section class="list-columns" aria-label="Soft and mixer">
+      <div class="list-card">
+        <h3>Soft and mixer</h3>
+        <ul class="item-list">
+          <li><span>Maltina</span><span class="price">₦1,200</span></li>
+          <li><span>Amstel</span><span class="price">₦1,200</span></li>
+          <li><span>Guinness Malta</span><span class="price">₦1,200</span></li>
+          <li><span>Water</span><span class="price">₦500</span></li>
+          <li><span>Fayrouz</span><span class="price">₦1,000</span></li>
+          <li><span>Coke can</span><span class="price">₦1,000</span></li>
+          <li><span>Mineral</span><span class="price">₦1,000</span></li>
+          <li><span>Cranberry</span><span class="price">₦3,200</span></li>
+          <li><span>Juice</span><span class="price">₦3,000</span></li>
+          <li><span>Hollandia</span><span class="price">₦3,500</span></li>
+        </ul>
       </div>
-    </div>
-    <div class="food-card">
-      <img src="images/black-bullet.jpg" alt="Black Bullet" />
-      <div class="food-info">
-        <h4>Black Bullet</h4>
-        <p>₦3,000</p>
+
+      <div class="list-card">
+        <h3>Energy / Herbs</h3>
+        <ul class="item-list">
+          <li><span>Blue Bullet</span><span class="price">₦2,000</span></li>
+          <li><span>Black Bullet</span><span class="price">₦3,000</span></li>
+          <li><span>Fearless</span><span class="price">₦1,000</span></li>
+          <li><span>Predator</span><span class="price">₦2,000</span></li>
+          <li><span>Climax Can</span><span class="price">₦1,200</span></li>
+          <li><span>Odogwu Bitters</span><span class="price">₦1,200</span></li>
+          <li><span>Don Simon</span><span class="price">₦6,500</span></li>
+          <li><span>1960</span><span class="price">₦2,500</span></li>
+          
+        </ul>
       </div>
-    </div>
-    <div class="food-card">
-      <img src="images/fearless.jpg" alt="Fearless" />
-      <div class="food-info">
-        <h4>Fearless</h4>
-        <p>₦1,000</p>
+
+      <div class="list-card" style="visibility:hidden;">
+        <h3>—</h3>
+        <ul class="item-list"><li><span>—</span><span class="price">—</span></li></ul>
       </div>
-    </div>
-    <div class="food-card">
-      <img src="images/predator.jpg" alt="Predator" />
-      <div class="food-info">
-        <h4>Predator</h4>
-        <p>₦2,000</p>
-      </div>
-    </div>
-    <div class="food-card">
-      <img src="images/climax-can.jpg" alt="Climax Can" />
-      <div class="food-info">
-        <h4>Climax Can</h4>
-        <p>₦1,200</p>
-      </div>
-    </div>
-    <div class="food-card">
-      <img src="images/odogwu-bitters.jpg" alt="Odogwu Bitters" />
-      <div class="food-info">
-        <h4>Odogwu Bitters</h4>
-        <p>₦1,200</p>
-      </div>
-    </div>
-    <div class="food-card">
-      <img src="images/don-simon.jpg" alt="Don Simon" />
-      <div class="food-info">
-        <h4>Don Simon</h4>
-        <p>₦6,500</p>
-      </div>
-    </div>
-    <div class="food-card">
-      <img src="images/1960-rootz.jpg" alt="1960" />
-      <div class="food-info">
-        <h4>1960</h4>
-        <p>₦2,500</p>
-      </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
   <!-- Bottom Navigation -->
   <nav class="bottom-nav">
