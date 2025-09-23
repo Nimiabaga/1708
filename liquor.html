@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
   <style>
-    /* ===== Golden Ticket Banner (unified look) ===== */
+    /* ===== Golden Ticket Banner — same look as SHOTS ===== */
     .menu-banner{
       position: relative;
       padding: 1.6rem 0 1.05rem 0;
@@ -25,22 +25,23 @@
     .menu-banner .super-glow{
       position: absolute; inset:0; pointer-events: none; z-index:0;
       background: radial-gradient(50% 80% at 50% 70%, rgba(0,0,0,.35) 0%, rgba(212,175,55,0) 90%);
+      opacity: 1;
     }
     .menu-banner h2{
       position: relative; z-index:1; margin:0;
       letter-spacing:.14em;
       text-transform:uppercase;
       font-weight: 900;
-      font-size: 2.05rem;
+      font-size: 2rem;
       background: linear-gradient(180deg,#fffde0 0%, #ffe060 25%, #e8c131 65%, #95742a 95%, #fff7cc 100%);
       -webkit-background-clip:text; background-clip:text;
       -webkit-text-fill-color:transparent;
       -webkit-text-stroke: 2px #d4af3766;
       filter: drop-shadow(0 3px 12px #201600) drop-shadow(0 0 16px #ffedb366);
-      text-shadow: 0 2px 18px #b8921c44, 0 0 0 #000;
+      text-shadow: 0 2px 18px #b8921c44;
     }
     .menu-banner h2::after{
-      content:""; display:block; width:160px; height:2.5px; margin:.7rem auto 0;
+      content:""; display:block; width:150px; height:2.5px; margin:.7rem auto 0;
       border-radius:2px; background: linear-gradient(90deg, transparent, #d4af37, transparent);
       box-shadow: 0 0 18px #d4af3748;
     }
@@ -63,6 +64,10 @@
 
     /* Extra padding above fixed bottom nav */
     main{ padding-bottom: 4.5rem; }
+    @media (max-width: 420px){
+      .menu-banner h2{ font-size:1.32rem; }
+      .menu-banner h2::after{ width:90px; }
+    }
   </style>
 </head>
 <body>
@@ -86,89 +91,89 @@
   <main>
     <div class="food-grid">
       <div class="food-card">
-        <img src="images/gordon-gin-medium.jpg" alt="GORDON GIN (MEDIUM)" />
+        <img src="images/gordon-gin-medium.jpg" alt="Gordon Gin (Medium)" />
         <div class="food-info">
-          <h4>GORDON GIN (MEDIUM)</h4>
+          <h4>Gordon Gin (Medium)</h4>
           <p>₦5,000</p>
         </div>
       </div>
 
       <div class="food-card">
-        <img src="images/big-gordon.jpg" alt="BIG GORDON" />
+        <img src="images/big-gordon.jpg" alt="Big Gordon" />
         <div class="food-info">
-          <h4>BIG GORDON</h4>
+          <h4>Big Gordon</h4>
           <p>₦12,000</p>
         </div>
       </div>
 
       <div class="food-card">
-        <img src="images/smirnoff-x1-small.jpg" alt="SMIRNOFF X1 (SMALL)" />
+        <img src="images/smirnoff-x1-small.jpg" alt="Smirnoff X1 (Small)" />
         <div class="food-info">
-          <h4>SMIRNOFF X1 (SMALL)</h4>
+          <h4>Smirnoff X1 (Small)</h4>
           <p>₦3,200</p>
         </div>
       </div>
 
       <div class="food-card">
-        <img src="images/smirnoff-x1-big.jpg" alt="SMIRNOFF X1 (BIG)" />
+        <img src="images/smirnoff-x1-big.jpg" alt="Smirnoff X1 (Big)" />
         <div class="food-info">
-          <h4>SMIRNOFF X1 (BIG)</h4>
+          <h4>Smirnoff X1 (Big)</h4>
           <p>₦12,000</p>
         </div>
       </div>
 
       <div class="food-card">
-        <img src="images/kensington.jpg" alt="KENSINGTON" />
+        <img src="images/kensington.jpg" alt="Kensington" />
         <div class="food-info">
-          <h4>KENSINGTON</h4>
+          <h4>Kensington</h4>
           <p>₦13,000</p>
         </div>
       </div>
 
       <div class="food-card">
-        <img src="images/john-bannermans.jpg" alt="JOHN BANNERMANS" />
+        <img src="images/john-bannermans.jpg" alt="John Bannermans" />
         <div class="food-info">
-          <h4>JOHN BANNERMANS</h4>
+          <h4>John Bannermans</h4>
           <p>₦25,000</p>
         </div>
       </div>
 
       <div class="food-card">
-        <img src="images/campari-medium.jpg" alt="M/CAMPARI" />
+        <img src="images/campari-medium.jpg" alt="M/Campari" />
         <div class="food-info">
-          <h4>M/CAMPARI</h4>
+          <h4>M/Campari</h4>
           <p>₦32,000</p>
         </div>
       </div>
 
       <div class="food-card">
-        <img src="images/campari-big.jpg" alt="B/CAMPARI" />
+        <img src="images/campari-big.jpg" alt="B/Campari" />
         <div class="food-info">
-          <h4>B/CAMPARI</h4>
+          <h4>B/Campari</h4>
           <p>₦36,000</p>
         </div>
       </div>
 
       <div class="food-card">
-        <img src="images/claymore.jpg" alt="CLAY MORE" />
+        <img src="images/claymore.jpg" alt="Clay More" />
         <div class="food-info">
-          <h4>CLAY MORE</h4>
+          <h4>Clay More</h4>
           <p>₦14,000</p>
         </div>
       </div>
 
       <div class="food-card">
-        <img src="images/monkey-shoulder.jpg" alt="MONKEY SHOULDER" />
+        <img src="images/monkey-shoulder.jpg" alt="Monkey Shoulder" />
         <div class="food-info">
-          <h4>MONKEY SHOULDER</h4>
+          <h4>Monkey Shoulder</h4>
           <p>₦45,000</p>
         </div>
       </div>
 
       <div class="food-card">
-        <img src="images/baileys.jpg" alt="BAILEYS" />
+        <img src="images/baileys.jpg" alt="Baileys" />
         <div class="food-info">
-          <h4>BAILEYS</h4>
+          <h4>Baileys</h4>
           <p>₦18,000</p>
         </div>
       </div>

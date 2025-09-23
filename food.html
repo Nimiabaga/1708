@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
   <style>
-    /* Food page-only tweaks (keeps Maximus layout vibe) */
+    /* Food page-only tweaks */
     .menu-toggle{
       display:flex;justify-content:center;gap:.6rem;flex-wrap:wrap;
       margin:1rem auto 1.2rem;max-width:980px;padding:0 .6rem;
@@ -17,14 +17,18 @@
     .menu-toggle a{
       padding:.55rem 1rem;border-radius:8px;font-weight:800;text-decoration:none;
       background:#0f0f0f;border:1px solid var(--logo-gold);
-      color:var(--logo-gold);transition:box-shadow .2s ease, transform .08s ease;
+      color:var(--logo-gold);
+      transition:box-shadow .2s ease, transform .08s ease;
     }
     .menu-toggle a:hover{ box-shadow:0 0 10px rgba(212,175,55,.22); }
-    .menu-toggle a:active{ transform:scale(.98); box-shadow:inset 0 -2px 0 #D4AF37,0 0 10px rgba(212,175,55,.45); }
+    .menu-toggle a:active{
+      transform:scale(.98);
+      box-shadow:inset 0 -2px 0 #D4AF37,0 0 10px rgba(212,175,55,.45);
+    }
 
     .food-info p small{ font-weight:600; opacity:.9; }
 
-    /* ===== Banner: make it match the homepage ===== */
+    /* ===== Golden Ticket Banner (unified style) ===== */
     .menu-banner {
       position: relative;
       padding: 1.6rem 0 1.05rem 0;
@@ -40,27 +44,28 @@
     }
     .menu-banner .super-glow{
       position: absolute; inset:0; pointer-events: none; z-index:0;
-      background: radial-gradient(50% 80% at 50% 70%, rgba(0, 0, 0, 0.35) 0%, rgba(212,175,55,0) 90%);
+      background: radial-gradient(50% 80% at 50% 70%, rgba(0,0,0,.35) 0%, rgba(212,175,55,0) 90%);
       opacity: 1;
     }
     .menu-banner h2{
       position: relative; z-index:1; margin:0;
       letter-spacing:.14em;
-      text-transform:uppercase;
+      text-transform: uppercase;
       font-weight: 900;
-      font-size: 2.05rem;
+      font-size: 2rem;
       background: linear-gradient(180deg,#fffde0 0%, #ffe060 25%, #e8c131 65%, #95742a 95%, #fff7cc 100%);
       -webkit-background-clip:text; background-clip:text;
       -webkit-text-fill-color:transparent;
       -webkit-text-stroke: 2px #d4af3766;
       filter: drop-shadow(0 3px 12px #201600) drop-shadow(0 0 16px #ffedb366);
-      text-shadow: 0 2px 18px #b8921c44, 0 0 0 #000;
+      text-shadow: 0 2px 18px #b8921c44;
     }
     .menu-banner h2::after{
-      content:""; display:block; width:170px; height:2.5px; margin:.7rem auto 0;
+      content:""; display:block; width:150px; height:2.5px; margin:.7rem auto 0;
       border-radius:2px; background: linear-gradient(90deg, transparent, #d4af37, transparent);
       box-shadow: 0 0 18px #d4af3748;
     }
+
     @media (max-width: 420px){
       .menu-banner h2{ font-size:1.32rem; }
       .menu-banner h2::after{ width:90px; }
@@ -73,9 +78,10 @@
     <img src="images/1708.png" alt="1708 Hotel Logo" class="logo" />
   </header>
 
+  <!-- Banner -->
   <div class="menu-banner">
     <span class="super-glow" aria-hidden="true"></span>
-    <h2>FOOD MENU</h2>
+    <h2>Food Menu</h2>
   </div>
 
   <!-- Category Buttons -->
@@ -96,50 +102,28 @@
   <!-- Preview Grid (sample dishes) -->
   <main>
     <div class="food-grid">
-      <!-- English Breakfast -->
       <div class="food-card">
         <img src="images/english-breakfast.jpg" alt="English Breakfast" />
-        <div class="food-info">
-          <h4>English Breakfast</h4>
-          <p>₦7,500</p>
-        </div>
+        <div class="food-info"><h4>English Breakfast</h4><p>₦7,500</p></div>
       </div>
-
-      <!-- Club Sandwich -->
       <div class="food-card">
         <img src="images/club-sandwich.jpg" alt="Club Sandwich" />
-        <div class="food-info">
-          <h4>Club Sandwich</h4>
-          <p>₦6,500</p>
-        </div>
+        <div class="food-info"><h4>Club Sandwich</h4><p>₦6,500</p></div>
       </div>
-
-      <!-- French Fries -->
       <div class="food-card">
         <img src="images/french-fries.jpg" alt="French Fries" />
-        <div class="food-info">
-          <h4>French Fries</h4>
-          <p>₦3,500</p>
-        </div>
+        <div class="food-info"><h4>French Fries</h4><p>₦3,500</p></div>
       </div>
-
-      <!-- Chicken Wings -->
       <div class="food-card">
         <img src="images/chicken-wings.jpg" alt="Chicken Wings" />
-        <div class="food-info">
-          <h4>Chicken Wings</h4>
-          <p>₦7,000</p>
-        </div>
+        <div class="food-info"><h4>Chicken Wings</h4><p>₦7,000</p></div>
       </div>
     </div>
 
-    <!-- Professional notice -->
-    <div class="tray-note">
-      Takeout ₦300
-    </div>
+    <div class="tray-note">Takeout ₦300</div>
   </main>
 
-  <!-- Bottom Navigation (same structure as 1708 home) -->
+  <!-- Bottom Navigation -->
   <nav class="bottom-nav">
     <a href="./index.html">Home</a>
     <a href="./food.html" class="active">Food</a>
