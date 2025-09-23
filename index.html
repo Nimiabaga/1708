@@ -6,58 +6,6 @@
   <title>Home - 1708 Hotel</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-
-  <style>
-    /* ===== Elegant “ticket” banner — HOME (bigger type) ===== */
-    .menu-banner{
-      position: relative;
-      padding: 1.25rem 0;
-      margin: .4rem 0 .9rem;
-      background: linear-gradient(180deg,#181818 0%, #111 48%, #0d0d0d 100%);
-      border: none;
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.05),
-        0 10px 24px rgba(212,175,55,.10);
-      isolation: isolate;
-      overflow: hidden;
-      text-align: center;
-      font-weight: 800;
-      font-size: 1.25rem;
-    }
-    .menu-banner::before,
-    .menu-banner::after{
-      content:"";
-      position:absolute; left:0; right:0; height:1px;
-      background: linear-gradient(90deg, transparent, rgba(212,175,55,.85), transparent);
-      pointer-events:none;
-    }
-    .menu-banner::before{ top:0; filter:blur(.2px); }
-    .menu-banner::after{ bottom:0; filter:blur(.2px); }
-    .menu-banner .glow{
-      position:absolute; inset:0; pointer-events:none; z-index:0;
-      background: radial-gradient(50% 60% at 50% 100%, rgba(212,175,55,.20) 0%, rgba(212,175,55,0) 65%);
-      opacity:.95;
-    }
-    .menu-banner h2{
-      position: relative; z-index:1; margin:0; letter-spacing:.09em;
-      color: var(--logo-gold); text-transform: uppercase; font-weight:900;
-      font-size: 1.85rem; /* bigger for home */
-      background: linear-gradient(180deg,#fff0b0 0%, #e8c131 60%, #b8891c 100%);
-      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
-      -webkit-text-stroke: 1px rgba(212,175,55,.35);
-      text-shadow: 0 1px 0 rgba(0,0,0,.65), 0 0 18px rgba(212,175,55,.22);
-    }
-    .menu-banner h2::after{
-      content:""; display:block; width:150px; height:2px; margin:.6rem auto 0;
-      border-radius:2px; background: linear-gradient(90deg, transparent, #d4af37, transparent);
-      box-shadow: 0 0 10px rgba(212,175,55,.35);
-    }
-    /* Responsive tweak */
-    @media (max-width: 420px){
-      .menu-banner h2{ font-size:1.6rem; }
-      .menu-banner h2::after{ width:120px; }
-    }
-  </style>
 </head>
 <body>
   <!-- Header (logo only) -->
@@ -68,13 +16,11 @@
   <main>
     <section class="section active">
       <div class="menu-banner">
-        <span class="glow" aria-hidden="true"></span>
+        <span class="super-glow" aria-hidden="true"></span>
         <h2>MENU</h2>
       </div>
-
       <!-- Featured -->
       <h2 style="text-align:center;">🍽️ Featured</h2>
-
       <div class="food-grid">
         <!-- Isi Ewu -->
         <div class="food-card">
@@ -84,7 +30,6 @@
             <p>₦10,000</p>
           </div>
         </div>
-
         <!-- Samosa (5 pieces) -->
         <div class="food-card">
           <img src="images/samosa-5-pieces-6000.jpg" alt="Samosa (5 pieces)" />
@@ -93,7 +38,6 @@
             <p>₦6,000</p>
           </div>
         </div>
-
         <!-- Fisherman Soup -->
         <div class="food-card">
           <img src="images/fisherman-soup-9000.jpg" alt="Fisherman Soup" />
@@ -102,7 +46,6 @@
             <p>₦9,000</p>
           </div>
         </div>
-
         <!-- Peppered Snail -->
         <div class="food-card">
           <img src="images/peppered-snail-4500.jpg" alt="Peppered Snail" />
