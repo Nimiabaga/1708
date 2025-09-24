@@ -61,6 +61,13 @@
     }
     .back-btn:hover, .back-btn:focus-visible{ transform: translateY(-1px); outline:none; }
 
+    /* Sold-out visuals */
+    .soldout-label{
+      color:#fff; background:#d91e1e; border-radius:.35em; padding:.07em .5em;
+      font-weight:700; margin-left:.6em; font-size:.97em; vertical-align:middle; display:inline-block;
+    }
+    .food-card.soldout{ opacity:.48; }
+
     /* Space above fixed bottom nav */
     main{ padding-bottom: 4.5rem; }
   </style>
@@ -73,7 +80,7 @@
 
   <!-- Banner -->
   <div class="menu-banner">
-    <span class="glow" aria-hidden="true"></span>
+    <span class="super-glow" aria-hidden="true"></span>
     <h2>WHISKEY</h2>
   </div>
 
@@ -85,51 +92,51 @@
   <!-- Grid of whiskey cards -->
   <main>
     <div class="food-grid">
-      <div class="food-card">
+      <div class="food-card" id="card-williams-lawson">
         <img src="images/williams-lawson.jpg" alt="Williams Lawson" />
         <div class="food-info">
           <h4>Williams Lawson</h4>
-          <p>₦25,000</p>
+          <p id="price-williams-lawson"></p>
         </div>
       </div>
 
-      <div class="food-card">
+      <div class="food-card" id="card-jack-daniels">
         <img src="images/jack-daniels.jpg" alt="Jack Daniels" />
         <div class="food-info">
           <h4>Jack Daniels</h4>
-          <p>₦40,000</p>
+          <p id="price-jack-daniels"></p>
         </div>
       </div>
 
-      <div class="food-card">
+      <div class="food-card" id="card-williams-lawson-small">
         <img src="images/williams-lawson-small.jpg" alt="Williams Lawson Small" />
         <div class="food-info">
           <h4>Williams Lawson Small</h4>
-          <p>₦12,000</p>
+          <p id="price-williams-lawson-small"></p>
         </div>
       </div>
 
-      <div class="food-card">
+      <div class="food-card" id="card-jameson-green-small">
         <img src="images/jameson-green-small.jpg" alt="Jameson Green Small" />
         <div class="food-info">
           <h4>Jameson Green Small</h4>
-          <p>₦15,000</p>
+          <p id="price-jameson-green-small"></p>
         </div>
       </div>
 
-      <div class="food-card">
+      <div class="food-card" id="card-singleton">
         <img src="images/singleton.jpg" alt="Singleton" />
         <div class="food-info">
           <h4>Singleton</h4>
-          <p>₦80,000</p>
+          <p id="price-singleton"></p>
         </div>
       </div>
 
-      <div class="food-card">
+      <div class="food-card" id="card-jameson-green-big">
         <img src="images/jameson-green-big.jpg" alt="Jameson Green Big" />
         <div class="food-info">
           <h4>Jameson Green Big</h4>
-          <p>₦40,000</p>
+          <p id="price-jameson-green-big"></p>
         </div>
       </div>
     </div>
@@ -145,5 +152,54 @@
     <a href="./rooms.html">Rooms</a>
     <a href="./contact.html">Contact</a>
   </nav>
+
+  <!-- Live price injection -->
+  <script>
+    // GAS endpoint + token (same as admin)
+    const ENDPOINT = 'https://script.google.com/macros/s/AKfycbw5v7gImXthxWkHUaCtDdDGx4U_tts7_1JWuHA9ojyu6nm2qvHyPehZrtfEK2j5JTMy/exec';
+    const TOKEN    = 'Forgive1988@';
+
+    const formatNaira = n => '₦' + Number(n||0).toLocaleString();
+    const norm = s => String(s||'').toLowerCase().trim();
+    const slug = s => String(s||'')
+      .normalize('NFD').replace(/[\u0300-\u036f]/g,'') // strip diacritics
+      .replace(/[’']/g,'')                             // drop apostrophes
+      .replace(/[^a-z0-9]/gi,'-').replace(/-+/g,'-')   // non-alnum -> dashes
+      .toLowerCase().replace(/-$/,'');                 // trim trailing dash
+
+    function injectPrices(){
+      fetch(`${ENDPOINT}?token=${encodeURIComponent(TOKEN)}`)
+        .then(r => r.json())
+        .then(j => {
+          if(!j.ok || !Array.isArray(j.rows)) return;
+
+          j.rows.forEach(item => {
+            // Only Drinks → Whiskey
+            if (!(norm(item.type) === 'drinks' || norm(item.type) === 'drink')) return;
+            if (norm(item.cat) !== 'whiskey') return;
+            if (!item.name) return;
+
+            const s = slug(item.name);
+            const priceEl = document.getElementById('price-' + s);
+            const cardEl  = document.getElementById('card-' + s);
+            if(!priceEl || !cardEl) return; // ignore names without matching card
+
+            priceEl.innerHTML = '';
+            cardEl.classList.remove('soldout');
+
+            const available = (item.available === true) || (String(item.available).toLowerCase() === 'true');
+            if (available){
+              priceEl.textContent = formatNaira(item.price);
+            } else {
+              priceEl.innerHTML = `${formatNaira(item.price)} <span class="soldout-label">Sold Out</span>`;
+              cardEl.classList.add('soldout');
+            }
+          });
+        })
+        .catch(()=>{ /* silent fail */ });
+    }
+
+    document.addEventListener('DOMContentLoaded', injectPrices);
+  </script>
 </body>
 </html>

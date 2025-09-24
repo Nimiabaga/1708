@@ -62,6 +62,13 @@
     }
     .back-btn:hover, .back-btn:focus-visible{ transform: translateY(-1px); outline:none; }
 
+    /* Sold-out visuals */
+    .soldout-label{
+      color:#fff; background:#d91e1e; border-radius:.35em; padding:.07em .5em;
+      font-weight:700; margin-left:.6em; font-size:.97em; vertical-align:middle; display:inline-block;
+    }
+    .food-card.soldout{ opacity:.48; }
+
     /* Extra space past fixed nav */
     main{ padding-bottom: 4.5rem; }
   </style>
@@ -74,7 +81,7 @@
 
   <!-- Banner -->
   <div class="menu-banner">
-    <span class="glow" aria-hidden="true"></span>
+    <span class="super-glow" aria-hidden="true"></span>
     <h2>WINES</h2>
   </div>
 
@@ -86,107 +93,108 @@
   <!-- Grid of wine cards -->
   <main>
     <div class="food-grid">
-      <div class="food-card">
-        <img src="images/carlo-rossi.jpg" alt="CARLO ROSSI" />
+      <div class="food-card" id="card-carlo-rossi">
+        <img src="images/carlo-rossi.jpg" alt="Carlo Rossi" />
         <div class="food-info">
-          <h4>CARLO ROSSI</h4>
-          <p>₦18,000</p>
+          <h4>Carlo Rossi</h4>
+          <p id="price-carlo-rossi"></p>
         </div>
       </div>
 
-      <div class="food-card">
-        <img src="images/markenellis.jpg" alt="MARKENELLIS" />
+      <div class="food-card" id="card-markenellis">
+        <img src="images/markenellis.jpg" alt="Markenellis" />
         <div class="food-info">
-          <h4>MARKENELLIS</h4>
-          <p>₦18,000</p>
+          <h4>Markenellis</h4>
+          <p id="price-markenellis"></p>
         </div>
       </div>
 
-      <div class="food-card">
-        <img src="images/four-cousins.jpg" alt="FOUR COUSINS" />
+      <div class="food-card" id="card-four-cousins">
+        <img src="images/four-cousins.jpg" alt="Four Cousins" />
         <div class="food-info">
-          <h4>FOUR COUSINS</h4>
-          <p>₦18,000</p>
+          <h4>Four Cousins</h4>
+          <p id="price-four-cousins"></p>
         </div>
       </div>
 
-      <div class="food-card">
-        <img src="images/four-cousins-sparkling.jpg" alt="FOUR COUSINS SPARKLING" />
+      <div class="food-card" id="card-four-cousins-sparkling">
+        <img src="images/four-cousins-sparkling.jpg" alt="Four Cousins Sparkling" />
         <div class="food-info">
-          <h4>FOUR COUSINS SPARKLING</h4>
-          <p>₦20,000</p>
+          <h4>Four Cousins Sparkling</h4>
+          <p id="price-four-cousins-sparkling"></p>
         </div>
       </div>
 
-      <div class="food-card">
-        <img src="images/andre.jpg" alt="ANDRE" />
+      <div class="food-card" id="card-andre">
+        <img src="images/andre.jpg" alt="Andre" />
         <div class="food-info">
-          <h4>ANDRE</h4>
-          <p>₦22,000</p>
+          <h4>Andre</h4>
+          <p id="price-andre"></p>
         </div>
       </div>
 
-      <div class="food-card">
-        <img src="images/drosty-off.jpg" alt="DROSTY OFF" />
+      <!-- NOTE: Catalog name is "Droty Off" (no 's'). Use that so prices show. -->
+      <div class="food-card" id="card-droty-off">
+        <img src="images/drosty-off.jpg" alt="Droty Off" />
         <div class="food-info">
-          <h4>DROSTY OFF</h4>
-          <p>₦18,000</p>
+          <h4>Droty Off</h4>
+          <p id="price-droty-off"></p>
         </div>
       </div>
 
-      <div class="food-card">
-        <img src="images/pastoral-wine.jpg" alt="PASTORAL WINE" />
+      <div class="food-card" id="card-pastoral-wine">
+        <img src="images/pastoral-wine.jpg" alt="Pastoral Wine" />
         <div class="food-info">
-          <h4>PASTORAL WINE</h4>
-          <p>₦19,000</p>
+          <h4>Pastoral Wine</h4>
+          <p id="price-pastoral-wine"></p>
         </div>
       </div>
 
-      <div class="food-card">
-        <img src="images/star-chaser.jpg" alt="STAR CHASER" />
+      <div class="food-card" id="card-star-chaser">
+        <img src="images/star-chaser.jpg" alt="Star Chaser" />
         <div class="food-info">
-          <h4>STAR CHASER</h4>
-          <p>₦17,000</p>
+          <h4>Star Chaser</h4>
+          <p id="price-star-chaser"></p>
         </div>
       </div>
 
-      <div class="food-card">
-        <img src="images/lamothe-original.jpg" alt="LAMOTHE ORIGINAL" />
+      <div class="food-card" id="card-lamothe-original">
+        <img src="images/lamothe-original.jpg" alt="Lamothe Original" />
         <div class="food-info">
-          <h4>LAMOTHE ORIGINAL</h4>
-          <p>₦15,000</p>
+          <h4>Lamothe Original</h4>
+          <p id="price-lamothe-original"></p>
         </div>
       </div>
 
-      <div class="food-card">
-        <img src="images/toma-wine.jpg" alt="TOMA WINE" />
+      <div class="food-card" id="card-toma-wine">
+        <img src="images/toma-wine.jpg" alt="Toma Wine" />
         <div class="food-info">
-          <h4>TOMA WINE</h4>
-          <p>₦10,000</p>
+          <h4>Toma Wine</h4>
+          <p id="price-toma-wine"></p>
         </div>
       </div>
 
-      <div class="food-card">
-        <img src="images/princi-pinal-wine.jpg" alt="PRINCI PINAL WINE" />
+      <div class="food-card" id="card-princi-pinal-wine">
+        <img src="images/princi-pinal-wine.jpg" alt="Princi Pinal Wine" />
         <div class="food-info">
-          <h4>PRINCI PINAL WINE</h4>
-          <p>₦10,000</p>
+          <h4>Princi Pinal Wine</h4>
+          <p id="price-princi-pinal-wine"></p>
         </div>
       </div>
 
-      <div class="food-card">
-        <img src="images/1964-wine.jpg" alt="1964 WINE" />
+      <div class="food-card" id="card-1964-wine">
+        <img src="images/1964-wine.jpg" alt="1964 Wine" />
         <div class="food-info">
-          <h4>1964 WINE</h4>
-          <p>₦10,000</p>
+          <h4>1964 Wine</h4>
+          <p id="price-1964-wine"></p>
         </div>
       </div>
 
-      <div class="food-card">
-        <img src="images/sweet-lip-wine.jpg" alt="SWEET LIP WINE" />
+      <div class="food-card" id="card-sweet-lip-wine">
+        <img src="images/sweet-lip-wine.jpg" alt="Sweet Lip Wine" />
         <div class="food-info">
-          <h4>SWEET LIP WINE</h4>
-          <p>₦15,000</p>
+          <h4>Sweet Lip Wine</h4>
+          <p id="price-sweet-lip-wine"></p>
         </div>
       </div>
     </div>
@@ -202,5 +210,54 @@
     <a href="./rooms.html">Rooms</a>
     <a href="./contact.html">Contact</a>
   </nav>
+
+  <!-- Live price injection -->
+  <script>
+    // GAS endpoint + token (same as admin)
+    const ENDPOINT = 'https://script.google.com/macros/s/AKfycbw5v7gImXthxWkHUaCtDdDGx4U_tts7_1JWuHA9ojyu6nm2qvHyPehZrtfEK2j5JTMy/exec';
+    const TOKEN    = 'Forgive1988@';
+
+    const formatNaira = n => '₦' + Number(n||0).toLocaleString();
+    const norm = s => String(s||'').toLowerCase().trim();
+    const slug = s => String(s||'')
+      .normalize('NFD').replace(/[\u0300-\u036f]/g,'') // remove diacritics
+      .replace(/[’']/g,'')                             // drop apostrophes
+      .replace(/[^a-z0-9]/gi,'-').replace(/-+/g,'-')   // non-alnum → dash
+      .toLowerCase().replace(/-$/,'');                 // trim last dash
+
+    function injectPrices(){
+      fetch(`${ENDPOINT}?token=${encodeURIComponent(TOKEN)}`)
+        .then(r => r.json())
+        .then(j => {
+          if(!j.ok || !Array.isArray(j.rows)) return;
+
+          j.rows.forEach(item => {
+            // Only Drinks → Wines
+            if (!(norm(item.type) === 'drinks' || norm(item.type) === 'drink')) return;
+            if (norm(item.cat) !== 'wines') return;
+            if (!item.name) return;
+
+            const s = slug(item.name);
+            const priceEl = document.getElementById('price-' + s);
+            const cardEl  = document.getElementById('card-' + s);
+            if(!priceEl || !cardEl) return;
+
+            priceEl.innerHTML = '';
+            cardEl.classList.remove('soldout');
+
+            const available = (item.available === true) || (String(item.available).toLowerCase() === 'true');
+            if (available){
+              priceEl.textContent = formatNaira(item.price);
+            } else {
+              priceEl.innerHTML = `${formatNaira(item.price)} <span class="soldout-label">Sold Out</span>`;
+              cardEl.classList.add('soldout');
+            }
+          });
+        })
+        .catch(()=>{ /* silent */ });
+    }
+
+    document.addEventListener('DOMContentLoaded', injectPrices);
+  </script>
 </body>
 </html>

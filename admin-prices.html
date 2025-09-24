@@ -114,23 +114,179 @@
     const TOKEN   = 'Forgive1988@';
 
     /* ===== 1708 CATALOG ===== */
-    const drinksCatalog = {};
+    const drinksCatalog = {
+      "Arabian Tea": [
+        { name: "Abino Shaka", price: 7000 },
+        { name: "Man Power", price: 7000 },
+        { name: "Body Cleanser", price: 7000 }
+      ],
+      "Beers/Lagers": [
+        { name: "Star", price: 1800 },
+        { name: "Gulder", price: 1900 },
+        { name: "Heineken", price: 2100 },
+        { name: "Medium Heineken", price: 1600 },
+        { name: '33"', price: 1600 },   // fixed data literal is okay now
+        { name: "Budweisser", price: 1700 },
+        { name: "Life", price: 1600 },
+        { name: "Hero", price: 1600 },
+        { name: "Tiger", price: 1600 }
+      ],
+
+      "Beers/Stout": [
+        { name: "Small Stout", price: 1700 },
+        { name: "Medium Stout", price: 2000 },
+        { name: "Big Stout", price: 2700 },
+        { name: "Legend", price: 2000 },
+        { name: "Guinness Smooth", price: 2000 }
+      ],
+      "Beers/Ready": [
+        { name: "Star Radler", price: 1300 },
+        { name: "Orijin", price: 1500 },
+        { name: "Smirnoff (big)", price: 2200 },
+        { name: "Smirnoff (small)", price: 1200 },
+        { name: "Desperadoes", price: 1800 }
+      ],
+      "Soft/Mixer": [
+        { name: "Maltina", price: 1200 },
+        { name: "Amstel", price: 1200 },
+        { name: "Guinness Malta", price: 1200 },
+        { name: "Water", price: 500 },
+        { name: "Fayrouz", price: 1000 },
+        { name: "Coke can", price: 1000 },
+        { name: "Mineral", price: 1000 },
+        { name: "Cranberry", price: 3200 },
+        { name: "Juice", price: 3000 },
+        { name: "Hollandia", price: 3500 }
+      ],
+      "Energy/Herbs": [
+        { name: "Blue Bullet", price: 2000 },
+        { name: "Black Bullet", price: 3000 },
+        { name: "Fearless", price: 1000 },
+        { name: "Predator", price: 2000 },
+        { name: "Climax Can", price: 1200 },
+        { name: "Odogwu Bitters", price: 1200 },
+        { name: "Don Simon", price: 6500 },
+        { name: "1960", price: 2500 }
+      ],
+      "Accessories": [
+        { name: "Lighter", price: 300 }
+      ],
+      "Cigarettes": [
+        { name: "Dunhill", price: 3200 },
+        { name: "Benson Switch", price: 3000 },
+        { name: "Benson Boost", price: 2000 },
+        { name: "Benson", price: 2400 },
+        { name: "Esse Change", price: 3400 }
+      ],
+      "Cigarettes/Nuts": [
+        { name: "Oris", price: 2000 },
+        { name: "Chesterfield", price: 3100 },
+        { name: "Dorchester", price: 2000 },
+        { name: "Bohem", price: 2100 },
+        { name: "Groundnut Small", price: 1800 }
+      ],
+      "Cocktails": [
+        { name: "Smoky Lamp", price: 10000 },
+        { name: "Zombie", price: 10000 },
+        { name: "Irish Coffee", price: 8000 },
+        { name: "Frozen Strawberry Margarita", price: 10000 },
+        { name: "Frozen Blue Margarita", price: 10000 },
+        { name: "Sweet Colorado", price: 10000 },
+        { name: "Classic Margarita", price: 10000 },
+        { name: "Long Island Iced Tea", price: 10000 },
+        { name: "Electric Ice Tea", price: 10000 },
+        { name: "Kiwi Fizzy", price: 10000 },
+        { name: "Mai Tai", price: 10000 },
+        { name: "Blue Hawaii", price: 10000 },
+        { name: "Winter Breeze", price: 10000 },
+        { name: "Mojito", price: 10000 },
+        { name: "Sex on the Beach", price: 10000 }
+      ],
+      "Liquor": [
+        { name: "Gordon Gin (Medium)", price: 5000 },
+        { name: "Big Gordon", price: 12000 },
+        { name: "Smirnoff X1 (Small)", price: 3200 },
+        { name: "Smirnoff X1 (Big)", price: 12000 },
+        { name: "Kensington", price: 13000 },
+        { name: "John Bannermans", price: 25000 },
+        { name: "M/Campari", price: 32000 },
+        { name: "B/Campari", price: 36000 },
+        { name: "Clay More", price: 14000 },
+        { name: "Monkey Shoulder", price: 45000 },
+        { name: "Baileys", price: 18000 }
+      ],
+      "Milkshakes": [
+        { name: "Creamy Vanilla", price: 10000 },
+        { name: "Strawberry Slush", price: 10000 },
+        { name: "Peanut Butter Delight", price: 10000 },
+        { name: "Iced Coffee Frappuccino", price: 10000 }
+      ],
+      "Mocktails": [
+        { name: "Chapman", price: 8000 },
+        { name: "Tropical Island", price: 8000 },
+        { name: "Love Portion", price: 8000 },
+        { name: "Holy Water", price: 8000 },
+        { name: "Cucumber Cooler", price: 8000 },
+        { name: "Bahamas Sunrise", price: 8000 },
+        { name: "Cinderella", price: 8000 },
+        { name: "Ginger Lemonade", price: 8000 }
+      ],
+      "Shots": [
+        { name: "Tequila", price: 3000 },
+        { name: "Whiskey", price: 3000 },
+        { name: "Campari", price: 2500 },
+        { name: "Gin", price: 3000 },
+        { name: "Jagermeister", price: 3000 }
+      ],
+      "Smoothies": [
+        { name: "Milk Fruity", price: 8000 },
+        { name: "Banana Strawberry", price: 8000 },
+        { name: "Avocado Banana", price: 8000 },
+        { name: "Peanut Banana", price: 8000 },
+        { name: "Ginger Mix", price: 8000 },
+        { name: "Fresh Juice", price: 8000 },
+        { name: "Fruit Perfait", price: 8000 }
+      ],
+      "Whiskey": [
+        { name: "Williams Lawson", price: 25000 },
+        { name: "Jack Daniels", price: 40000 },
+        { name: "Williams Lawson Small", price: 12000 },
+        { name: "Jameson Green Small", price: 15000 },
+        { name: "Singleton", price: 80000 },
+        { name: "Jameson Green Big", price: 40000 }
+      ],
+      "Wines": [
+        { name: "Carlo Rossi", price: 18000 },
+        { name: "Markenellis", price: 18000 },
+        { name: "Four Cousins", price: 18000 },
+        { name: "Four Cousins Sparkling", price: 20000 },
+        { name: "Andre", price: 22000 },
+        { name: "Droty Off", price: 18000 },
+        { name: "Pastoral Wine", price: 19000 },
+        { name: "Star Chaser", price: 17000 },
+        { name: "Lamothe Original", price: 15000 },
+        { name: "Toma Wine", price: 10000 },
+        { name: "Princi Pinal Wine", price: 10000 },
+        { name: "1964 Wine", price: 10000 },
+        { name: "Sweet Lip Wine", price: 15000 }
+      ]
+    };
+
     const foodCatalog = {
       "Appetizer (Inter-Continental)": [
-  { name: "Samosa (5 pieces)", price: 6000 },
-  { name: "Springroll (5 pieces)", price: 5500 },
-  { name: "Nkwobi", price: 9000 },
-  { name: "Isi-Ewu", price: 10000 },
-  { name: "Peppered Gizzard", price: 8500 },
-  { name: "Peppered Chicken", price: 7500 },
-  { name: "Peppered Goat Meat", price: 9000 },
-  { name: "Peppered Beef", price: 7000 },
-  { name: "Peppered Cow - Tail", price: 8000 },
-  { name: "Peppered Cow - Head", price: 8500 },
-  { name: "Peppered Snail", price: 4500 },
-  { name: "Chicken Wings", price: 7000 }
-],
-
+        { name: "Samosa (5 pieces)", price: 6000 },
+        { name: "Springroll (5 pieces)", price: 5500 },
+        { name: "Nkwobi", price: 9000 },
+        { name: "Isi-Ewu", price: 10000 },
+        { name: "Chicken Wings", price: 7000 },
+        { name: "Peppered Gizzard", price: 8500 },
+        { name: "Peppered Chicken", price: 7500 },
+        { name: "Peppered Goat Meat", price: 9000 },
+        { name: "Peppered Beef", price: 7000 },
+        { name: "Peppered Cow - Tail", price: 8000 },
+        { name: "Peppered Cow - Head", price: 8500 },
+        { name: "Peppered Snail", price: 4500 }
+      ],
       "Appetizer (National)": [
         { name: "Chicken Peppersoup", price: 7000 },
         { name: "Goat Meat Peppersoup", price: 8000 },
@@ -141,11 +297,10 @@
         { name: "Cow Head Peppersoup", price: 8000 }
       ],
       "BBQ & Fries": [
-  { name: "Croaker Fish", price: 25000 },
-  { name: "Cat Fish",     price: 20000 },
-  { name: "Fries",        price: 3000 }
-],
-
+        { name: "Croaker Fish", price: 25000 },
+        { name: "Cat Fish", price: 20000 },
+        { name: "Fries", price: 3000 }
+      ],
       "Beverages": [
         { name: "Coffee", price: 2500 },
         { name: "Tea", price: 2000 },
@@ -161,10 +316,10 @@
         { name: "Toasted Breads", price: 2500 }
       ],
       "Main Dishes (Inter-Continental)": [
-        { name: "Plain Spaghetti",       price: 3000 },     // set real price in admin
-        { name: "Jollof Spaghetti",      price: 5000 },     // set real price in admin
+        { name: "Plain Spaghetti",       price: 0 },
+        { name: "Jollof Spaghetti",      price: 0 },
         { name: "French Fries",          price: 3500 },
-        { name: "Chinese Stir-Fry Rice", price: 8000}      // set real price in admin
+        { name: "Chinese Stir-Fry Rice", price: 0 }
       ],
       "Main Dishes (National)": [
         { name: "Jollof Rice", price: 5500 },
@@ -241,18 +396,29 @@
         .concat(pendingNew);
     }
 
+    // ---------- FIXED: escape option labels/values so names like 33" work ----------
     function itemSelectHTML(row){
+      const esc = s => String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+
       const cat = catalogForType(row.type || 'Food');
       const groups = Object.keys(cat);
+
       let html = `<select class="item-select">
         <option value="">— pick item —</option>`;
+
       if (groups.length){
         for (const g of groups){
-          html += `<optgroup label="${g}">`;
+          html += `<optgroup label="${esc(g)}">`;
           for (const it of cat[g]){
-            const val = `${g}|||${it.name}`;
+            const rawVal = `${g}|||${it.name}`;
+            const val = esc(rawVal);
+            const label = esc(it.name);
             const selected = (row.cat===g && row.name===it.name) ? 'selected' : '';
-            html += `<option value="${val}" ${selected}>${it.name}</option>`;
+            html += `<option value="${val}" ${selected}>${label}</option>`;
           }
           html += `</optgroup>`;
         }
@@ -260,6 +426,7 @@
       html += `<option value="__custom__">— Custom… —</option></select>`;
       return html;
     }
+    // ------------------------------------------------------------------------------
 
     function tr(row, isNew=false){
       const id = row.id;
@@ -300,15 +467,14 @@
         row.type = e.target.value || '';
         row.name = ''; row.cat = ''; row.price = 0;
         refreshRowControls(trEl, row);
-        scheduleSave();
-        return;
+        return; // do not autosave on type change
       }
       if (e.target.classList.contains('cat'))  { row.cat  = e.target.value; scheduleSave(); }
       if (e.target.classList.contains('price')){ row.price = money(e.target.value); scheduleSave(); }
       if (e.target.classList.contains('avail')){ row.available = e.target.checked; scheduleSave(); }
 
       if (e.target.classList.contains('item-select')){
-        const val = e.target.value;
+        const val = e.target.value; // browser decodes entities back automatically
         if (val === '__custom__'){
           const nm = prompt('Enter custom item name');
           if (nm){
@@ -411,9 +577,10 @@
       $('status').textContent = `Imported ${data.count} item(s)`;
     });
 
-    // === SAVE (POST body, not URL) + better error surfacing ===
+    // === SAVE (clean + dedupe before writing) ===
     async function saveToSheet(){
       try{
+        // merge rows + pendingNew
         const merged = rows.concat(
           pendingNew.map(x=>({
             id:x.id, type:x.type||'', name:x.name||'', cat:x.cat||'',
@@ -421,13 +588,23 @@
           }))
         );
 
+        // drop incomplete rows (prevent blank Food/Drinks entries)
+        const cleaned = merged.filter(r => r.type && r.name && r.cat);
+
+        // de-duplicate by (type|cat|name), keep last occurrence
+        const map = new Map();
+        for (const r of cleaned){
+          map.set(`${r.type}|||${r.cat}|||${r.name}`, r);
+        }
+        const finalRows = Array.from(map.values());
+
         const r = await fetch(API_URL, {
           method:'POST',
           headers:{ 'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8' },
           body: new URLSearchParams({
             token: TOKEN,
             op: 'write',
-            rows: JSON.stringify(merged)
+            rows: JSON.stringify(finalRows)
           })
         });
 
@@ -439,7 +616,7 @@
         }
 
         // sync UI immediately
-        rows = merged;
+        rows = finalRows;
         pendingNew = [];
         render();
         $('status').textContent = 'Saved ✓';

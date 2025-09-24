@@ -62,6 +62,13 @@
     }
     .back-btn:hover, .back-btn:focus-visible{ transform: translateY(-1px); outline:none; }
 
+    /* Sold-out visuals (same pattern) */
+    .soldout-label{
+      color:#fff; background:#d91e1e; border-radius:.35em; padding:.07em .5em;
+      font-weight:700; margin-left:.6em; font-size:.97em; vertical-align:middle; display:inline-block;
+    }
+    .food-card.soldout{ opacity:.48; }
+
     /* Extra padding above fixed bottom nav */
     main{ padding-bottom: 4.5rem; }
     @media (max-width: 420px){
@@ -90,91 +97,91 @@
   <!-- Single-card grid (uses existing .food-grid / .food-card / .food-info from style.css) -->
   <main>
     <div class="food-grid">
-      <div class="food-card">
+      <div class="food-card" id="card-gordon-gin-medium">
         <img src="images/gordon-gin-medium.jpg" alt="Gordon Gin (Medium)" />
         <div class="food-info">
           <h4>Gordon Gin (Medium)</h4>
-          <p>₦5,000</p>
+          <p id="price-gordon-gin-medium"></p>
         </div>
       </div>
 
-      <div class="food-card">
+      <div class="food-card" id="card-big-gordon">
         <img src="images/big-gordon.jpg" alt="Big Gordon" />
         <div class="food-info">
           <h4>Big Gordon</h4>
-          <p>₦12,000</p>
+          <p id="price-big-gordon"></p>
         </div>
       </div>
 
-      <div class="food-card">
+      <div class="food-card" id="card-smirnoff-x1-small">
         <img src="images/smirnoff-x1-small.jpg" alt="Smirnoff X1 (Small)" />
         <div class="food-info">
           <h4>Smirnoff X1 (Small)</h4>
-          <p>₦3,200</p>
+          <p id="price-smirnoff-x1-small"></p>
         </div>
       </div>
 
-      <div class="food-card">
+      <div class="food-card" id="card-smirnoff-x1-big">
         <img src="images/smirnoff-x1-big.jpg" alt="Smirnoff X1 (Big)" />
         <div class="food-info">
           <h4>Smirnoff X1 (Big)</h4>
-          <p>₦12,000</p>
+          <p id="price-smirnoff-x1-big"></p>
         </div>
       </div>
 
-      <div class="food-card">
+      <div class="food-card" id="card-kensington">
         <img src="images/kensington.jpg" alt="Kensington" />
         <div class="food-info">
           <h4>Kensington</h4>
-          <p>₦13,000</p>
+          <p id="price-kensington"></p>
         </div>
       </div>
 
-      <div class="food-card">
+      <div class="food-card" id="card-john-bannermans">
         <img src="images/john-bannermans.jpg" alt="John Bannermans" />
         <div class="food-info">
           <h4>John Bannermans</h4>
-          <p>₦25,000</p>
+          <p id="price-john-bannermans"></p>
         </div>
       </div>
 
-      <div class="food-card">
+      <div class="food-card" id="card-m-campari">
         <img src="images/campari-medium.jpg" alt="M/Campari" />
         <div class="food-info">
           <h4>M/Campari</h4>
-          <p>₦32,000</p>
+          <p id="price-m-campari"></p>
         </div>
       </div>
 
-      <div class="food-card">
+      <div class="food-card" id="card-b-campari">
         <img src="images/campari-big.jpg" alt="B/Campari" />
         <div class="food-info">
           <h4>B/Campari</h4>
-          <p>₦36,000</p>
+          <p id="price-b-campari"></p>
         </div>
       </div>
 
-      <div class="food-card">
+      <div class="food-card" id="card-clay-more">
         <img src="images/claymore.jpg" alt="Clay More" />
         <div class="food-info">
           <h4>Clay More</h4>
-          <p>₦14,000</p>
+          <p id="price-clay-more"></p>
         </div>
       </div>
 
-      <div class="food-card">
+      <div class="food-card" id="card-monkey-shoulder">
         <img src="images/monkey-shoulder.jpg" alt="Monkey Shoulder" />
         <div class="food-info">
           <h4>Monkey Shoulder</h4>
-          <p>₦45,000</p>
+          <p id="price-monkey-shoulder"></p>
         </div>
       </div>
 
-      <div class="food-card">
+      <div class="food-card" id="card-baileys">
         <img src="images/baileys.jpg" alt="Baileys" />
         <div class="food-info">
           <h4>Baileys</h4>
-          <p>₦18,000</p>
+          <p id="price-baileys"></p>
         </div>
       </div>
 
@@ -191,5 +198,57 @@
     <a href="./rooms.html">Rooms</a>
     <a href="./contact.html">Contact</a>
   </nav>
+
+  <!-- Live price injection -->
+  <script>
+    // Endpoint + token (same as admin)
+    const ENDPOINT = 'https://script.google.com/macros/s/AKfycbw5v7gImXthxWkHUaCtDdDGx4U_tts7_1JWuHA9ojyu6nm2qvHyPehZrtfEK2j5JTMy/exec';
+    const TOKEN    = 'Forgive1988@';
+
+    const formatNaira = n => '₦' + Number(n||0).toLocaleString();
+    const norm  = s => String(s||'').toLowerCase().trim();
+    const slug  = s => String(s||'')
+      .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+      .replace(/[^a-z0-9]/gi,'-').replace(/-+/g,'-')
+      .toLowerCase().replace(/-$/,'');
+
+    function injectPrices(){
+      fetch(`${ENDPOINT}?token=${encodeURIComponent(TOKEN)}`)
+        .then(r => r.json())
+        .then(j => {
+          if(!j.ok || !Array.isArray(j.rows)) return;
+
+          j.rows.forEach(item => {
+            // tolerant match: type can be "Drink" or "Drinks"; cat must be "Liquor" (case/space-insensitive)
+            const t = norm(item.type);
+            const c = norm(item.cat);
+            if (!(t === 'drinks' || t === 'drink')) return;
+            if (c !== 'liquor') return;
+            if (!item.name) return;
+
+            const s = slug(item.name);
+            const priceEl = document.getElementById('price-' + s);
+            const cardEl  = document.getElementById('card-' + s);
+            if(!priceEl || !cardEl) return;
+
+            // reset visuals
+            priceEl.innerHTML = '';
+            cardEl.classList.remove('soldout');
+
+            const available = (item.available === true) || (String(item.available).toLowerCase() === 'true');
+
+            if (available){
+              priceEl.textContent = formatNaira(item.price);
+            } else {
+              priceEl.innerHTML = `${formatNaira(item.price)} <span class="soldout-label">Sold Out</span>`;
+              cardEl.classList.add('soldout');
+            }
+          });
+        })
+        .catch(()=>{ /* silent */ });
+    }
+
+    document.addEventListener('DOMContentLoaded', injectPrices);
+  </script>
 </body>
 </html>

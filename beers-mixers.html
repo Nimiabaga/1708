@@ -96,6 +96,13 @@
     .item-list li:last-child{ border-bottom:0; }
     .price{ color:var(--logo-gold); font-weight:900; margin-left:.8rem; white-space:nowrap; }
 
+    /* Sold-out look for list items */
+    .soldout-label{
+      color:#fff; background:#d91e1e; border-radius:.35em; padding:.07em .5em;
+      font-weight:700; margin-left:.6em; font-size:.92em; vertical-align:middle; display:inline-block;
+    }
+    .item-list li.soldout{ opacity:.55; }
+
     main{ padding-bottom: 4.5rem; } /* space for fixed bottom nav */
     @media (max-width: 420px){
       .menu-banner h2{ font-size:1.32rem; }
@@ -131,37 +138,37 @@
       <div class="list-card">
         <h3>Beers — Lagers</h3>
         <ul class="item-list">
-          <li><span>Star</span><span class="price">₦1,800</span></li>
-          <li><span>Gulder</span><span class="price">₦1,900</span></li>
-          <li><span>Heineken</span><span class="price">₦2,100</span></li>
-          <li><span>Medium Heineken</span><span class="price">₦1,600</span></li>
-          <li><span>33"</span><span class="price">₦1,600</span></li>
-          <li><span>Budweisser</span><span class="price">₦1,700</span></li>
-          <li><span>Life</span><span class="price">₦1,600</span></li>
-          <li><span>Hero</span><span class="price">₦1,600</span></li>
-          <li><span>Tiger</span><span class="price">₦1,600</span></li>
+          <li><span>Star</span><span class="price" id="price-star"></span></li>
+          <li><span>Gulder</span><span class="price" id="price-gulder"></span></li>
+          <li><span>Heineken</span><span class="price" id="price-heineken"></span></li>
+          <li><span>Medium Heineken</span><span class="price" id="price-medium-heineken"></span></li>
+          <li><span>33"</span><span class="price" id="price-33"></span></li>
+          <li><span>Budweisser</span><span class="price" id="price-budweisser"></span></li>
+          <li><span>Life</span><span class="price" id="price-life"></span></li>
+          <li><span>Hero</span><span class="price" id="price-hero"></span></li>
+          <li><span>Tiger</span><span class="price" id="price-tiger"></span></li>
         </ul>
       </div>
 
       <div class="list-card">
         <h3>Beers — Stout / Dark</h3>
         <ul class="item-list">
-          <li><span>Small Stout</span><span class="price">₦1,700</span></li>
-          <li><span>Medium Stout</span><span class="price">₦2,000</span></li>
-          <li><span>Big Stout</span><span class="price">₦2,700</span></li>
-          <li><span>Legend</span><span class="price">₦2,000</span></li>
-          <li><span>Guinness Smooth</span><span class="price">₦2,000</span></li>
+          <li><span>Small Stout</span><span class="price" id="price-small-stout"></span></li>
+          <li><span>Medium Stout</span><span class="price" id="price-medium-stout"></span></li>
+          <li><span>Big Stout</span><span class="price" id="price-big-stout"></span></li>
+          <li><span>Legend</span><span class="price" id="price-legend"></span></li>
+          <li><span>Guinness Smooth</span><span class="price" id="price-guinness-smooth"></span></li>
         </ul>
       </div>
 
       <div class="list-card">
         <h3>Beers — Ready to Drink</h3>
         <ul class="item-list">
-          <li><span>Star Radler</span><span class="price">₦1,300</span></li>
-          <li><span>Orijin</span><span class="price">₦1,500</span></li>
-          <li><span>Smirnoff (big)</span><span class="price">₦2,200</span></li>
-          <li><span>Smirnoff (small)</span><span class="price">₦1,200</span></li>
-          <li><span>Desperadoes</span><span class="price">₦1,800</span></li>
+          <li><span>Star Radler</span><span class="price" id="price-star-radler"></span></li>
+          <li><span>Orijin</span><span class="price" id="price-orijin"></span></li>
+          <li><span>Smirnoff (big)</span><span class="price" id="price-smirnoff-big"></span></li>
+          <li><span>Smirnoff (small)</span><span class="price" id="price-smirnoff-small"></span></li>
+          <li><span>Desperadoes</span><span class="price" id="price-desperadoes"></span></li>
         </ul>
       </div>
     </section>
@@ -171,30 +178,30 @@
       <div class="list-card">
         <h3>Soft and mixer</h3>
         <ul class="item-list">
-          <li><span>Maltina</span><span class="price">₦1,200</span></li>
-          <li><span>Amstel</span><span class="price">₦1,200</span></li>
-          <li><span>Guinness Malta</span><span class="price">₦1,200</span></li>
-          <li><span>Water</span><span class="price">₦500</span></li>
-          <li><span>Fayrouz</span><span class="price">₦1,000</span></li>
-          <li><span>Coke can</span><span class="price">₦1,000</span></li>
-          <li><span>Mineral</span><span class="price">₦1,000</span></li>
-          <li><span>Cranberry</span><span class="price">₦3,200</span></li>
-          <li><span>Juice</span><span class="price">₦3,000</span></li>
-          <li><span>Hollandia</span><span class="price">₦3,500</span></li>
+          <li><span>Maltina</span><span class="price" id="price-maltina"></span></li>
+          <li><span>Amstel</span><span class="price" id="price-amstel"></span></li>
+          <li><span>Guinness Malta</span><span class="price" id="price-guinness-malta"></span></li>
+          <li><span>Water</span><span class="price" id="price-water"></span></li>
+          <li><span>Fayrouz</span><span class="price" id="price-fayrouz"></span></li>
+          <li><span>Coke can</span><span class="price" id="price-coke-can"></span></li>
+          <li><span>Mineral</span><span class="price" id="price-mineral"></span></li>
+          <li><span>Cranberry</span><span class="price" id="price-cranberry"></span></li>
+          <li><span>Juice</span><span class="price" id="price-juice"></span></li>
+          <li><span>Hollandia</span><span class="price" id="price-hollandia"></span></li>
         </ul>
       </div>
 
       <div class="list-card">
         <h3>Energy / Herbs</h3>
         <ul class="item-list">
-          <li><span>Blue Bullet</span><span class="price">₦2,000</span></li>
-          <li><span>Black Bullet</span><span class="price">₦3,000</span></li>
-          <li><span>Fearless</span><span class="price">₦1,000</span></li>
-          <li><span>Predator</span><span class="price">₦2,000</span></li>
-          <li><span>Climax Can</span><span class="price">₦1,200</span></li>
-          <li><span>Odogwu Bitters</span><span class="price">₦1,200</span></li>
-          <li><span>Don Simon</span><span class="price">₦6,500</span></li>
-          <li><span>1960</span><span class="price">₦2,500</span></li>
+          <li><span>Blue Bullet</span><span class="price" id="price-blue-bullet"></span></li>
+          <li><span>Black Bullet</span><span class="price" id="price-black-bullet"></span></li>
+          <li><span>Fearless</span><span class="price" id="price-fearless"></span></li>
+          <li><span>Predator</span><span class="price" id="price-predator"></span></li>
+          <li><span>Climax Can</span><span class="price" id="price-climax-can"></span></li>
+          <li><span>Odogwu Bitters</span><span class="price" id="price-odogwu-bitters"></span></li>
+          <li><span>Don Simon</span><span class="price" id="price-don-simon"></span></li>
+          <li><span>1960</span><span class="price" id="price-1960"></span></li>
         </ul>
       </div>
 
@@ -213,5 +220,58 @@
     <a href="./rooms.html">Rooms</a>
     <a href="./contact.html">Contact</a>
   </nav>
+
+  <!-- Live price injection (Drinks) -->
+  <script>
+    const ENDPOINT = 'https://script.google.com/macros/s/AKfycbw5v7gImXthxWkHUaCtDdDGx4U_tts7_1JWuHA9ojyu6nm2qvHyPehZrtfEK2j5JTMy/exec';
+    const TOKEN    = 'Forgive1988@';
+
+    const formatNaira = n => '₦' + Number(n||0).toLocaleString();
+    const slug = s => String(s)
+      .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+      .replace(/[^a-z0-9]/gi,'-').replace(/-+/g,'-')
+      .toLowerCase().replace(/-$/,'');
+
+    // Which categories this page should show (must match admin sheet exactly)
+    const ALLOWED_CATS = new Set([
+      'Beers/Lagers','Beers/Stout','Beers/Ready','Soft/Mixer','Energy/Herbs'
+    ]);
+
+    function injectPrices(){
+      fetch(`${ENDPOINT}?token=${encodeURIComponent(TOKEN)}`)
+        .then(r=>r.json())
+        .then(j=>{
+          if(!j.ok || !Array.isArray(j.rows)) return;
+
+          j.rows.forEach(item=>{
+            if (String(item.type) !== 'Drinks') return;
+            if (!ALLOWED_CATS.has(String(item.cat))) return;
+            if (!item.name) return;
+
+            const s = slug(item.name);
+            const priceEl = document.getElementById('price-' + s);
+            if(!priceEl) return;
+
+            // get the surrounding <li> to dim when sold out
+            const li = priceEl.closest('li');
+
+            // reset
+            priceEl.textContent = '';
+            if(li) li.classList.remove('soldout');
+
+            const available = (item.available === true) || (String(item.available).toLowerCase() === 'true');
+            if (available){
+              priceEl.textContent = formatNaira(item.price);
+            } else {
+              priceEl.innerHTML = `${formatNaira(item.price)} <span class="soldout-label">Sold Out</span>`;
+              if(li) li.classList.add('soldout');
+            }
+          });
+        })
+        .catch(()=>{ /* ignore for now */ });
+    }
+
+    document.addEventListener('DOMContentLoaded', injectPrices);
+  </script>
 </body>
 </html>
