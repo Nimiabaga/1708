@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Admin — 1708 | Price Editor</title>
+  <meta name="robots" content="noindex,nofollow"/>
+
+  <style>
+    :root{
+      /* slightly smaller */
+      --text:#f2f2f2; --muted:#bdbdbd; --gold:#d4af37;
+      --card: rgba(255,255,255,.05); --card2: rgba(255,255,255,.03);
+      --bd: rgba(255,255,255,.12);
+      --fs: clamp(.92rem, 1.5vw, .98rem);
+      --fs-small: clamp(.82rem, 1.3vw, .92rem);
+      --fs-title: clamp(1.28rem, 3.0vw, 1.58rem);
+    }
+    *{ box-sizing:border-box }
+    body{
+      margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:#0b0b0b; color:var(--text);
+      -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    }
+    .wrap{ max-width:980px; margin:22px auto 36px; padding:0 12px; }
+    h1{
+      margin:6px 0 14px; text-align:center; letter-spacing:.22em; text-transform:uppercase;
+      color:#ffdf7a; font-size:var(--fs-title); text-shadow:0 0 22px rgba(255,223,122,.25);
+    }
+    .back{ color:#ffdf7a; text-decoration:none; display:inline-flex; align-items:center; gap:.45rem; margin:.2rem 0 1rem; }
+    .card{
+      background:linear-gradient(180deg,var(--card),var(--card2));
+      border:1px solid var(--bd); border-radius:16px; padding:14px;
+      box-shadow:0 14px 28px rgba(0,0,0,.55);
+    }
+    .toolbar{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+    .toolbar input[type="search"], .toolbar select{
+      background:#111; color:#fff; border:1px solid #2c2c2c; border-radius:10px; padding:10px 12px; font-size:var(--fs);
+    }
+    .btn{ appearance:none; border:0; border-radius:999px; padding:9px 14px; font-weight:900; cursor:pointer;
+          background:linear-gradient(180deg,#fff,#e9e9e9); color:#111; font-size:var(--fs); }
+    .btn.secondary{ background:#222; color:#f5f5f5; border:1px solid #2f2f2f; }
+    .btn.danger{ background:#c1121f; color:#fff; }
+    .status{ margin-left:auto; color:var(--muted); white-space:nowrap; font-size:var(--fs-small); }
+
+    table{ width:100%; border-collapse:separate; border-spacing:0 10px; margin-top:10px; font-size:var(--fs); }
+    thead th{ color:#ddd; font-size:.9em; letter-spacing:.06em; text-transform:uppercase; }
+    th, td{ text-align:left; padding:10px 12px; }
+    tbody tr{ background:rgba(255,255,255,.035); border:1px solid rgba(255,255,255,.10); }
+    tbody tr td:first-child{ border-top-left-radius:10px; border-bottom-left-radius:10px; }
+    tbody tr td:last-child{ border-top-right-radius:10px; border-bottom-right-radius:10px; }
+
+    select.type, input.cat, input.price, select.item-select{
+      width:100%; background:#0e0e0e; color:#fff; border:1px solid #444; border-radius:8px; padding:8px 10px;
+    }
+    input.price{ text-align:right; max-width:140px; }
+    .check{ width:18px; height:18px; }
+    .del{ padding:8px 12px; border-radius:10px; }
+
+    @media (max-width:600px){
+      .btn{ width:100%; justify-content:center }
+      .toolbar{ gap:10px }
+      .status{ width:100%; text-align:center; margin:6px 0 0 }
+      table{ font-size:.95rem }
+      input.price{ max-width:100% }
+    }
+    @media (prefers-reduced-motion:reduce){ .btn, .card{ transition:none !important } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="back" href="admin.html">← Back to admin</a>
+    <h1>PRICE EDITOR</h1>
+
+    <div class="card">
+      <div class="toolbar">
+        <input id="search" type="search" placeholder="Search item or category...">
+        <select id="show">
+          <option value="">Show: All</option>
+          <option value="Drinks">Drinks</option>
+          <option value="Food">Food</option>
+        </select>
+
+        <button id="add" class="btn">Add Item</button>
+        <button id="save" class="btn">Save</button>
+        <button id="download" class="btn">Download JSON</button>
+        <label class="btn secondary">
+          Load JSON <input id="upload" type="file" accept="application/json" style="display:none">
+        </label>
+        <button id="startfresh" class="btn danger">Start fresh (2 rows)</button>
+
+        <span id="status" class="status"></span>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Item (choose from dropdown)</th>
+            <th>Cat</th>
+            <th>Price (₦)</th>
+            <th>Available</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    /* ===== BACKEND CONFIG ===== */
+    const API_URL = 'https://script.google.com/macros/s/AKfycbw5v7gImXthxWkHUaCtDdDGx4U_tts7_1JWuHA9ojyu6nm2qvHyPehZrtfEK2j5JTMy/exec';
+    const TOKEN   = 'Forgive1988@';
+
+    /* ===== 1708 CATALOG ===== */
+    const drinksCatalog = {};
+    const foodCatalog = {
+      "Appetizer (Inter-Continental)": [
+  { name: "Samosa (5 pieces)", price: 6000 },
+  { name: "Springroll (5 pieces)", price: 5500 },
+  { name: "Nkwobi", price: 9000 },
+  { name: "Isi-Ewu", price: 10000 },
+  { name: "Peppered Gizzard", price: 8500 },
+  { name: "Peppered Chicken", price: 7500 },
+  { name: "Peppered Goat Meat", price: 9000 },
+  { name: "Peppered Beef", price: 7000 },
+  { name: "Peppered Cow - Tail", price: 8000 },
+  { name: "Peppered Cow - Head", price: 8500 },
+  { name: "Peppered Snail", price: 4500 },
+  { name: "Chicken Wings", price: 7000 }
+],
+
+      "Appetizer (National)": [
+        { name: "Chicken Peppersoup", price: 7000 },
+        { name: "Goat Meat Peppersoup", price: 8000 },
+        { name: "Beef Peppersoup", price: 6000 },
+        { name: "Catfish Peppersoup", price: 7000 },
+        { name: "Assorted Meats Pepper Soup", price: 8000 },
+        { name: "Cow Leg Peppersoup", price: 7000 },
+        { name: "Cow Head Peppersoup", price: 8000 }
+      ],
+      "BBQ & Fries": [
+  { name: "Croaker Fish", price: 25000 },
+  { name: "Cat Fish",     price: 20000 },
+  { name: "Fries",        price: 3000 }
+],
+
+      "Beverages": [
+        { name: "Coffee", price: 2500 },
+        { name: "Tea", price: 2000 },
+        { name: "Cocoa", price: 2500 }
+      ],
+      "Breakfast Dishes": [
+        { name: "Boiled Plantain", price: 3500 },
+        { name: "Fried Plantain", price: 3500 },
+        { name: "Fried Yam", price: 3500 },
+        { name: "Boiled Yam", price: 3000 },
+        { name: "Club Sandwich", price: 6500 },
+        { name: "English Breakfast", price: 7500 },
+        { name: "Toasted Breads", price: 2500 }
+      ],
+      "Main Dishes (Inter-Continental)": [
+        { name: "Plain Spaghetti",       price: 3000 },     // set real price in admin
+        { name: "Jollof Spaghetti",      price: 5000 },     // set real price in admin
+        { name: "French Fries",          price: 3500 },
+        { name: "Chinese Stir-Fry Rice", price: 8000}      // set real price in admin
+      ],
+      "Main Dishes (National)": [
+        { name: "Jollof Rice", price: 5500 },
+        { name: "White Rice", price: 4500 },
+        { name: "Fried Rice", price: 5500 }
+      ],
+      "National Soups": [
+        { name: "Afang Soup", price: 6500 },
+        { name: "Okro / Okra Soup", price: 5500 },
+        { name: "Egusi Soup", price: 6000 },
+        { name: "Vegetable Soup", price: 6000 },
+        { name: "Native Soup", price: 6500 },
+        { name: "Fisherman Soup", price: 9000 }
+      ],
+      "Proteins": [
+        { name: "Boiled Egg", price: 800 },
+        { name: "Omelette", price: 1500 },
+        { name: "Beef", price: 2500 },
+        { name: "Chicken", price: 3000 },
+        { name: "Goat Meat", price: 3200 },
+        { name: "Catfish", price: 3500 },
+        { name: "Croaker", price: 3800 },
+        { name: "Cow Tail", price: 2800 },
+        { name: "Cow Head", price: 3000 }
+      ],
+      "Stews & Sauces": [
+        { name: "Tomatoes Stew", price: 4500 },
+        { name: "Curry Sauce", price: 4500 },
+        { name: "Egg Sauce", price: 4000 }
+      ],
+      "Swallows": [
+        { name: "Poundo (Yam)", price: 2500 },
+        { name: "Semovita", price: 2300 },
+        { name: "Garri", price: 2000 },
+        { name: "Wheat", price: 2300 }
+      ]
+    };
+
+    /* ===== helpers ===== */
+    const $ = (id)=>document.getElementById(id);
+    const uid = ()=> String(Date.now()) + Math.random().toString(16).slice(2);
+    const money = v => (v==null || v==='') ? '' : Number(v);
+    const catalogForType = (t)=> t==='Food' ? foodCatalog : drinksCatalog;
+
+    let rows = [];
+    let pendingNew = [];
+    let saveTimer = null;
+
+    function scheduleSave(){
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(saveToSheet, 600); // debounce autosave
+      $('status').textContent = 'Saving…';
+    }
+
+    async function fetchItems(){
+      $('status').textContent = 'Loading...';
+      const res = await fetch(`${API_URL}?token=${encodeURIComponent(TOKEN)}`);
+      const data = await res.json();
+      if(!data.ok) throw new Error(data.error||'Failed to load');
+      rows = Array.isArray(data.rows) ? data.rows : [];
+      pendingNew = [];
+      render();
+      $('status').textContent = `Loaded ${rows.length} item(s)`;
+    }
+
+    function filtered(){
+      const q = $('search').value.trim().toLowerCase();
+      const show = $('show').value;
+      return rows
+        .filter(r =>
+          (!show || String(r.type)===show) &&
+          (!q || String(r.name).toLowerCase().includes(q) || String(r.cat).toLowerCase().includes(q))
+        )
+        .concat(pendingNew);
+    }
+
+    function itemSelectHTML(row){
+      const cat = catalogForType(row.type || 'Food');
+      const groups = Object.keys(cat);
+      let html = `<select class="item-select">
+        <option value="">— pick item —</option>`;
+      if (groups.length){
+        for (const g of groups){
+          html += `<optgroup label="${g}">`;
+          for (const it of cat[g]){
+            const val = `${g}|||${it.name}`;
+            const selected = (row.cat===g && row.name===it.name) ? 'selected' : '';
+            html += `<option value="${val}" ${selected}>${it.name}</option>`;
+          }
+          html += `</optgroup>`;
+        }
+      }
+      html += `<option value="__custom__">— Custom… —</option></select>`;
+      return html;
+    }
+
+    function tr(row, isNew=false){
+      const id = row.id;
+      return `
+        <tr data-id="${id}" ${isNew?'data-new="1"':''}>
+          <td>
+            <select class="type">
+              ${['','Drinks','Food'].map(t=>`<option value="${t}" ${String(row.type||'')===t?'selected':''}>${t||'—'}</option>`).join('')}
+            </select>
+          </td>
+          <td>${itemSelectHTML(row)}</td>
+          <td><input class="cat"  value="${row.cat??''}"  placeholder="Category"></td>
+          <td><input class="price" type="number" min="0" step="1" value="${row.price??''}"></td>
+          <td><input class="check avail" type="checkbox" ${row.available?'checked':''}></td>
+          <td><button class="del btn secondary">Delete</button></td>
+        </tr>`;
+    }
+
+    function refreshRowControls(trEl, row){
+      trEl.querySelector('td:nth-child(2)').innerHTML = itemSelectHTML(row);
+    }
+
+    function render(){
+      const body = filtered().map(r => tr(r, !!r.__new)).join('');
+      $('tbody').innerHTML = body || '<tr><td colspan="6" style="text-align:center;color:#bbb;">No items</td></tr>';
+    }
+
+    // Input handlers (AUTOSAVE)
+    document.addEventListener('input', e=>{
+      const trEl = e.target.closest('tr'); if(!trEl) return;
+      const id = trEl.dataset.id;
+      const isNew = trEl.dataset.new === '1';
+      const src = isNew ? pendingNew : rows;
+      const row = src.find(x=>String(x.id)===String(id));
+      if (!row) return;
+
+      if (e.target.classList.contains('type')){
+        row.type = e.target.value || '';
+        row.name = ''; row.cat = ''; row.price = 0;
+        refreshRowControls(trEl, row);
+        scheduleSave();
+        return;
+      }
+      if (e.target.classList.contains('cat'))  { row.cat  = e.target.value; scheduleSave(); }
+      if (e.target.classList.contains('price')){ row.price = money(e.target.value); scheduleSave(); }
+      if (e.target.classList.contains('avail')){ row.available = e.target.checked; scheduleSave(); }
+
+      if (e.target.classList.contains('item-select')){
+        const val = e.target.value;
+        if (val === '__custom__'){
+          const nm = prompt('Enter custom item name');
+          if (nm){
+            row.name = nm; row.cat = '(Custom)';
+            trEl.querySelector('.cat').value = row.cat;
+            scheduleSave();
+          }
+          e.target.value = '';
+        } else if (val){
+          const [cat,name] = val.split('|||');
+          row.cat = cat; row.name = name;
+          const catMap = catalogForType(row.type || 'Food');
+          const found = (catMap[cat]||[]).find(i=>i.name===name);
+          row.price = found ? Number(found.price)||0 : row.price;
+          trEl.querySelector('.cat').value = row.cat;
+          trEl.querySelector('.price').value = row.price || 0;
+          scheduleSave();
+        } else {
+          row.name=''; row.cat='';
+          scheduleSave();
+        }
+      }
+    });
+
+    // Delete
+    document.addEventListener('click', e=>{
+      if(!e.target.classList.contains('del')) return;
+      const trEl = e.target.closest('tr'); const id = trEl.dataset.id;
+      if (trEl.dataset.new === '1') {
+        pendingNew = pendingNew.filter(x=>String(x.id)!==String(id));
+      } else {
+        const r = rows.find(x=>String(x.id)===String(id));
+        if (r){ r.available = false; r.price = 0; }
+      }
+      render();
+      scheduleSave();
+    });
+
+    // Add row
+    $('add').addEventListener('click', ()=>{
+      const id = uid();
+      pendingNew.push({ id, type:'Food', name:'', cat:'', price:0, available:true, __new:true });
+      render();
+      // no autosave here; wait for user to pick item/price or click Save
+    });
+
+    // Manual save
+    $('save').addEventListener('click', saveToSheet);
+
+    // Download JSON (backup)
+    $('download').addEventListener('click', ()=>{
+      const blob = new Blob([JSON.stringify(rows, null, 2)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = '1708-menu.json'; a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    // Load JSON (write to sheet) — POST body, not URL
+    $('upload').addEventListener('change', async (e)=>{
+      const file = e.target.files[0]; if(!file) return;
+      const text = await file.text();
+      let arr = JSON.parse(text);
+      if (!Array.isArray(arr)) { alert('JSON must be an array'); return; }
+      $('status').textContent = 'Importing...';
+      const res = await fetch(API_URL, {
+        method:'POST',
+        headers:{ 'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8' },
+        body: new URLSearchParams({
+          token: TOKEN,
+          op: 'write',
+          rows: JSON.stringify(arr)
+        })
+      });
+      const data = await res.json();
+      if(!data.ok){ alert(data.error||'Import failed'); $('status').textContent=''; return; }
+      await fetchItems();
+      $('status').textContent = `Imported ${data.count} item(s)`;
+    });
+
+    // Start fresh (2 rows) — POST body, not URL
+    $('startfresh').addEventListener('click', async ()=>{
+      if(!confirm('Replace the sheet with 2 starter rows?')) return;
+      const seed = [
+        { id:'seed-1', type:'Drinks', name:'Sample Drink', cat:'Whiskey', price:10000, available:true,  updatedAt:'' },
+        { id:'seed-2', type:'Food',   name:'Sample Meal',  cat:'Main',    price: 5000, available:true,  updatedAt:'' }
+      ];
+      $('status').textContent='Starting fresh...';
+      const res = await fetch(API_URL, {
+        method:'POST',
+        headers:{ 'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8' },
+        body: new URLSearchParams({
+          token: TOKEN,
+          op: 'write',
+          rows: JSON.stringify(seed)
+        })
+      });
+      const data = await res.json();
+      if(!data.ok){ alert(data.error||'Failed'); $('status').textContent=''; return; }
+      await fetchItems();
+      $('status').textContent = `Imported ${data.count} item(s)`;
+    });
+
+    // === SAVE (POST body, not URL) + better error surfacing ===
+    async function saveToSheet(){
+      try{
+        const merged = rows.concat(
+          pendingNew.map(x=>({
+            id:x.id, type:x.type||'', name:x.name||'', cat:x.cat||'',
+            price:Number(x.price||0), available:!!x.available, updatedAt:''
+          }))
+        );
+
+        const r = await fetch(API_URL, {
+          method:'POST',
+          headers:{ 'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8' },
+          body: new URLSearchParams({
+            token: TOKEN,
+            op: 'write',
+            rows: JSON.stringify(merged)
+          })
+        });
+
+        const j = await r.json();
+        if(!j.ok){
+          $('status').textContent = 'Save failed';
+          alert(j.error || 'Save failed');   // show server error reason
+          return;
+        }
+
+        // sync UI immediately
+        rows = merged;
+        pendingNew = [];
+        render();
+        $('status').textContent = 'Saved ✓';
+      }catch(err){
+        $('status').textContent = 'Save failed';
+        alert(err.message||err);
+      }
+    }
+
+    $('search').addEventListener('input', render);
+    $('show').addEventListener('change', render);
+
+    // init
+    fetchItems().catch(err=>alert(err.message||err));
+  </script>
+</body>
+</html>

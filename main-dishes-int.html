@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Appetizers (Inter-Continental) — 1708 Hotel</title>
+  <title>Main Dishes (Inter-Continental) — 1708 Hotel</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
   <style>
-   /* ===== Golden Ticket Banner — unified with SHOTS ===== */
+    /* ===== Golden Ticket Banner (unified look) ===== */
     .menu-banner{
       position: relative;
       padding: 1.6rem 0 1.05rem 0;
@@ -16,13 +16,9 @@
       background: linear-gradient(180deg,#111 0%, #000 60%, #000 100%);
       border: 1.5px solid #d4af37;
       border-radius: 7px;
-      box-shadow:
-        0 5px 24px 0 #00000050,
-        0 1px 0 #000000,
-        0 0 24px 0 #00000060;
+      box-shadow: 0 5px 24px 0 #00000050, 0 1px 0 #000000, 0 0 24px 0 #00000060;
       text-align: center;
     }
-    /* make sure the glow class matches the HTML */
     .menu-banner .super-glow{
       position: absolute; inset:0; pointer-events: none; z-index:0;
       background: radial-gradient(50% 80% at 50% 70%, rgba(0,0,0,.35) 0%, rgba(212,175,55,0) 90%);
@@ -30,52 +26,39 @@
     }
     .menu-banner h2{
       position: relative; z-index:1; margin:0;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      font-weight: 900;
-      font-size: 2rem;
+      letter-spacing:.14em; text-transform:uppercase; font-weight:900; font-size:2rem;
       background: linear-gradient(180deg,#fffde0 0%, #ffe060 25%, #e8c131 65%, #95742a 95%, #fff7cc 100%);
-      -webkit-background-clip:text; background-clip:text;
-      -webkit-text-fill-color:transparent;
+      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
       -webkit-text-stroke: 2px #d4af3766;
       filter: drop-shadow(0 3px 12px #201600) drop-shadow(0 0 16px #ffedb366);
       text-shadow: 0 2px 18px #b8921c44;
     }
     .menu-banner h2::after{
-      content:""; display:block; width:150px; height:2.5px; margin:.7rem auto 0;
+      content:""; display:block; width:190px; height:2.5px; margin:.7rem auto 0;
       border-radius:2px; background: linear-gradient(90deg, transparent, #d4af37, transparent);
       box-shadow: 0 0 18px #d4af3748;
     }
 
-    /* Back button (unchanged) */
-    .back-wrap{
-      display:flex;justify-content:center;align-items:center;
-      margin:.85rem auto 0; padding:0 .8rem; max-width:980px;
-    }
+    /* Back button */
+    .back-wrap{ display:flex;justify-content:center;align-items:center; margin:.85rem auto 0; padding:0 .8rem; max-width:980px; }
     .back-btn{
       display:inline-block; text-decoration:none; font-weight:800; letter-spacing:.2px;
       padding:.65rem 1.05rem; border-radius:14px; border:1.5px solid #D4AF37; color:#2a1e00;
       background: linear-gradient(180deg, #FFD867 0%, #E8C131 58%, #CBA21B 100%);
       box-shadow: inset 0 0 0 1px rgba(255,255,255,.25), 0 2px 0 #8f6f05, 0 10px 24px rgba(212,175,55,.28);
-      position:relative; isolation:isolate;
-      transition: transform .12s ease, box-shadow .18s ease, filter .18s ease;
+      position:relative; isolation:isolate; transition: transform .12s ease, box-shadow .18s ease, filter .18s ease;
     }
-    .back-btn::before{
-      content:""; position:absolute; left:10px; right:10px; top:7px; height:38%;
-      border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,0));
-      pointer-events:none;
-    }
-    .back-btn:hover, .back-btn:focus-visible{
-      transform: translateY(-1px);
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.3), 0 2px 0 #8f6f05, 0 12px 28px rgba(212,175,55,.36);
-      outline:none;
-    }
+    .back-btn::before{ content:""; position:absolute; left:10px; right:10px; top:7px; height:38%; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,0)); pointer-events:none; }
+    .back-btn:hover, .back-btn:focus-visible{ transform: translateY(-1px); box-shadow: inset 0 0 0 1px rgba(255,255,255,.3), 0 2px 0 #8f6f05, 0 12px 28px rgba(212,175,55,.36); outline:none; }
 
-    /* Spacer to clear the fixed bottom nav (unchanged) */
+    /* Sold-out look (pattern) */
+    .soldout-label{ color:#fff; background:#d91e1e; border-radius:.35em; padding:.07em .5em; font-weight:700; margin-left:.6em; font-size:.97em; vertical-align:middle; display:inline-block; }
+    .food-card.soldout{ opacity:.48; }
+
     .spacer{ height:3.8rem; }
     @media (max-width: 420px){
-      .menu-banner h2{ font-size:1.32rem; }
-      .menu-banner h2::after{ width:90px; }
+      .menu-banner h2{ font-size:1.28rem; }
+      .menu-banner h2::after{ width:140px; }
     }
   </style>
 </head>
@@ -88,7 +71,7 @@
   <!-- Banner -->
   <div class="menu-banner">
     <span class="super-glow" aria-hidden="true"></span>
-    <h2>APPETIZERS (INTER-CONTINENTAL)</h2>
+    <h2>MAIN DISHES (INTER-CONTINENTAL)</h2>
   </div>
 
   <!-- Back to Food -->
@@ -99,59 +82,36 @@
   <!-- Cards Grid -->
   <main>
     <div class="food-grid">
-      <div class="food-card">
-        <img src="images/samosa-5-pieces-6000.jpg" alt="Samosa (5 pieces)" />
-        <div class="food-info"><h4>Samosa (5 pieces)</h4><p>₦6,000</p></div>
+      <div class="food-card" id="card-plain-spaghetti">
+        <img src="images/plain-spaghetti.jpg" alt="Plain Spaghetti" />
+        <div class="food-info">
+          <h4>Plain Spaghetti</h4>
+          <p id="price-plain-spaghetti"></p>
+        </div>
       </div>
 
-      <div class="food-card">
-        <img src="images/springroll-5-pieces.jpg" alt="Springroll (5 pieces)" />
-        <div class="food-info"><h4>Springroll (5 pieces)</h4><p>₦5,500</p></div>
+      <div class="food-card" id="card-jollof-spaghetti">
+        <img src="images/jollof-spaghetti.jpg" alt="Jollof Spaghetti" />
+        <div class="food-info">
+          <h4>Jollof Spaghetti</h4>
+          <p id="price-jollof-spaghetti"></p>
+        </div>
       </div>
 
-      <div class="food-card">
-        <img src="images/nkwobi.jpg" alt="Nkwobi" />
-        <div class="food-info"><h4>Nkwobi</h4><p>₦9,000</p></div>
+      <div class="food-card" id="card-french-fries">
+        <img src="images/french-fries.jpg" alt="French Fries" />
+        <div class="food-info">
+          <h4>French Fries</h4>
+          <p id="price-french-fries"></p>
+        </div>
       </div>
 
-      <div class="food-card">
-        <img src="images/isi-ewu-10000.jpg" alt="Isi-Ewu" />
-        <div class="food-info"><h4>Isi-Ewu</h4><p>₦10,000</p></div>
-      </div>
-
-      <div class="food-card">
-        <img src="images/peppered-gizzard.jpg" alt="Peppered Gizzard" />
-        <div class="food-info"><h4>Peppered Gizzard</h4><p>₦8,500</p></div>
-      </div>
-
-      <div class="food-card">
-        <img src="images/peppered-chicken.jpg" alt="Peppered Chicken" />
-        <div class="food-info"><h4>Peppered Chicken</h4><p>₦7,500</p></div>
-      </div>
-
-      <div class="food-card">
-        <img src="images/peppered-goat-meat.jpg" alt="Peppered Goat Meat" />
-        <div class="food-info"><h4>Peppered Goat Meat</h4><p>₦9,000</p></div>
-      </div>
-
-      <div class="food-card">
-        <img src="images/peppered-beef.jpg" alt="Peppered Beef" />
-        <div class="food-info"><h4>Peppered Beef</h4><p>₦7,000</p></div>
-      </div>
-
-      <div class="food-card">
-        <img src="images/peppered-cow-tail.jpg" alt="Peppered Cow - Tail" />
-        <div class="food-info"><h4>Peppered Cow - Tail</h4><p>₦8,000</p></div>
-      </div>
-
-      <div class="food-card">
-        <img src="images/peppered-cow-head.jpg" alt="Peppered Cow - Head" />
-        <div class="food-info"><h4>Peppered Cow - Head</h4><p>₦8,500</p></div>
-      </div>
-
-      <div class="food-card">
-        <img src="images/peppered-snail-4500.jpg" alt="Peppered Snail" />
-        <div class="food-info"><h4>Peppered Snail</h4><p>₦4,500</p></div>
+      <div class="food-card" id="card-chinese-stir-fry-rice">
+        <img src="images/chinese-stir-fry-rice.jpg" alt="Chinese Stir-Fry Rice" />
+        <div class="food-info">
+          <h4>Chinese Stir-Fry Rice</h4>
+          <p id="price-chinese-stir-fry-rice"></p>
+        </div>
       </div>
     </div>
 
@@ -167,5 +127,50 @@
     <a href="./rooms.html">Rooms</a>
     <a href="./contact.html">Contact</a>
   </nav>
+
+  <!-- Live price injection -->
+  <script>
+    const ENDPOINT = 'https://script.google.com/macros/s/AKfycbw5v7gImXthxWkHUaCtDdDGx4U_tts7_1JWuHA9ojyu6nm2qvHyPehZrtfEK2j5JTMy/exec';
+    const TOKEN    = 'Forgive1988@';
+
+    const formatNaira = n => '₦' + Number(n||0).toLocaleString();
+    const slug = s => String(s)
+      .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+      .replace(/[^a-z0-9]/gi,'-').replace(/-+/g,'-')
+      .toLowerCase().replace(/-$/,'');
+
+    function injectPrices(){
+      fetch(`${ENDPOINT}?token=${encodeURIComponent(TOKEN)}`)
+        .then(r => r.json())
+        .then(j => {
+          if(!j.ok || !Array.isArray(j.rows)) return;
+
+          j.rows.forEach(item => {
+            if (String(item.type) !== 'Food') return;
+            if (String(item.cat) !== 'Main Dishes (Inter-Continental)') return;
+            if (!item.name) return;
+
+            const s = slug(item.name);
+            const priceEl = document.getElementById('price-' + s);
+            const cardEl  = document.getElementById('card-' + s);
+            if(!priceEl || !cardEl) return;
+
+            priceEl.innerHTML = '';
+            cardEl.classList.remove('soldout');
+
+            const available = (item.available === true) || (String(item.available).toLowerCase() === 'true');
+            if (available){
+              priceEl.textContent = formatNaira(item.price);
+            } else {
+              priceEl.innerHTML = `${formatNaira(item.price)} <span class="soldout-label">Sold Out</span>`;
+              cardEl.classList.add('soldout');
+            }
+          });
+        })
+        .catch(()=>{ /* ignore network hiccups */ });
+    }
+
+    document.addEventListener('DOMContentLoaded', injectPrices);
+  </script>
 </body>
 </html>

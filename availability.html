@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Admin — 1708 | Price Editor</title>
+  <meta name="robots" content="noindex,nofollow">
+  <style>html.locked body{visibility:hidden}</style>
+  <script>document.documentElement.classList.add('locked');</script>
+  <style>
+    :root { --fg:#f2f2f2; --muted:#bdbdbd; }
+    body{ background:#0c0c0c; color:var(--fg); margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; }
+    .wrap{ max-width:960px; margin:28px auto 44px; padding:0 12px; }
+    .logo{ display:block; margin:0 auto 8px; height:56px; }
+    .back{ color:#ffdf7a; text-decoration:none; display:inline-block; margin:6px 0 10px; }
+    h2{ text-align:center; margin:8px 0 6px; letter-spacing:.12em; text-transform:uppercase;
+        color:#ffdf7a; text-shadow:0 0 24px rgba(255,223,122,.35); }
+    .hint{ text-align:center; color:#bbb; margin:0 0 18px; font-size:.95rem; }
+
+    .card{ background:rgba(0,0,0,.78); border:1px solid rgba(255,255,255,.08);
+           border-radius:16px; padding:16px; box-shadow:0 12px 24px rgba(0,0,0,.5); }
+
+    .toolbar{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:10px; }
+    .toolbar input, .toolbar select{ background:#0e0e0e; color:#fff; border:1px solid #2a2a2a; border-radius:10px; padding:10px 12px; }
+    .btn{ appearance:none; border:0; border-radius:999px; padding:10px 16px; font-weight:900; cursor:pointer;
+          background:linear-gradient(180deg,#fff,#eaeaea); color:#111; }
+    .btn.secondary{ background:#212121; color:#f5f5f5; border:1px solid #2f2f2f; }
+    .btn.danger{ background:#c1121f; color:#fff; }
+    .status{ margin-left:auto; color:var(--muted); white-space:nowrap; }
+
+    table{ width:100%; border-collapse:separate; border-spacing:0 8px; }
+    thead th{ color:#ddd; font-size:.9rem; letter-spacing:.06em; text-transform:uppercase; }
+    th, td{ text-align:left; padding:10px 12px; }
+    tbody tr{ background:rgba(255,255,255,.035); border:1px solid rgba(255,255,255,.09); }
+    tbody tr td:first-child{ border-top-left-radius:10px; border-bottom-left-radius:10px; }
+    tbody tr td:last-child{ border-top-right-radius:10px; border-bottom-right-radius:10px; }
+    .price{ width:120px; text-align:right; background:#000; color:#fff; border:1px solid #444; border-radius:8px; padding:8px 10px; }
+    .check{ width:18px; height:18px; }
+    .del{ padding:8px 12px; border-radius:10px; }
+  </style>
+</head>
+<body>
+  <!-- Minimal PIN gate -->
+  <script>
+    (function(){ const PIN='17081', KEY='admin_ok_1708';
+      if(!sessionStorage.getItem(KEY)){ const i=prompt('Enter admin PIN'); if(i===PIN){sessionStorage.setItem(KEY,'1')} else {location.replace('/'); return;} }
+      document.documentElement.classList.remove('locked');
+    })();
+  </script>
+
+  <div class="wrap">
+    <!-- one logo only -->
+    <img class="logo" src="images/1708.png" alt="1708 Logo">
+    <a class="back" href="admin.html">← Back to admin</a>
+    <h2>PRICE EDITOR</h2>
+    <p class="hint">Pick Food/Drinks, type price, toggle availability, or delete. Use Download/Load JSON for backups.</p>
+
+    <div class="card">
+      <div class="toolbar">
+        <input id="search" type="search" placeholder="Search item or category...">
+        <select id="show">
+          <option value="">Show: All</option>
+          <option value="Drinks">Drinks</option>
+          <option value="Food">Food</option>
+        </select>
+
+        <button id="add" class="btn">Add Item</button>
+        <button id="save" class="btn">Save</button>
+        <button id="download" class="btn">Download JSON</button>
+        <label class="btn secondary">
+          Load JSON <input id="upload" type="file" accept="application/json" style="display:none">
+        </label>
+        <button id="startfresh" class="btn danger">Start fresh (2 rows)</button>
+
+        <span id="status" class="status"></span>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Item (Name)</th>
+            <th>Cat</th>
+            <th>Price (₦)</th>
+            <th>Available</th>
+            <th>Action</th>
+            <!-- Id is intentionally hidden from UI -->
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    // backend
+    const API_URL = 'https://script.google.com/macros/s/AKfycbxC_SHryj81aEopH9MDxYaIXfAPnn4cCz63VRSsDxbkFVApzujlSNF5ab59EIjrATE/exec';
+    const API_KEY = '1708_SUPERSECRET_8b7f3e6c9a2141d6925e4f0a2c5d3f1a';
+
+    // local state
+    let rows = [];                 // rows from sheet
+    let pendingPrice = new Map();  // id -> price
+    let pendingAvail = new Map();  // id -> available
+    let pendingNew = [];           // brand-new rows to import
+
+    const $ = (id)=>document.getElementById(id);
+    const uid = ()=> String(Date.now()) + Math.random().toString(16).slice(2);
+    const toBool = v => String(v).toLowerCase()==='true' || v===true;
+    const money = v => (v==null || v==='') ? '' : Number(v);
+
+    async function fetchItems(){
+      $('status').textContent = 'Loading...';
+      const res = await fetch(`${API_URL}?key=${encodeURIComponent(API_KEY)}`);
+      const data = await res.json();
+      if(!data.ok) throw new Error(data.error||'Failed to load');
+      rows = data.items.map(it => ({
+        Id: it.Id, Type: it.Type, Name: it.Name, Cat: it.Cat,
+        Price: it.Price, Available: toBool(it.Available), UpdatedAt: it.UpdatedAt
+      }));
+      pendingPrice.clear(); pendingAvail.clear(); pendingNew = [];
+      render();
+      $('status').textContent = `Loaded ${rows.length} item(s)`;
+    }
+
+    function filtered(){
+      const q = $('search').value.trim().toLowerCase();
+      const show = $('show').value;
+      return rows.filter(r =>
+        (!show || String(r.Type)===show) &&
+        (!q || String(r.Name).toLowerCase().includes(q) || String(r.Cat).toLowerCase().includes(q))
+      ).concat(pendingNew);
+    }
+
+    function tr(row, isNew=false){
+      const id = row.Id;
+      const price = isNew ? (row.Price ?? '') : (pendingPrice.has(id)? pendingPrice.get(id) : row.Price ?? '');
+      const avail = isNew ? (!!row.Available) : (pendingAvail.has(id)? pendingAvail.get(id) : !!row.Available);
+      return `
+        <tr data-id="${id}" ${isNew?'data-new="1"':''}>
+          <td>
+            <select class="type">
+              ${['','Drinks','Food'].map(t=>`<option value="${t}" ${String(row.Type||'')===t?'selected':''}>${t||'—'}</option>`).join('')}
+            </select>
+          </td>
+          <td><input class="name" value="${row.Name??''}" placeholder="Item name"></td>
+          <td><input class="cat"  value="${row.Cat??''}" placeholder="Category"></td>
+          <td><input class="price" type="number" min="0" step="1" value="${price}"></td>
+          <td><input class="check avail" type="checkbox" ${avail?'checked':''}></td>
+          <td><button class="del btn secondary">Delete</button></td>
+        </tr>`;
+    }
+
+    function render(){
+      const body = filtered().map(r => tr(r, !!r.__new)).join('');
+      $('tbody').innerHTML = body || '<tr><td colspan="6" style="text-align:center;color:#bbb;">No items</td></tr>';
+    }
+
+    // events
+    document.addEventListener('input', e=>{
+      const trEl = e.target.closest('tr'); if(!trEl) return;
+      const id = trEl.dataset.id;
+      if (trEl.dataset.new === '1') {
+        const row = pendingNew.find(x=>x.Id===id);
+        if(!row) return;
+        if (e.target.classList.contains('type')) row.Type = e.target.value;
+        if (e.target.classList.contains('name')) row.Name = e.target.value;
+        if (e.target.classList.contains('cat'))  row.Cat  = e.target.value;
+        if (e.target.classList.contains('price')) row.Price = money(e.target.value);
+        if (e.target.classList.contains('avail')) row.Available = e.target.checked;
+      } else {
+        if (e.target.classList.contains('price')) pendingPrice.set(id, money(e.target.value));
+        if (e.target.classList.contains('avail')) pendingAvail.set(id, e.target.checked);
+      }
+    });
+
+    document.addEventListener('click', e=>{
+      if(e.target.classList.contains('del')){
+        const trEl = e.target.closest('tr'); const id = trEl.dataset.id;
+        if (trEl.dataset.new === '1') {
+          pendingNew = pendingNew.filter(x=>x.Id!==id);
+        } else {
+          // “Delete” by marking unavailable and price 0 (non-destructive)
+          pendingAvail.set(id, false);
+          pendingPrice.set(id, 0);
+        }
+        render();
+      }
+    });
+
+    $('add').addEventListener('click', ()=>{
+      const id = uid();
+      pendingNew.push({ Id:id, Type:'', Name:'', Cat:'', Price:0, Available:true, __new:true });
+      render();
+    });
+
+    $('download').addEventListener('click', ()=>{
+      const blob = new Blob([JSON.stringify(rows, null, 2)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = '1708-menu.json'; a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    $('upload').addEventListener('change', async (e)=>{
+      const file = e.target.files[0]; if(!file) return;
+      const text = await file.text();
+      let arr = JSON.parse(text);
+      if (!Array.isArray(arr)) { alert('JSON must be an array'); return; }
+      $('status').textContent = 'Importing...';
+      const res = await fetch(API_URL, {
+        method:'POST',
+        headers:{ 'Content-Type':'application/json', 'X-API-KEY': API_KEY },
+        body: JSON.stringify({ action:'importItems', items: arr })
+      });
+      const data = await res.json();
+      if(!data.ok){ alert(data.error||'Import failed'); $('status').textContent=''; return; }
+      await fetchItems();
+      $('status').textContent = `Imported ${data.imported} item(s)`;
+    });
+
+    $('startfresh').addEventListener('click', async ()=>{
+      if(!confirm('Replace the sheet with 2 starter rows?')) return;
+      const items = [
+        { Id:'seed-1', Type:'Drinks', Name:'Sample Drink', Cat:'Whiskey', Price:10000, Available:true, UpdatedAt:'' },
+        { Id:'seed-2', Type:'Food',   Name:'Sample Meal',  Cat:'Main',    Price:5000,  Available:true, UpdatedAt:'' }
+      ];
+      $('status').textContent='Starting fresh...';
+      const res = await fetch(API_URL, {
+        method:'POST',
+        headers:{ 'Content-Type':'application/json', 'X-API-KEY': API_KEY },
+        body: JSON.stringify({ action:'importItems', items })
+      });
+      const data = await res.json();
+      if(!data.ok){ alert(data.error||'Failed'); $('status').textContent=''; return; }
+      await fetchItems();
+      $('status').textContent = `Imported ${data.imported} item(s)`;
+    });
+
+    $('save').addEventListener('click', async ()=>{
+      try{
+        $('status').textContent = 'Saving...';
+        if (pendingPrice.size){
+          const updates = [...pendingPrice.entries()].map(([id,price])=>({ id, price }));
+          const r = await fetch(API_URL, {
+            method:'POST', headers:{ 'Content-Type':'application/json','X-API-KEY': API_KEY },
+            body: JSON.stringify({ action:'updatePrices', updates })
+          });
+          const j = await r.json(); if(!j.ok) throw new Error(j.error||'updatePrices failed');
+        }
+        if (pendingAvail.size){
+          const updates = [...pendingAvail.entries()].map(([id,available])=>({ id, available }));
+          const r2 = await fetch(API_URL, {
+            method:'POST', headers:{ 'Content-Type':'application/json','X-API-KEY': API_KEY },
+            body: JSON.stringify({ action:'setAvailability', updates })
+          });
+          const j2 = await r2.json(); if(!j2.ok) throw new Error(j2.error||'setAvailability failed');
+        }
+        if (pendingNew.length){
+          const items = pendingNew.map(x=>({
+            Id:x.Id, Type:x.Type||'', Name:x.Name||'', Cat:x.Cat||'',
+            Price: money(x.Price)||0, Available: !!x.Available, UpdatedAt:''
+          }));
+          const r3 = await fetch(API_URL, {
+            method:'POST', headers:{ 'Content-Type':'application/json','X-API-KEY': API_KEY },
+            body: JSON.stringify({ action:'importItems', items: [...rows, ...items] })
+          });
+          const j3 = await r3.json(); if(!j3.ok) throw new Error(j3.error||'importItems failed');
+        }
+        await fetchItems();
+        pendingPrice.clear(); pendingAvail.clear(); pendingNew = [];
+        $('status').textContent = 'Saved';
+      }catch(err){
+        $('status').textContent = '';
+        alert(err.message||err);
+      }
+    });
+
+    $('search').addEventListener('input', render);
+    $('show').addEventListener('change', render);
+
+    // init
+    fetchItems().catch(err=>alert(err.message||err));
+  </script>
+</body>
+</html>

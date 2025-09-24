@@ -16,10 +16,7 @@
       background: linear-gradient(180deg,#111 0%, #000 60%, #000 100%);
       border: 1.5px solid #d4af37;
       border-radius: 7px;
-      box-shadow:
-        0 5px 24px 0 #00000050,
-        0 1px 0 #000000,
-        0 0 24px 0 #00000060;
+      box-shadow: 0 5px 24px 0 #00000050, 0 1px 0 #000000, 0 0 24px 0 #00000060;
       text-align: center;
     }
     .menu-banner .super-glow{
@@ -93,24 +90,24 @@
   <!-- Cards Grid -->
   <main>
     <div class="food-grid">
-      <div class="food-card">
+      <div class="food-card" id="card-poundo-yam">
         <img src="images/poundo-yam.jpg" alt="Poundo (Yam)" />
-        <div class="food-info"><h4>Poundo (Yam)</h4><p>₦2,500</p></div>
+        <div class="food-info"><h4>Poundo (Yam)</h4><p id="price-poundo-yam"></p></div>
       </div>
 
-      <div class="food-card">
+      <div class="food-card" id="card-semovita">
         <img src="images/semovita.jpg" alt="Semovita" />
-        <div class="food-info"><h4>Semovita</h4><p>₦2,300</p></div>
+        <div class="food-info"><h4>Semovita</h4><p id="price-semovita"></p></div>
       </div>
 
-      <div class="food-card">
+      <div class="food-card" id="card-garri">
         <img src="images/garri.jpg" alt="Garri" />
-        <div class="food-info"><h4>Garri</h4><p>₦2,000</p></div>
+        <div class="food-info"><h4>Garri</h4><p id="price-garri"></p></div>
       </div>
 
-      <div class="food-card">
+      <div class="food-card" id="card-wheat">
         <img src="images/wheat.jpg" alt="Wheat" />
-        <div class="food-info"><h4>Wheat</h4><p>₦2,300</p></div>
+        <div class="food-info"><h4>Wheat</h4><p id="price-wheat"></p></div>
       </div>
     </div>
 
@@ -126,5 +123,48 @@
     <a href="./rooms.html">Rooms</a>
     <a href="./contact.html">Contact</a>
   </nav>
+
+  <!-- Price injection -->
+  <script>
+    const ENDPOINT = 'https://script.google.com/macros/s/AKfycbw5v7gImXthxWkHUaCtDdDGx4U_tts7_1JWuHA9ojyu6nm2qvHyPehZrtfEK2j5JTMy/exec';
+    const TOKEN    = 'Forgive1988@';
+    const formatNaira = n => '₦' + Number(n||0).toLocaleString();
+
+    function injectPrices(){
+      fetch(`${ENDPOINT}?token=${encodeURIComponent(TOKEN)}`)
+        .then(r => r.json())
+        .then(j => {
+          if(!j.ok || !Array.isArray(j.rows)) return;
+          j.rows.forEach(item => {
+            if (String(item.type) !== 'Food') return;
+            if (String(item.cat) !== 'Swallows') return;
+            if (!item.name) return;
+
+            const slug = String(item.name)
+              .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+              .replace(/[^a-z0-9]/gi,'-').replace(/-+/g,'-')
+              .toLowerCase().replace(/-$/,'');
+
+            const priceEl = document.getElementById('price-' + slug);
+            const cardEl  = document.getElementById('card-' + slug);
+            if(!priceEl || !cardEl) return;
+
+            priceEl.innerHTML = '';
+            cardEl.classList.remove('soldout');
+
+            const available = (item.available === true) || (String(item.available).toLowerCase() === 'true');
+            if (available){
+              priceEl.textContent = formatNaira(item.price);
+            } else {
+              priceEl.innerHTML = `${formatNaira(item.price)} <span class="soldout-label">Sold Out</span>`;
+              cardEl.classList.add('soldout');
+            }
+          });
+        })
+        .catch(()=>{});
+    }
+
+    document.addEventListener('DOMContentLoaded', injectPrices);
+  </script>
 </body>
 </html>

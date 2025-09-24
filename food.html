@@ -65,11 +65,17 @@
       border-radius:2px; background: linear-gradient(90deg, transparent, #d4af37, transparent);
       box-shadow: 0 0 18px #d4af3748;
     }
-
     @media (max-width: 420px){
       .menu-banner h2{ font-size:1.32rem; }
       .menu-banner h2::after{ width:90px; }
     }
+
+    /* sold-out visuals (OBÍRÍ pattern) */
+    .soldout-label{
+      color:#fff; background:#d91e1e; border-radius:.35em; padding:.07em .5em;
+      font-weight:700; margin-left:.6em; font-size:.97em; vertical-align:middle; display:inline-block;
+    }
+    .food-card.soldout{ opacity:.48; }
   </style>
 </head>
 <body>
@@ -102,21 +108,37 @@
   <!-- Preview Grid (sample dishes) -->
   <main>
     <div class="food-grid">
-      <div class="food-card">
+      <!-- IMPORTANT: ids follow the OBÍRÍ pattern -> card-<slug(name)>, price-<slug(name)> -->
+      <div class="food-card" id="card-english-breakfast">
         <img src="images/english-breakfast.jpg" alt="English Breakfast" />
-        <div class="food-info"><h4>English Breakfast</h4><p>₦7,500</p></div>
+        <div class="food-info">
+          <h4>English Breakfast</h4>
+          <p id="price-english-breakfast"></p>
+        </div>
       </div>
-      <div class="food-card">
+
+      <div class="food-card" id="card-club-sandwich">
         <img src="images/club-sandwich.jpg" alt="Club Sandwich" />
-        <div class="food-info"><h4>Club Sandwich</h4><p>₦6,500</p></div>
+        <div class="food-info">
+          <h4>Club Sandwich</h4>
+          <p id="price-club-sandwich"></p>
+        </div>
       </div>
-      <div class="food-card">
+
+      <div class="food-card" id="card-french-fries">
         <img src="images/french-fries.jpg" alt="French Fries" />
-        <div class="food-info"><h4>French Fries</h4><p>₦3,500</p></div>
+        <div class="food-info">
+          <h4>French Fries</h4>
+          <p id="price-french-fries"></p>
+        </div>
       </div>
-      <div class="food-card">
+
+      <div class="food-card" id="card-chicken-wings">
         <img src="images/chicken-wings.jpg" alt="Chicken Wings" />
-        <div class="food-info"><h4>Chicken Wings</h4><p>₦7,000</p></div>
+        <div class="food-info">
+          <h4>Chicken Wings</h4>
+          <p id="price-chicken-wings"></p>
+        </div>
       </div>
     </div>
 
@@ -131,5 +153,59 @@
     <a href="./rooms.html">Rooms</a>
     <a href="./contact.html">Contact</a>
   </nav>
+
+  <!-- OBÍRÍ-style data injection -->
+  <script>
+    // 1708 backend (same pattern)
+    const ENDPOINT = 'https://script.google.com/macros/s/AKfycbw5v7gImXthxWkHUaCtDdDGx4U_tts7_1JWuHA9ojyu6nm2qvHyPehZrtfEK2j5JTMy/exec';
+    const TOKEN    = 'Forgive1988@';
+
+    function formatNaira(amount) {
+      if(amount==null || amount==='' || isNaN(amount)) return '₦0';
+      return '₦' + Number(amount).toLocaleString();
+    }
+    function slug(s){
+      return String(s)
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]/gi,'-')
+        .replace(/-+/g,'-')
+        .toLowerCase()
+        .replace(/-$/,'');
+    }
+    function priceIdFromName(name){ return 'price-' + slug(name); }
+    function cardIdFromName(name){ return 'card-' + slug(name); }
+
+    function injectPrices() {
+      fetch(`${ENDPOINT}?token=${encodeURIComponent(TOKEN)}`)
+        .then(res => res.json())
+        .then(result => {
+          if(!result.ok || !Array.isArray(result.rows)) return;
+
+          result.rows.forEach(item => {
+            if(String(item.type) !== 'Food' || !item.name) return;
+
+            const priceId = priceIdFromName(item.name);
+            const cardId  = cardIdFromName(item.name);
+            const priceEl = document.getElementById(priceId);
+            const cardEl  = document.getElementById(cardId);
+            if(!priceEl || !cardEl) return;
+
+            priceEl.innerHTML = '';
+            cardEl.classList.remove('soldout');
+
+            const available = (item.available === true) || (String(item.available).toLowerCase()==='true');
+            if (available) {
+              priceEl.textContent = formatNaira(item.price);
+            } else {
+              priceEl.innerHTML = `${formatNaira(item.price)} <span class="soldout-label">Sold Out</span>`;
+              cardEl.classList.add('soldout');
+            }
+          });
+        })
+        .catch(()=>{ /* ignore network errors for now */ });
+    }
+
+    document.addEventListener('DOMContentLoaded', injectPrices);
+  </script>
 </body>
 </html>

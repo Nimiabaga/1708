@@ -62,7 +62,19 @@
     }
     .back-btn:hover, .back-btn:focus-visible{ transform: translateY(-1px); outline:none; }
 
+    /* Sold-out visuals (same pattern) */
+    .soldout-label{
+      color:#fff; background:#d91e1e; border-radius:.35em; padding:.07em .5em;
+      font-weight:700; margin-left:.6em; font-size:.97em; vertical-align:middle; display:inline-block;
+    }
+    .food-card.soldout{ opacity:.48; }
+
     main{ padding-bottom: 4.5rem; } /* breathing space above fixed nav */
+
+    @media (max-width:420px){
+      .menu-banner h2{ font-size:1.32rem; }
+      .menu-banner h2::after{ width:90px; }
+    }
   </style>
 </head>
 <body>
@@ -85,14 +97,20 @@
   <!-- Grid -->
   <main>
     <div class="food-grid">
-      <div class="food-card">
+      <div class="food-card" id="card-croaker-fish">
         <img src="images/croaker-fish.jpg" alt="Croaker Fish" />
-        <div class="food-info"><h4>Croaker Fish</h4><p>₦25,000</p></div>
+        <div class="food-info"><h4>Croaker Fish</h4><p id="price-croaker-fish"></p></div>
       </div>
 
-      <div class="food-card">
+      <div class="food-card" id="card-cat-fish">
         <img src="images/cat-fish.jpg" alt="Cat Fish" />
-        <div class="food-info"><h4>Cat Fish</h4><p>₦20,000</p></div>
+        <div class="food-info"><h4>Cat Fish</h4><p id="price-cat-fish"></p></div>
+      </div>
+
+      <!-- NEW: Fries -->
+      <div class="food-card" id="card-fries">
+        <img src="images/fries.jpg" alt="Fries" />
+        <div class="food-info"><h4>Fries</h4><p id="price-fries"></p></div>
       </div>
     </div>
 
@@ -107,5 +125,52 @@
     <a href="./rooms.html">Rooms</a>
     <a href="./contact.html">Contact</a>
   </nav>
+
+  <!-- OBÍRÍ-style injection -->
+  <script>
+    // Endpoint + token (same as admin)
+    const ENDPOINT = 'https://script.google.com/macros/s/AKfycbw5v7gImXthxWkHUaCtDdDGx4U_tts7_1JWuHA9ojyu6nm2qvHyPehZrtfEK2j5JTMy/exec';
+    const TOKEN    = 'Forgive1988@';
+
+    const formatNaira = n => '₦' + Number(n||0).toLocaleString();
+
+    function injectPrices(){
+      fetch(`${ENDPOINT}?token=${encodeURIComponent(TOKEN)}`)
+        .then(r => r.json())
+        .then(j => {
+          if(!j.ok || !Array.isArray(j.rows)) return;
+
+          j.rows.forEach(item => {
+            if (String(item.type) !== 'Food') return;
+            if (String(item.cat) !== 'BBQ & Fries') return;
+            if (!item.name) return;
+
+            const slug = String(item.name)
+              .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+              .replace(/[^a-z0-9]/gi,'-').replace(/-+/g,'-')
+              .toLowerCase().replace(/-$/,'');
+
+            const priceEl = document.getElementById('price-' + slug);
+            const cardEl  = document.getElementById('card-' + slug);
+            if(!priceEl || !cardEl) return;
+
+            priceEl.innerHTML = '';
+            cardEl.classList.remove('soldout');
+
+            const available = (item.available === true) || (String(item.available).toLowerCase() === 'true');
+
+            if (available){
+              priceEl.textContent = formatNaira(item.price);
+            } else {
+              priceEl.innerHTML = `${formatNaira(item.price)} <span class="soldout-label">Sold Out</span>`;
+              cardEl.classList.add('soldout');
+            }
+          });
+        })
+        .catch(()=>{ /* ignore for now */ });
+    }
+
+    document.addEventListener('DOMContentLoaded', injectPrices);
+  </script>
 </body>
 </html>
