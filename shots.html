@@ -6,10 +6,7 @@
   <title>Shots — 1708 Hotel</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-
-  <!-- Golden Ticket banner (unified 1708 look) -->
   <style>
-    /* Banner styling */
     .menu-banner{
       position: relative;
       padding: 1.6rem 0 1.05rem 0;
@@ -46,7 +43,6 @@
       border-radius:2px; background: linear-gradient(90deg, transparent, #d4af37, transparent);
       box-shadow: 0 0 18px #d4af3748;
     }
-    /* Back button */
     .back-wrap{ display:flex; justify-content:center; margin:.85rem auto 0; padding:0 .8rem; max-width:980px; }
     .back-btn{
       display:inline-block; text-decoration:none; font-weight:800; letter-spacing:.2px;
@@ -61,14 +57,12 @@
       pointer-events:none;
     }
     .back-btn:hover, .back-btn:focus-visible{ transform: translateY(-1px); outline:none; }
-
     .soldout-label{
       color:#fff; background:#d91e1e; border-radius:.35em; padding:.07em .5em;
       font-weight:700; margin-left:.6em; font-size:.97em; vertical-align:middle; display:inline-block;
     }
     .food-card.soldout{ opacity:.48; }
-
-    main{ padding-bottom:4.5rem; } /* breathing room above fixed nav */
+    main{ padding-bottom:4.5rem; }
     @media (max-width: 420px){
       .menu-banner h2{ font-size:1.32rem; }
       .menu-banner h2::after{ width:90px; }
@@ -76,21 +70,16 @@
   </style>
 </head>
 <body>
-  <!-- Header -->
   <header class="animate__animated animate__fadeInDown">
     <img src="images/1708.png" alt="1708 Hotel Logo" class="logo" />
   </header>
-
   <div class="menu-banner">
     <span class="super-glow" aria-hidden="true"></span>
     <h2>SHOTS</h2>
   </div>
-
-  <!-- Back to Drinks -->
   <div class="back-wrap">
     <a class="back-btn" href="./drinks.html">← Back to Drinks</a>
   </div>
-  
   <main>
     <div class="food-grid">
       <!-- Tequila -->
@@ -101,11 +90,14 @@
           <p id="price-tequila"></p>
         </div>
       </div>
-
-      
-
-    
-
+      <!-- Casamigos Tequila -->
+      <div class="food-card" id="card-casamigos-tequila">
+        <img src="images/casamigos-tequila-shot.jpg" alt="Casamigos Tequila Shot" />
+        <div class="food-info">
+          <h4>Casamigos Tequila</h4>
+          <p id="price-casamigos-tequila"></p>
+        </div>
+      </div>
       <!-- Gin -->
       <div class="food-card" id="card-gin">
         <img src="images/gin-shot.jpg" alt="Gin Shot" />
@@ -114,7 +106,6 @@
           <p id="price-gin"></p>
         </div>
       </div>
-
       <!-- Jagermeister -->
       <div class="food-card" id="card-jagermeister">
         <img src="images/jagermeister-shot.jpg" alt="Jagermeister Shot" />
@@ -124,13 +115,10 @@
         </div>
       </div>
     </div>
-
     <div class="tray-note">
       Images are illustrative. Prices include VAT where applicable.
     </div>
   </main>
-
-  <!-- Bottom Navigation -->
   <nav class="bottom-nav">
     <a href="./index.html">Home</a>
     <a href="./food.html">Food</a>
@@ -138,40 +126,31 @@
     <a href="./rooms.html">Rooms</a>
     <a href="./contact.html">Contact</a>
   </nav>
-
-  <!-- Live price injection -->
   <script>
-    // GAS endpoint + token (same as admin)
     const ENDPOINT = 'https://script.google.com/macros/s/AKfycbw5v7gImXthxWkHUaCtDdDGx4U_tts7_1JWuHA9ojyu6nm2qvHyPehZrtfEK2j5JTMy/exec';
     const TOKEN    = 'Forgive1988@';
-
     const formatNaira = n => '₦' + Number(n||0).toLocaleString();
     const norm = s => String(s||'').toLowerCase().trim();
     const slug = s => String(s||'')
-      .normalize('NFD').replace(/[\u0300-\u036f]/g,'') // strip diacritics
-      .replace(/[’']/g,'')                             // drop apostrophes (curly & straight)
-      .replace(/[^a-z0-9]/gi,'-').replace(/-+/g,'-')   // non-alnum to dashes
-      .toLowerCase().replace(/-$/,'');                 // tidy trailing dash
-
+      .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+      .replace(/[’']/g,'')
+      .replace(/[^a-z0-9]/gi,'-').replace(/-+/g,'-')
+      .toLowerCase().replace(/-$/,'');
     function injectPrices(){
       fetch(`${ENDPOINT}?token=${encodeURIComponent(TOKEN)}`)
         .then(r => r.json())
         .then(j => {
           if(!j.ok || !Array.isArray(j.rows)) return;
-
           j.rows.forEach(item => {
             if (!(norm(item.type) === 'drinks' || norm(item.type) === 'drink')) return;
             if (norm(item.cat) !== 'shots') return;
             if (!item.name) return;
-
             const s = slug(item.name);
             const priceEl = document.getElementById('price-' + s);
             const cardEl  = document.getElementById('card-' + s);
             if(!priceEl || !cardEl) return;
-
             priceEl.innerHTML = '';
             cardEl.classList.remove('soldout');
-
             const available = (item.available === true) || (String(item.available).toLowerCase() === 'true');
             if (available){
               priceEl.textContent = formatNaira(item.price);
@@ -183,7 +162,6 @@
         })
         .catch(()=>{ /* silent fail */ });
     }
-
     document.addEventListener('DOMContentLoaded', injectPrices);
   </script>
 </body>
