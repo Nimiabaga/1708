@@ -129,6 +129,34 @@
           <p id="price-iced-coffee-frappuccino"></p>
         </div>
       </div>
+
+      <!-- ==================== NEW ITEMS ==================== -->
+      <!-- Bailey Milkshake -->
+      <div class="food-card" id="card-bailey-milkshake">
+        <img src="images/bailey-milkshake.jpg" alt="Bailey Milkshake" />
+        <div class="food-info">
+          <h4>Bailey Milkshake</h4>
+          <p id="price-bailey-milkshake"></p>
+        </div>
+      </div>
+
+      <!-- Banana Milkshake -->
+      <div class="food-card" id="card-banana-milkshake">
+        <img src="images/banana-milkshake.jpg" alt="Banana Milkshake" />
+        <div class="food-info">
+          <h4>Banana Milkshake</h4>
+          <p id="price-banana-milkshake"></p>
+        </div>
+      </div>
+
+      <!-- Sneakers Milkshake -->
+      <div class="food-card" id="card-sneakers-milkshake">
+        <img src="images/sneakers-milkshake.jpg" alt="Sneakers Milkshake" />
+        <div class="food-info">
+          <h4>Sneakers Milkshake</h4>
+          <p id="price-sneakers-milkshake"></p>
+        </div>
+      </div>
     </div>
 
     <div class="tray-note">
@@ -165,7 +193,7 @@
           if(!j.ok || !Array.isArray(j.rows)) return;
 
           j.rows.forEach(item => {
-            // tolerant: type "Drink" or "Drinks"; category must be "Milkshakes" (case/space-insensitive)
+            // tolerant: type "Drink" or "Drinks"; category must be "Milkshakes" (case-insensitive)
             const t = norm(item.type);
             const c = norm(item.cat);
             if (!(t === 'drinks' || t === 'drink')) return;

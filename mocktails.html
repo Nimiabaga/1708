@@ -89,7 +89,62 @@
 
   <main>
     <div class="food-grid">
-      <!-- Chapman -->
+      <!-- ==================== NEW ITEMS (₦8,000 default) ==================== -->
+      <div class="food-card" id="card-bribe-pina">
+        <img src="images/bribe-pina.jpg" alt="Bribe Pina Mocktail" />
+        <div class="food-info">
+          <h4>Bribe Pina</h4>
+          <p id="price-bribe-pina"></p>
+          <small style="display:block;color:#ccc;margin-top:4px;">Coconut Syrup, Pineapple Juice, Simple Syrup, Coconut Grenadine</small>
+        </div>
+      </div>
+
+      <div class="food-card" id="card-frozen-passion-colada">
+        <img src="images/frozen-passion-colada.jpg" alt="Frozen Passion Colada Mocktail" />
+        <div class="food-info">
+          <h4>Frozen Passion Colada</h4>
+          <p id="price-frozen-passion-colada"></p>
+          <small style="display:block;color:#ccc;margin-top:4px;">Passion Syrup, Pineapple Juice, Coconut Cream</small>
+        </div>
+      </div>
+
+      <div class="food-card" id="card-blue-lemonade">
+        <img src="images/blue-lemonade.jpg" alt="Blue Lemonade Mocktail" />
+        <div class="food-info">
+          <h4>Blue Lemonade</h4>
+          <p id="price-blue-lemonade"></p>
+          <small style="display:block;color:#ccc;margin-top:4px;">Blue Curaçao Syrup, Lemon Juice, Simple Syrup, top-up Soda</small>
+        </div>
+      </div>
+
+      <div class="food-card" id="card-blue-hawaii-mocktail">
+        <img src="images/blue-hawaii-mocktail.jpg" alt="Blue Hawaii Mocktail" />
+        <div class="food-info">
+          <h4>Blue Hawaii</h4>
+          <p id="price-blue-hawaii"></p>
+          <small style="display:block;color:#ccc;margin-top:4px;">(Mocktail)</small>
+        </div>
+      </div>
+
+      <div class="food-card" id="card-sweet-sunrise">
+        <img src="images/sweet-sunrise.jpg" alt="Sweet Sunrise Mocktail" />
+        <div class="food-info">
+          <h4>Sweet Sunrise</h4>
+          <p id="price-sweet-sunrise"></p>
+          <small style="display:block;color:#ccc;margin-top:4px;">Orange Juice, Lime Juice, Simple Syrup, Grenadine</small>
+        </div>
+      </div>
+
+      <div class="food-card" id="card-lick-me-up">
+        <img src="images/lick-me-up.jpg" alt="Lick Me Up Mocktail" />
+        <div class="food-info">
+          <h4>Lick Me Up</h4>
+          <p id="price-lick-me-up"></p>
+          <small style="display:block;color:#ccc;margin-top:4px;">Baileys, Strawberry, Yogurt, Date Syrup</small>
+        </div>
+      </div>
+
+      <!-- ==================== EXISTING ITEMS (KEPT) ==================== -->
       <div class="food-card" id="card-chapman">
         <img src="images/chapman.jpg" alt="Chapman Mocktail" />
         <div class="food-info">
@@ -99,7 +154,6 @@
         </div>
       </div>
 
-      <!-- Tropical Island -->
       <div class="food-card" id="card-tropical-island">
         <img src="images/tropical-island.jpg" alt="Tropical Island Mocktail" />
         <div class="food-info">
@@ -109,27 +163,6 @@
         </div>
       </div>
 
-      <!-- Love Portion -->
-      <div class="food-card" id="card-love-portion">
-        <img src="images/love-portion.jpg" alt="Love Portion Mocktail" />
-        <div class="food-info">
-          <h4>Love Portion</h4>
-          <p id="price-love-portion"></p>
-          <small style="display:block;color:#ccc;margin-top:4px;">Fresh Cream, Irish Cream, Kiwi, Peach, Coconut</small>
-        </div>
-      </div>
-
-      <!-- Holy Water -->
-      <div class="food-card" id="card-holy-water">
-        <img src="images/holy-water.jpg" alt="Holy Water Mocktail" />
-        <div class="food-info">
-          <h4>Extra Man Power</h4>
-          <p id="price-holy-water"></p>
-          <small style="display:block;color:#ccc;margin-top:4px;">Raspberry, Tangerine Sour Mix, Lemonade, Lime</small>
-        </div>
-      </div>
-
-      <!-- Cucumber Cooler -->
       <div class="food-card" id="card-cucumber-cooler">
         <img src="images/cucumber-cooler.jpg" alt="Cucumber Cooler Mocktail" />
         <div class="food-info">
@@ -139,7 +172,6 @@
         </div>
       </div>
 
-      <!-- Bahama’s Sunrise -->
       <div class="food-card" id="card-bahamas-sunrise">
         <img src="images/bahamas-sunrise.jpg" alt="Bahamas Sunrise Mocktail" />
         <div class="food-info">
@@ -149,7 +181,6 @@
         </div>
       </div>
 
-      <!-- Cinderella -->
       <div class="food-card" id="card-cinderella">
         <img src="images/cinderella.jpg" alt="Cinderella Mocktail" />
         <div class="food-info">
@@ -159,7 +190,6 @@
         </div>
       </div>
 
-      <!-- Ginger Lemonade -->
       <div class="food-card" id="card-ginger-lemonade">
         <img src="images/ginger-lemonade.jpg" alt="Ginger Lemonade Mocktail" />
         <div class="food-info">
@@ -168,6 +198,9 @@
           <small style="display:block;color:#ccc;margin-top:4px;">Fresh Ginger, Fresh Lemon, Lime Soda</small>
         </div>
       </div>
+
+      <!-- ==================== REMOVED PER REQUEST ==================== -->
+      <!-- Deleted: Love Potion / Love Portion, Extra Man Power -->
     </div>
 
     <div class="tray-note">
@@ -197,6 +230,23 @@
       .replace(/[^a-z0-9]/gi,'-').replace(/-+/g,'-')
       .toLowerCase().replace(/-$/,'');
 
+    const DEFAULT_PRICE = 8000; // ₦8,000 for new mocktails
+    const DEFAULT_NAMES = [
+      'Bribe Pina',
+      'Frozen Passion Colada',
+      'Blue Lemonade',
+      'Blue Hawaii',
+      'Sweet Sunrise',
+      'Lick Me Up'
+    ];
+
+    function setDefaults(){
+      DEFAULT_NAMES.forEach(name => {
+        const el = document.getElementById('price-' + slug(name));
+        if (el) el.textContent = formatNaira(DEFAULT_PRICE);
+      });
+    }
+
     function injectPrices(){
       fetch(`${ENDPOINT}?token=${encodeURIComponent(TOKEN)}`)
         .then(r => r.json())
@@ -213,7 +263,7 @@
 
             const s = slug(item.name);
             const priceEl = document.getElementById('price-' + s);
-            const cardEl  = document.getElementById('card-' + s);
+            const cardEl  = document.getElementById('card-' + s) || document.getElementById('card-' + s + '-mocktail');
             if(!priceEl || !cardEl) return;
 
             // reset visuals
@@ -222,9 +272,10 @@
 
             const available = (item.available === true) || (String(item.available).toLowerCase() === 'true');
             if (available){
-              priceEl.textContent = formatNaira(item.price);
+              // If sheet has a price, override default; else keep default
+              priceEl.textContent = formatNaira(item.price ?? DEFAULT_PRICE);
             } else {
-              priceEl.innerHTML = `${formatNaira(item.price)} <span class="soldout-label">Sold Out</span>`;
+              priceEl.innerHTML = `${formatNaira(item.price ?? DEFAULT_PRICE)} <span class="soldout-label">Sold Out</span>`;
               cardEl.classList.add('soldout');
             }
           });
@@ -232,7 +283,10 @@
         .catch(()=>{ /* ignore for now */ });
     }
 
-    document.addEventListener('DOMContentLoaded', injectPrices);
+    document.addEventListener('DOMContentLoaded', () => {
+      setDefaults();
+      injectPrices();
+    });
   </script>
 </body>
 </html>
