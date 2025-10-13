@@ -128,6 +128,7 @@
         { name: '33"', price: 1600 },   // fixed data literal is okay now
         { name: "Budweisser", price: 1700 },
         { name: "Life", price: 1600 },
+        { name: "Trophy", price: 1600 },
         { name: "Hero", price: 1600 },
         { name: "Tiger", price: 1600 }
       ],
@@ -137,13 +138,17 @@
         { name: "Medium Stout", price: 2000 },
         { name: "Big Stout", price: 2700 },
         { name: "Legend", price: 2000 },
-        { name: "Guinness Smooth", price: 2000 }
+        { name: "Guinness Smooth", price: 2500 }
       ],
       "Beers/Ready": [
         { name: "Star Radler", price: 1300 },
-        { name: "Orijin", price: 1500 },
+        { name: "Orijin", price: 2500 },
         { name: "Smirnoff (big)", price: 2200 },
         { name: "Smirnoff (small)", price: 1200 },
+        { name: "Flying Fish", price: 1500 },
+        { name: "Medium Smirnoff Double Black", price: 1600 },
+        
+         { name: "Castle Lite", price: 1500 },
         { name: "Desperadoes", price: 1800 }
       ],
       "Soft/Mixer": [
@@ -160,13 +165,14 @@
       ],
       "Energy/Herbs": [
         { name: "Blue Bullet", price: 2000 },
+        { name: "Red Bull", price: 3000 },
         { name: "Black Bullet", price: 3000 },
         { name: "Fearless", price: 1000 },
         { name: "Predator", price: 2000 },
         { name: "Climax Can", price: 1200 },
         { name: "Odogwu Bitters", price: 1200 },
         { name: "Don Simon", price: 6500 },
-        { name: "1960", price: 2500 }
+        { name: "1960", price: 1700 }
       ],
       "Accessories": [
         { name: "Lighter", price: 300 }
@@ -217,7 +223,7 @@
         { name: "B/Campari", price: 36000 },
         { name: "Clay More", price: 14000 },
         { name: "Monkey Shoulder", price: 45000 },
-        { name: "Baileys", price: 18000 }
+        { name: "Baileys", price: 35000 }
       ],
       "Milkshakes": [
   { "name": "Creamy Vanilla" },
@@ -269,6 +275,7 @@
         { name: "Williams Lawson Small", price: 12000 },
         { name: "Jameson Green Small", price: 15000 },
         { name: "Singleton", price: 80000 },
+        { name: "Monkey Shoulder", price: 45000 },
         { name: "Jameson Green Big", price: 40000 }
       ],
       "Wines": [
@@ -404,12 +411,11 @@
     function filtered(){
       const q = $('search').value.trim().toLowerCase();
       const show = $('show').value;
-      return rows
-        .filter(r =>
-          (!show || String(r.type)===show) &&
-          (!q || String(r.name).toLowerCase().includes(q) || String(r.cat).toLowerCase().includes(q))
-        )
-        .concat(pendingNew);
+      const all = rows.concat(pendingNew); // include new rows before filtering
+      return all.filter(r =>
+        (!show || String(r.type)===show) &&
+        (!q || String(r.name).toLowerCase().includes(q) || String(r.cat).toLowerCase().includes(q))
+      );
     }
 
     // ---------- FIXED: escape option labels/values so names like 33" work ----------
@@ -483,6 +489,9 @@
         row.type = e.target.value || '';
         row.name = ''; row.cat = ''; row.price = 0;
         refreshRowControls(trEl, row);
+        // Clear visible inputs to match reset data
+        trEl.querySelector('.cat').value = '';
+        trEl.querySelector('.price').value = '';
         return; // do not autosave on type change
       }
       if (e.target.classList.contains('cat'))  { row.cat  = e.target.value; scheduleSave(); }
