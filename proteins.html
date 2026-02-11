@@ -122,7 +122,7 @@
       </div>
     </div>
 
-    <div class="tray-note">Takeout ₦300</div>
+    <div class="tray-note">Takeout <span id="price-takeout">₦300</span></div>
     <div class="spacer"></div>
   </main>
 
@@ -176,6 +176,32 @@
     }
 
     document.addEventListener('DOMContentLoaded', injectPrices);
+  </script>
+  <script>
+    const TAKEOUT_ENDPOINT = 'https://script.google.com/macros/s/AKfycbw5v7gImXthxWkHUaCtDdDGx4U_tts7_1JWuHA9ojyu6nm2qvHyPehZrtfEK2j5JTMy/exec';
+    const TAKEOUT_TOKEN    = 'Forgive1988@';
+
+    function injectTakeout(){
+      const takeoutEl = document.getElementById('price-takeout');
+      if (!takeoutEl) return;
+
+      fetch(`${TAKEOUT_ENDPOINT}?token=${encodeURIComponent(TAKEOUT_TOKEN)}`)
+        .then(r => r.json())
+        .then(j => {
+          if(!j.ok || !Array.isArray(j.rows)) return;
+
+          const row = j.rows.find(item =>
+            String(item.type).toLowerCase() === 'food' &&
+            String(item.cat).toLowerCase() === 'takeout' &&
+            String(item.name).toLowerCase() === 'takeout'
+          );
+          if (!row) return;
+          takeoutEl.textContent = '₦' + Number(row.price || 0).toLocaleString();
+        })
+        .catch(()=>{ /* silent */ });
+    }
+
+    document.addEventListener('DOMContentLoaded', injectTakeout);
   </script>
 </body>
 </html>

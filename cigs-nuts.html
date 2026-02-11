@@ -115,6 +115,13 @@
       white-space:nowrap;
     }
 
+    /* Sold-out visuals */
+    .soldout-label{
+      color:#fff; background:#d91e1e; border-radius:.35em; padding:.07em .5em;
+      font-weight:700; margin-left:.6em; font-size:.92em; vertical-align:middle; display:inline-block;
+    }
+    .item-list li.soldout{ opacity:.55; }
+
     /* Keep space above fixed bottom nav */
     main{ padding-bottom: 4.5rem; }
     @media (max-width: 420px){
@@ -150,7 +157,7 @@
     <section class="list-card" aria-label="Accessories">
       <h3>Accessories</h3>
       <ul class="item-list">
-        <li><span>LIGHTER</span><span class="price">₦300</span></li>
+        <li><span>LIGHTER</span><span class="price" id="price-lighter"></span></li>
       </ul>
     </section>
   </div>
@@ -162,11 +169,11 @@
       <section class="list-card">
         <h3>Cigarettes</h3>
         <ul class="item-list">
-          <li><span>DUNHILL</span><span class="price">₦3,200</span></li>
-          <li><span>BENSON SWITCH</span><span class="price">₦3,000</span></li>
-          <li><span>BENSON BOOST</span><span class="price">₦2,000</span></li>
-          <li><span>BENSON</span><span class="price">₦2,400</span></li>
-          <li><span>ESSE CHANGE</span><span class="price">₦3,400</span></li>
+          <li><span>DUNHILL</span><span class="price" id="price-dunhill"></span></li>
+          <li><span>BENSON SWITCH</span><span class="price" id="price-benson-switch"></span></li>
+          <li><span>BENSON BOOST</span><span class="price" id="price-benson-boost"></span></li>
+          <li><span>BENSON</span><span class="price" id="price-benson"></span></li>
+          <li><span>ESSE CHANGE</span><span class="price" id="price-esse-change"></span></li>
         </ul>
       </section>
 
@@ -174,11 +181,11 @@
       <section class="list-card">
         <h3>More Cigarettes / Nuts</h3>
         <ul class="item-list">
-          <li><span>ORIS</span><span class="price">₦2,000</span></li>
-          <li><span>CHESTERFIELD</span><span class="price">₦3,100</span></li>
-          <li><span>DORCHESTER</span><span class="price">₦2,000</span></li>
-          <li><span>BOHEM</span><span class="price">₦2,100</span></li>
-          <li><span>GROUNDNUT SMALL</span><span class="price">₦1,800</span></li>
+          <li><span>ORIS</span><span class="price" id="price-oris"></span></li>
+          <li><span>CHESTERFIELD</span><span class="price" id="price-chesterfield"></span></li>
+          <li><span>DORCHESTER</span><span class="price" id="price-dorchester"></span></li>
+          <li><span>BOHEM</span><span class="price" id="price-bohem"></span></li>
+          <li><span>GROUNDNUT SMALL</span><span class="price" id="price-groundnut-small"></span></li>
         </ul>
       </section>
     </div>
@@ -192,5 +199,54 @@
     <a href="./rooms.html">Rooms</a>
     <a href="./contact.html">Contact</a>
   </nav>
+
+  <!-- Live price injection -->
+  <script>
+    // GAS endpoint + token (same as admin)
+    const ENDPOINT = 'https://script.google.com/macros/s/AKfycbw5v7gImXthxWkHUaCtDdDGx4U_tts7_1JWuHA9ojyu6nm2qvHyPehZrtfEK2j5JTMy/exec';
+    const TOKEN    = 'Forgive1988@';
+
+    const formatNaira = n => '₦' + Number(n||0).toLocaleString();
+    const norm = s => String(s||'').toLowerCase().trim();
+    const slug = s => String(s||'')
+      .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+      .replace(/[’']/g,'')
+      .replace(/[^a-z0-9]/gi,'-').replace(/-+/g,'-')
+      .toLowerCase().replace(/-$/,'');
+
+    function injectPrices(){
+      fetch(`${ENDPOINT}?token=${encodeURIComponent(TOKEN)}`)
+        .then(r => r.json())
+        .then(j => {
+          if(!j.ok || !Array.isArray(j.rows)) return;
+
+          j.rows.forEach(item => {
+            if (!(norm(item.type) === 'drinks' || norm(item.type) === 'drink')) return;
+            const cat = norm(item.cat);
+            if (!['accessories', 'cigarettes', 'cigarettes/nuts'].includes(cat)) return;
+            if (!item.name) return;
+
+            const s = slug(item.name);
+            const priceEl = document.getElementById('price-' + s);
+            if(!priceEl) return;
+
+            const liEl = priceEl.closest('li');
+            priceEl.innerHTML = '';
+            if (liEl) liEl.classList.remove('soldout');
+
+            const available = (item.available === true) || (String(item.available).toLowerCase() === 'true');
+            if (available){
+              priceEl.textContent = formatNaira(item.price);
+            } else {
+              priceEl.innerHTML = `${formatNaira(item.price)} <span class="soldout-label">Sold Out</span>`;
+              if (liEl) liEl.classList.add('soldout');
+            }
+          });
+        })
+        .catch(()=>{ /* silent */ });
+    }
+
+    document.addEventListener('DOMContentLoaded', injectPrices);
+  </script>
 </body>
 </html>
