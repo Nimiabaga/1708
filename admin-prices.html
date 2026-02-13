@@ -79,6 +79,7 @@
           <option value="">Show: All</option>
           <option value="Drinks">Drinks</option>
           <option value="Food">Food</option>
+          <option value="Rooms">Rooms</option>
         </select>
 
         <button id="add" class="btn">Add Item</button>
@@ -409,11 +410,18 @@
       ]
     };
 
+    const roomsCatalog = {
+      "Rooms": [
+        { name: "Deluxe", price: 45000 },
+        { name: "Standard", price: 40000 }
+      ]
+    };
+
     /* ===== helpers ===== */
     const $ = (id)=>document.getElementById(id);
     const uid = ()=> String(Date.now()) + Math.random().toString(16).slice(2);
     const money = v => (v==null || v==='') ? '' : Number(v);
-    const catalogForType = (t)=> t==='Food' ? foodCatalog : drinksCatalog;
+    const catalogForType = (t)=> t==='Food' ? foodCatalog : t==='Rooms' ? roomsCatalog : drinksCatalog;
 
     let rows = [];
     let pendingNew = [];
@@ -484,7 +492,7 @@
         <tr data-id="${id}" ${isNew?'data-new="1"':''}>
           <td>
             <select class="type">
-              ${['','Drinks','Food'].map(t=>`<option value="${t}" ${String(row.type||'')===t?'selected':''}>${t||'—'}</option>`).join('')}
+              ${['','Drinks','Food','Rooms'].map(t=>`<option value="${t}" ${String(row.type||'')===t?'selected':''}>${t||'—'}</option>`).join('')}
             </select>
           </td>
           <td>${itemSelectHTML(row)}</td>
