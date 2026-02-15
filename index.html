@@ -71,35 +71,35 @@
       <h2 style="text-align:center;">🍽️ Featured</h2>
       <div class="food-grid">
         <!-- Isi Ewu -->
-        <div class="food-card">
+        <div class="food-card" data-item="Isi-Ewu">
           <img src="images/isi-ewu-10000.jpg" alt="Isi Ewu" />
           <div class="food-info">
             <h4>Isi Ewu</h4>
-            <p>₦10,000</p>
+            <p class="price-display">Loading...</p>
           </div>
         </div>
         <!-- Samosa -->
-        <div class="food-card">
+        <div class="food-card" data-item="Samosa (5 pieces)">
           <img src="images/samosa-5-pieces-6000.jpg" alt="Samosa (5 pieces)" />
           <div class="food-info">
             <h4>Samosa (5 pieces)</h4>
-            <p>₦6,000</p>
+            <p class="price-display">Loading...</p>
           </div>
         </div>
         <!-- Fisherman Soup -->
-        <div class="food-card">
+        <div class="food-card" data-item="Fisherman Soup">
           <img src="images/fisherman-soup-9000.jpg" alt="Fisherman Soup" />
           <div class="food-info">
             <h4>Fisherman Soup</h4>
-            <p>₦9,000</p>
+            <p class="price-display">Loading...</p>
           </div>
         </div>
         <!-- Peppered Snail -->
-        <div class="food-card">
+        <div class="food-card" data-item="Peppered Snail">
           <img src="images/peppered-snail-4500.jpg" alt="Peppered Snail" />
           <div class="food-info">
             <h4>Peppered Snail</h4>
-            <p></p>
+            <p class="price-display">Loading...</p>
           </div>
         </div>
       </div>
@@ -114,5 +114,70 @@
     <a href="./rooms.html">Rooms</a>
     <a href="./contact.html">Contact</a>
   </nav>
+
+  <script>
+    // Dynamic price loading from admin database
+    (async function() {
+      const API_URL = 'https://script.google.com/macros/s/AKfycbw5v7gImXthxWkHUaCtDdDGx4U_tts7_1JWuHA9ojyu6nm2qvHyPehZrtfEK2j5JTMy/exec';
+      const TOKEN = 'Forgive1988@';
+
+      try {
+        // Fetch all items from the database (same format as admin panel)
+        const response = await fetch(`${API_URL}?token=${encodeURIComponent(TOKEN)}`);
+        const data = await response.json();
+
+        console.log('API Response:', data); // Debug log
+
+        if (!data.ok || !data.rows) {
+          throw new Error('Failed to load prices');
+        }
+
+        console.log('Total items loaded:', data.rows.length); // Debug log
+
+        // Create a map of items by name for quick lookup
+        const itemMap = new Map();
+        data.rows.forEach(item => {
+          itemMap.set(item.name, {
+            price: item.price || 0,
+            available: item.available !== false
+          });
+          console.log(`Mapped: ${item.name} = ₦${item.price}, Available: ${item.available}`); // Debug log
+        });
+
+        // Update all price displays on the page
+        document.querySelectorAll('[data-item]').forEach(card => {
+          const itemName = card.getAttribute('data-item');
+          const priceDisplay = card.querySelector('.price-display');
+          
+          console.log(`Looking for: "${itemName}"`); // Debug log
+          
+          if (itemMap.has(itemName)) {
+            const item = itemMap.get(itemName);
+            if (item.available && item.price > 0) {
+              priceDisplay.textContent = `₦${item.price.toLocaleString()}`;
+              console.log(`✓ Updated ${itemName} to ₦${item.price}`); // Debug log
+            } else {
+              priceDisplay.textContent = 'Sold Out';
+              priceDisplay.style.color = '#ff6b6b';
+              console.log(`✓ ${itemName} marked as Sold Out`); // Debug log
+            }
+          } else {
+            priceDisplay.textContent = 'Sold Out';
+            priceDisplay.style.color = '#ff6b6b';
+            console.log(`✗ Item "${itemName}" not found - showing Sold Out`); // Debug log
+          }
+        });
+
+      } catch (error) {
+        console.error('Error loading prices:', error);
+        // Fallback: show error or keep "Loading..."
+        document.querySelectorAll('.price-display').forEach(p => {
+          if (p.textContent === 'Loading...') {
+            p.textContent = 'Check menu';
+          }
+        });
+      }
+    })();
+  </script>
 </body>
 </html>

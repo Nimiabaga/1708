@@ -108,6 +108,23 @@
       box-shadow:0 2px 0 rgb(5 0 0 / .35), 0 6px 22px rgba(0,0,0,.25);
       white-space:nowrap; font-size:var(--fs-btn);
       touch-action:manipulation;
+      transition:all .18s ease;
+    }
+    .adm-btn:hover{
+      transform:translateY(-2px);
+      box-shadow:0 4px 0 rgb(5 0 0 / .35), 0 8px 28px rgba(0,0,0,.35);
+    }
+
+    .adm-btn.primary{
+      background:linear-gradient(180deg,#22c55e,#16a34a);
+      color:#fff;
+      font-size:1.05em;
+      padding:.8rem 1.5rem;
+      box-shadow:0 2px 0 rgb(0 0 0 / .35), 0 8px 24px rgba(34,197,94,.35);
+    }
+    .adm-btn.primary:hover{
+      background:linear-gradient(180deg,#4ade80,#22c55e);
+      box-shadow:0 4px 0 rgb(0 0 0 / .35), 0 12px 32px rgba(34,197,94,.45);
     }
 
     .meal-caption{ text-align:center; margin-top:1.6rem; opacity:.9; color:var(--muted); font-size:var(--fs-body); }
@@ -175,11 +192,119 @@
           <a class="adm-btn" href="./admin-prices.html">Open Price Editor</a>
         </div>
       </article>
+
+      <article class="tile">
+        <div>
+          <h4>Backup & Restore</h4>
+          <p>Download catalogue as JSON or restore from backup in case everything wipes.</p>
+        </div>
+        <div class="actions" style="gap:.6rem; flex-wrap:wrap; justify-content:center;">
+          <button id="load-all-cat" class="adm-btn primary">Load All Catalog Items</button>
+          <button id="download-cat" class="adm-btn">Download Catalogue</button>
+        </div>
+        <input id="upload-cat" type="file" accept="application/json" style="display:none">
+      </article>
     </section>
 
     <section id="admin-message" class="meal-caption">
-      <strong>Welcome, Admin:</strong> Use the Price Editor to update menu prices and availability.
+      <strong>Welcome, Admin:</strong> Use the Price Editor to update menu prices and availability. <span id="backup-status"></span>
     </section>
   </main>
+
+  <script>
+    const API_URL = 'https://script.google.com/macros/s/AKfycbw5v7gImXthxWkHUaCtDdDGx4U_tts7_1JWuHA9ojyu6nm2qvHyPehZrtfEK2j5JTMy/exec';
+    const TOKEN = 'Forgive1988@';
+
+    // Helper to get element
+    const $ = id => document.getElementById(id);
+
+    // Load catalogue button - trigger file input
+    $('load-all-cat').addEventListener('click', () => {
+      $('upload-cat').click();
+    });
+
+    // Download catalogue as JSON
+    $('download-cat').addEventListener('click', async () => {
+      try {
+        $('backup-status').textContent = 'Downloading...';
+        const response = await fetch(API_URL + '?token=' + TOKEN + '&op=read');
+        const data = await response.json();
+        
+        if (!data.ok || !data.rows) {
+          alert('Failed to download catalogue');
+          $('backup-status').textContent = '';
+          return;
+        }
+
+        // Create JSON file and download
+        const json = JSON.stringify(data.rows, null, 2);
+        const blob = new Blob([json], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `1708-catalogue-${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        $('backup-status').textContent = `✓ Downloaded ${data.rows.length} items`;
+        setTimeout(() => { $('backup-status').textContent = ''; }, 3000);
+      } catch (err) {
+        alert('Error: ' + (err.message || err));
+        $('backup-status').textContent = '';
+      }
+    });
+
+    // Load catalogue from JSON
+    $('upload-cat').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      try {
+        $('backup-status').textContent = 'Reading file...';
+        const text = await file.text();
+        const rows = JSON.parse(text);
+
+        if (!Array.isArray(rows)) {
+          alert('JSON must be an array of items');
+          $('backup-status').textContent = '';
+          return;
+        }
+
+        if (!confirm(`Load ${rows.length} items from backup? This will replace current catalogue.`)) {
+          $('upload-cat').value = '';
+          $('backup-status').textContent = '';
+          return;
+        }
+
+        $('backup-status').textContent = 'Uploading...';
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+          body: new URLSearchParams({
+            token: TOKEN,
+            op: 'write',
+            rows: JSON.stringify(rows)
+          })
+        });
+
+        const result = await response.json();
+        if (!result.ok) {
+          alert(result.error || 'Upload failed');
+          $('backup-status').textContent = '';
+          return;
+        }
+
+        $('upload-cat').value = '';
+        $('backup-status').textContent = `✓ Restored ${result.count || rows.length} items`;
+        setTimeout(() => { $('backup-status').textContent = ''; }, 3000);
+      } catch (err) {
+        alert('Error: ' + (err.message || err));
+        $('upload-cat').value = '';
+        $('backup-status').textContent = '';
+      }
+    });
+  </script>
 </body>
 </html>
