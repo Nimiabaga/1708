@@ -464,39 +464,55 @@
       if(!data.ok) throw new Error(data.error||'Failed to load');
       rows = Array.isArray(data.rows) ? data.rows : [];
       pendingNew = [];
-      const seeded = seedMissingWhiskeyRows();
+      const seeded = seedMissingNewlyAddedRows();
       if (seeded) {
         await saveToSheet({ silent: true });
       }
       render();
       $('status').textContent = seeded
-        ? `Loaded ${rows.length} item(s) + synced ${seeded} Whiskey item(s).`
+        ? `Loaded ${rows.length} item(s) + synced ${seeded} new item(s).`
         : `Loaded ${rows.length} item(s)`;
     }
 
-    function seedMissingWhiskeyRows(){
-      const whiskeyItems = (drinksCatalog['Whiskey'] || []).filter(i => i && i.name);
-      if (!whiskeyItems.length) return 0;
-
+    function seedMissingNewlyAddedRows(){
       const key = r => `${String(r.type || '').trim().toLowerCase()}|||${String(r.cat || '').trim().toLowerCase()}|||${String(r.name || '').trim().toLowerCase()}`;
       const existing = new Set(rows.map(key));
 
-      let added = 0;
-      whiskeyItems.forEach(item => {
-        const k = `drinks|||whiskey|||${String(item.name).trim().toLowerCase()}`;
-        if (existing.has(k)) return;
+      const targets = [
+        { type: 'Drinks', cat: 'Whiskey', names: [
+          'American Honey','Jameson Black','Glenfiddich 12yrs','Glenfiddich 15yrs','Glenfiddich 18yrs',
+          'Hennessey VS','Hennessey VSOP','Remy Martin','Swift Martel','Glenmorangie','Martel VS'
+        ]},
+        { type: 'Drinks', cat: 'Liquor', names: ['Clay More'] },
+        { type: 'Drinks', cat: 'Energy/Herbs', names: ['Ace Bitters','Zagg','Chapman ALC','Vinogano','1960'] },
+        { type: 'Drinks', cat: 'Cigarettes/Nuts', names: ['Groundnut Big'] },
+        { type: 'Food', cat: 'Stews & Sauces', names: ['Tomatoes Sauce','Peppered Sauce/Soup','Fried Rice Sauce','Salad','Vegetable Sauce'] },
+        { type: 'Food', cat: 'Beverages', names: ['Lipton Tea','Custard'] },
+        { type: 'Drinks', cat: 'Wines', names: ['Pastoral Sour','1964 Wine'] }
+      ];
 
-        pendingNew.push({
-          id: uid(),
-          type: 'Drinks',
-          name: item.name,
-          cat: 'Whiskey',
-          price: Number(item.price || 0),
-          available: true,
-          __new: true
+      let added = 0;
+      targets.forEach(target => {
+        const source = target.type === 'Food' ? foodCatalog : target.type === 'Rooms' ? roomsCatalog : drinksCatalog;
+        const list = source[target.cat] || [];
+
+        target.names.forEach(name => {
+          const k = `${String(target.type).trim().toLowerCase()}|||${String(target.cat).trim().toLowerCase()}|||${String(name).trim().toLowerCase()}`;
+          if (existing.has(k)) return;
+
+          const found = list.find(i => String(i?.name || '').trim().toLowerCase() === String(name).trim().toLowerCase());
+          pendingNew.push({
+            id: uid(),
+            type: target.type,
+            name,
+            cat: target.cat,
+            price: Number(found?.price || 0),
+            available: true,
+            __new: true
+          });
+          existing.add(k);
+          added += 1;
         });
-        existing.add(k);
-        added += 1;
       });
 
       return added;
