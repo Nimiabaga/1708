@@ -210,6 +210,10 @@
           <li><span>Climax Can</span><span class="price" id="price-climax-can"></span></li>
           <li><span>Odogwu Bitters</span><span class="price" id="price-odogwu-bitters"></span></li>
           <li><span>Origin Bitters</span><span class="price" id="price-origin-bitters"></span></li>
+          <li><span>Ace Bitters</span><span class="price" id="price-ace-bitters"></span></li>
+          <li><span>Zagg</span><span class="price" id="price-zagg"></span></li>
+          <li><span>Vinogano</span><span class="price" id="price-vinogano"></span></li>
+          <li><span>Chapman ALC</span><span class="price" id="price-chapman-alc"></span></li>
           <li><span>Don Simon</span><span class="price" id="price-don-simon"></span></li>
           <li><span>1960</span><span class="price" id="price-1960"></span></li>
         </ul>
@@ -242,9 +246,11 @@
       .replace(/[^a-z0-9]/gi,'-').replace(/-+/g,'-')
       .toLowerCase().replace(/-$/,'');
 
-    // Which categories this page should show (must match admin sheet exactly)
+    const norm = s => String(s || '').trim().toLowerCase();
+
+    // Which categories this page should show
     const ALLOWED_CATS = new Set([
-      'Beers/Lagers','Beers/Stout','Beers/Ready','Soft/Mixer','Energy/Herbs'
+      'beers/lagers','beers/stout','beers/ready','soft/mixer','energy/herbs'
     ]);
 
     function injectPrices(){
@@ -254,9 +260,11 @@
           if(!j.ok || !Array.isArray(j.rows)) return;
 
           j.rows.forEach(item=>{
-            if (String(item.type) !== 'Drinks') return;
-            if (!ALLOWED_CATS.has(String(item.cat))) return;
             if (!item.name) return;
+
+            const typeOk = norm(item.type) === 'drinks';
+            const catOk = ALLOWED_CATS.has(norm(item.cat));
+            if (!typeOk && !catOk) return;
 
             const s = slug(item.name);
             const priceEl = document.getElementById('price-' + s);

@@ -177,6 +177,10 @@
         { name: "Climax Can", price: 1200 },
         { name: "Origin Bitters", price: 2500 },
         { name: "Odogwu Bitters", price: 1200 },
+        { name: "Ace Bitters", price: 1700 },
+        { name: "Zagg", price: 1100 },
+        { name: "Chapman ALC", price: 2200 },
+        { name: "Vinogano", price: 1700 },
         { name: "Don Simon", price: 6500 },
         { name: "1960", price: 1700 }
       ],
@@ -195,7 +199,8 @@
         { name: "Chesterfield", price: 3100 },
         { name: "Dorchester", price: 3100 },
         { name: "Bohem", price: 2100 },
-        { name: "Groundnut Small", price: 1800 }
+        { name: "Groundnut Small", price: 1800 },
+        { name: "Groundnut Big", price: 5050 }
       ],
       "Cocktails": [
   { "name": "Adios Motherfucker", "price": 10000 },
@@ -287,9 +292,20 @@
       "Whiskey": [
         { name: "Williams Lawson", price: 25000 },
         { name: "Jack Daniels", price: 40000 },
+        { name: "American Honey", price: 35000 },
         { name: "Williams Lawson Small", price: 12000 },
         { name: "Jameson Green Small", price: 18000 },
+        { name: "Jameson Black", price: 67000 },
         { name: "Singleton", price: 80000 },
+        { name: "Glenfiddich 12yrs", price: 110000 },
+        { name: "Glenfiddich 15yrs", price: 128000 },
+        { name: "Glenfiddich 18yrs", price: 184000 },
+        { name: "Hennessey VS", price: 106000 },
+        { name: "Hennessey VSOP", price: 167000 },
+        { name: "Remy Martin", price: 105000 },
+        { name: "Swift Martel", price: 134000 },
+        { name: "Glenmorangie", price: 73000 },
+        { name: "Martel VS", price: 73000 },
         { name: "Monkey Shoulder", price: 45000 },
         { name: "Jameson Green Big", price: 40000 },
         { name: "Black Label", price: 70500 },
@@ -305,11 +321,12 @@
         { name: "Drostdy hof", price: 18000 },
         { name: "Pastoral Wine", price: 19000 },
         { name: "Pastoral Muscat", price: 21000 },
+        { name: "Pastoral Sour", price: 21500 },
         { name: "Star Chaser", price: 17000 },
         { name: "Lamothe Original", price: 15000 },
         { name: "Toma Wine", price: 10000 },
         { name: "Princi Pinal Wine", price: 10000 },
-        { name: "1964 Wine", price: 10000 },
+        { name: "1964 Wine", price: 11000 },
         { name: "Sweet Lip Wine", price: 15000 }
       ]
     };
@@ -349,6 +366,8 @@
       "Beverages": [
         { name: "Coffee", price: 2500 },
         { name: "Tea", price: 2000 },
+        { name: "Lipton Tea", price: 0 },
+        { name: "Custard", price: 0 },
         { name: "Cocoa", price: 2500 }
       ],
       "Breakfast Dishes": [
@@ -396,6 +415,11 @@
       ],
       "Stews & Sauces": [
         { name: "Tomatoes Stew", price: 4500 },
+        { name: "Tomatoes Sauce", price: 1200 },
+        { name: "Peppered Sauce/Soup", price: 1200 },
+        { name: "Fried Rice Sauce", price: 1200 },
+        { name: "Vegetable Sauce", price: 2300 },
+        { name: "Salad", price: 1700 },
         { name: "Curry Sauce", price: 4500 },
         { name: "Egg Sauce", price: 4000 }
       ],
@@ -440,8 +464,42 @@
       if(!data.ok) throw new Error(data.error||'Failed to load');
       rows = Array.isArray(data.rows) ? data.rows : [];
       pendingNew = [];
+      const seeded = seedMissingWhiskeyRows();
+      if (seeded) {
+        await saveToSheet({ silent: true });
+      }
       render();
-      $('status').textContent = `Loaded ${rows.length} item(s)`;
+      $('status').textContent = seeded
+        ? `Loaded ${rows.length} item(s) + synced ${seeded} Whiskey item(s).`
+        : `Loaded ${rows.length} item(s)`;
+    }
+
+    function seedMissingWhiskeyRows(){
+      const whiskeyItems = (drinksCatalog['Whiskey'] || []).filter(i => i && i.name);
+      if (!whiskeyItems.length) return 0;
+
+      const key = r => `${String(r.type || '').trim().toLowerCase()}|||${String(r.cat || '').trim().toLowerCase()}|||${String(r.name || '').trim().toLowerCase()}`;
+      const existing = new Set(rows.map(key));
+
+      let added = 0;
+      whiskeyItems.forEach(item => {
+        const k = `drinks|||whiskey|||${String(item.name).trim().toLowerCase()}`;
+        if (existing.has(k)) return;
+
+        pendingNew.push({
+          id: uid(),
+          type: 'Drinks',
+          name: item.name,
+          cat: 'Whiskey',
+          price: Number(item.price || 0),
+          available: true,
+          __new: true
+        });
+        existing.add(k);
+        added += 1;
+      });
+
+      return added;
     }
 
     function filtered(){
@@ -461,9 +519,13 @@
         .replace(/"/g, '&quot;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;');
+      const norm = s => String(s || '').trim().toLowerCase();
 
       const cat = catalogForType(row.type || 'Food');
       const groups = Object.keys(cat);
+      const rowCat = norm(row.cat);
+      const rowName = norm(row.name);
+      let hasCurrent = false;
 
       let html = `<select class="item-select">
         <option value="">— pick item —</option>`;
@@ -475,12 +537,21 @@
             const rawVal = `${g}|||${it.name}`;
             const val = esc(rawVal);
             const label = esc(it.name);
-            const selected = (row.cat===g && row.name===it.name) ? 'selected' : '';
+            const selected = (rowCat === norm(g) && rowName === norm(it.name)) ? 'selected' : '';
+            if (selected) hasCurrent = true;
             html += `<option value="${val}" ${selected}>${label}</option>`;
           }
           html += `</optgroup>`;
         }
       }
+
+      if (!hasCurrent && row.name){
+        const currentCat = String(row.cat || '(Custom)').trim();
+        const currentName = String(row.name).trim();
+        const rawVal = `${currentCat}|||${currentName}`;
+        html += `<option value="${esc(rawVal)}" selected>Current: ${esc(currentName)}</option>`;
+      }
+
       html += `<option value="__custom__">— Custom… —</option></select>`;
       return html;
     }
@@ -639,7 +710,8 @@
     });
 
     // === SAVE (clean + dedupe before writing) ===
-    async function saveToSheet(){
+    async function saveToSheet(options = {}){
+      const silent = !!options.silent;
       try{
         // merge rows + pendingNew
         const merged = rows.concat(
@@ -672,7 +744,7 @@
         const j = await r.json();
         if(!j.ok){
           $('status').textContent = 'Save failed';
-          alert(j.error || 'Save failed');   // show server error reason
+          if (!silent) alert(j.error || 'Save failed');   // show server error reason
           return;
         }
 
@@ -683,7 +755,7 @@
         $('status').textContent = 'Saved ✓';
       }catch(err){
         $('status').textContent = 'Save failed';
-        alert(err.message||err);
+        if (!silent) alert(err.message||err);
       }
     }
 
